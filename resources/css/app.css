@@ -10,4 +10,19 @@
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
+
+    /* Color Pallete */
+    --color-primary: #007AFF;
+    --color-primary-gradient: linearGradient(#007AFF, #0E315D)
+    --color-white: #FEFEFF;
+    --color-dark: #2C2C2C;
+    --color-gray: #999999;
+    --color-danger: #EC221F;
+    --color-success: #14AE5C;
+    --color-warning: #E8B931;
+
+    /* Color Primary Shades */
+    --color-primary-500: #1EACFF;
+    --color-primary-300: #83DFFF;
+    --color-primary-100: #D6F2FF;
 }
