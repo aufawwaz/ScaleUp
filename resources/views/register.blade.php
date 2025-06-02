@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Login ScaleUp</title>
+    <title>Register ScaleUp</title>
 </head>
 <body style="background: linear-gradient(#007AFF, #0E315D);" class="h-[100dvh]">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between px-[5vw] py-[3vh] h-full gap-0 md:gap-[3vw]">
@@ -21,51 +21,43 @@
                 <p class="text-primary-900 text-2xl transform -translate-x-1.25">cale<b>Up</b></p>
             </div>
 
-            <h2 class="text-dark text-3xl text-center font-bold py-[1rem]">Login</h2>
-            <button
-                onclick="" 
-                class="rounded-[12px] border-1 border-gray p-2 w-full flex flex-row justify-center items-center gap-1 cursor-pointer"
-            >
+            <h2 class="text-dark text-3xl text-center font-bold py-[1rem]">Sign Up</h2>
+            <button class="rounded-[12px] border-1 border-gray p-2 w-full flex flex-row justify-center items-center gap-1 cursor-pointer">
                 <img src="/asset/ic_google.svg" alt="" style="width: 12px;">
-                <p class="text-dark text-sm font-bold mb-0.5">Sign in with Google</p>
+                <p class="text-dark text-sm font-bold mb-0.5">Sign up with Google</p>
             </button>
-            
+
             <div class="flex items-center justify-center gap-x-[8px] h-[32px]">
                 <hr class="w-[30%] border-gray">
                 <p class="text-gray mb-1">or</p>
                 <hr class="w-[30%] border-gray">
             </div>
-
+            
             <form action="" class="flex flex-col gap-[16px] mb-[3rem]">
-                <x-input-form type="text" name="email" icon="/asset/ic_email.svg" placeholder="Email"/>
-                <x-input-form type="password" name="password" icon="/asset/ic_password.svg" placeholder="Password"/>
-                <x-input-form type="password" name="confirm_password" icon="/asset/ic_password.svg" placeholder="Confirm Password"/>
+                <x-input-form type="text" name="email" icon="/asset/ic_user.svg" placeholder="Username"/>
+                <x-input-form type="text" name="password" icon="/asset/ic_email.svg" placeholder="Email"/>
+                <x-input-form type="password" name="confirm_password" icon="/asset/ic_password.svg" placeholder="password"/>
                 
-                <div class="flex justify-between">
-                    <div class="flex gap-2 items-center">
-                        <input type="checkbox" name="remember_me" class="accent-gray checked:accent-primary h-[24px]">
-                        <p class="text-sm mb-0.5">Remember Me</p>
-                    </div>
-                    <a href="" class="text-sm text-primary">Forgot Password?</a>
+                <div class="flex gap-2 items-center">
+                    <input type="checkbox" name="remember_me" class="accent-gray checked:accent-primary h-[24px]">
+                    <p class="text-sm mb-0.5">I agree to
+                        <a href="" class="text-sm text-primary"> Terms & Conditions</a>
+                    </p>
                 </div>
-
-                <button 
-                    onclick=""
-                    class="rounded-[12px] border-1 bg-primary-900 p-3 w-full font-bold text-white text-sm cursor-pointer"
-                >
-                    Login
+                
+                <button class="rounded-[12px] border-1 bg-primary-900 p-3 w-full font-bold text-white text-sm cursor-pointer">
+                    Sign Up
                 </button>
 
                 <p class="text-sm">
-                    Don't have an account?
-                    <a href="{{ route("register") }}" class="text-sm text-primary">Create Account</a>
+                    Already have an account? 
+                    <a href="{{ route('login') }}" class="text-sm text-primary">Sign in</a>
                 </p>
             </form>
         </div>
     </div>
 </body>
 </html>
-
 
 <style>
     .fade-move-up {
