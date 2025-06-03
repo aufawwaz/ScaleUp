@@ -14,6 +14,6 @@ class Product extends Model
         'harga_modal',
         'kategori',
         'deskripsi',
-        'stok_awal', // Ubah dari 'stok' ke 'stok_awal'
+        'stok_awal',
     ];
 }
