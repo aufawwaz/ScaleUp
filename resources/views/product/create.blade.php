@@ -20,7 +20,10 @@
                     <input id="image" name="image" type="file" class="hidden" accept="image/*" onchange="previewImage(event)">
                     <img id="image-preview" class="absolute top-0 left-0 w-full h-full object-cover rounded opacity-0 transition-opacity duration-200" />
                 </label>
-            </div>
+              </div>
+              <span class="text-xs text-gray-400 mt-[-1rem] mb-2 block">
+                  Maksimal ukuran gambar 5MB. Format: JPG, JPEG, PNG.
+              </span>
             <x-custom-input-form label="Nama Produk" name="nama_produk" required="true" placeholder="Masukkan Nama Produk" />
             <x-custom-input-form label="Satuan" name="satuan" type="select" required="true" :options="['Pcs','Box','Kg','Lusin']" placeholder="Pilih Satuan" />
             <x-custom-input-form label="Harga Jual" name="harga_jual" type="number" required="true" placeholder="Masukkan Harga Produk" />

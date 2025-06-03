@@ -42,7 +42,7 @@ class ProductController extends Controller
             'kategori'     => 'nullable|string|max:100',
             'deskripsi'    => 'nullable|string',
             'stok'         => 'nullable|integer',
-            'image'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         // Handle upload gambar jika ada
@@ -53,5 +53,44 @@ class ProductController extends Controller
         Product::create($validated);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
+    }
+
+    // Edit Produk
+    public function edit(Product $product)
+    {
+        return view('product.edit', compact('product'));
+    }
+
+    // Update Produk
+    public function update(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'satuan' => 'required|string',
+            'harga_jual' => 'required|numeric',
+            'harga_modal' => 'nullable|numeric',
+            'kategori' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
+            'stok' => 'nullable|integer',
+            'image' => 'nullable|image|max:5128',
+            'stok_change' => 'nullable|integer',
+        ]);
+
+        // Hitung stok baru
+        $stok_change = $request->input('stok_change', 0);
+        $validated['stok'] = $product->stok + $stok_change;
+
+        // Handle image upload jika ada file baru
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($product->image && \Storage::disk('public')->exists($product->image)) {
+                \Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('produk', 'public');
+        }
+
+        $product->update($validated);
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate!');
     }
 }

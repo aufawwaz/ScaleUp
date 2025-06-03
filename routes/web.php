@@ -37,11 +37,6 @@ Route::get('/register', function () {
 // Product
 Route::resource('product', ProductController::class);
 
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
-Route::post('/product', [ProductController::class, 'store'])->name('product.store');
-Route::get('/product/create')->name('product.create');
-
 // Authentication
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');

@@ -4,21 +4,17 @@
     <!-- Tombol Edit & Hapus (kanan atas, hanya muncul saat hover) -->
     <div class="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition z-20">
         <a href="{{ route('product.edit', $product->id) }}"
-           class="bg-white hover:bg-gray-200 text-dark p-3 rounded-full shadow transition"
-           title="Edit">
+           class="bg-primary hover:brightness-80 text-white p-3 rounded-full shadow transition"
+           title="Edit"> 
             <!-- Icon edit -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l-6 6m-2 2h2v2h2v-2h2v-2h-2v-2h-2v2h-2v-2z"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>
         </a>
         <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')" class="inline">
             @csrf
             @method('DELETE')
-            <button type="submit" class="bg-white hover:bg-gray-200 text-dark p-3 rounded-full shadow transition cursor-pointer" title="Hapus">
+            <button type="submit" class="bg-danger hover:brightness-80 text-white p-3 rounded-full shadow transition cursor-pointer" title="Hapus">
                 <!-- Icon hapus -->
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+               <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
             </button>
         </form>
     </div>
@@ -38,7 +34,7 @@
                 <span class="text-xs text-gray-500">{{ $product->stok }} Tersedia</span>
             </div>
             <div class="flex items-center justify-between">
-                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Keuntungan</span>
+                <span class="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-xl">Keuntungan</span>
                 <span class="text-green-500 text-sm font-semibold">
                     Rp{{ number_format($product->harga_jual - $product->harga_modal, 0, ',', '.') }}
                 </span>
