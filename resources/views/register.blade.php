@@ -7,9 +7,10 @@
     @vite('resources/css/app.css')
     <title>Register ScaleUp</title>
 </head>
-<body style="background: linear-gradient(#007AFF, #0E315D); overflow-y: auto;" class="min-h-screen md:h-full">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between px-[5vw] py-[3vh] md:h-[100vh] gap-[6vh] md:gap-[3vw]">
+<body class="min-h-screen md:h-full bg-gradient-to-b from-[#007AFF] to-[#0E315D] overflow-y-auto">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between px-[5vw] py-[3vh] h-full gap-0 md:gap-[3vw]">
         
+        <!-- Bagian onboarding, pastikan sama dengan login -->
         <div class="fade-move-up relative w-full h-[32rem] md:w-[480px] overflow-hidden text-white md:ml-auto mb-4 md:mb-0 md:mr-0 flex flex-col justify-center gap-2" style="transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;">
             <div id="auto-scroll" class="flex h-full transition-transform duration-700 ease-in-out">
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
@@ -17,13 +18,11 @@
                     <h3 class="text-2xl font-bold">Kelola Bisnis dalam Satu Tempat dengan Mudah</h3>
                     <p class="text-sm">Atur produk, transaksi, saldo, dan pelanggan dengan mudah dalam satu platform</p>
                 </div>
-
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
                     <img src="/asset/onboard_2.svg" alt="" class="w-[275px]">
                     <h3 class="text-2xl font-bold">Pengetahuan adalah Kunci Bisnis Berkembang</h3>
                     <p class="text-sm">Pelajari dan Temukan insight bisnis melalui Knowledge Card dan ambil keputusan dengan percaya diri</p>
                 </div>
-
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
                     <img src="/asset/onboard_3.svg" alt="" class="w-[275px]">
                     <h3 class="text-2xl font-bold">Catat & Kendalikan Keuanganmu Secara Real-Time</h3>
@@ -37,6 +36,7 @@
             </div>
         </div>
 
+        <!-- Bagian form register, JANGAN DIUBAH -->
         <div class="fade-move-up container bg-white rounded-[20px] px-[3rem] py-[1rem] md:w-1/2 md:max-w-[480px] md:mr-auto md:ml-0" style="transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;">
             <div class="flex items-center justify-start">
                 <img src="/asset/scaleUp_logo.svg" alt="" class="w-10">
@@ -80,7 +80,7 @@
     </div>
 </body>
 </html>
-<!-- Styling dan script dari login.blade.php -->
+<!-- Styling dan script onboarding -->
 <style>
     .fade-move-up {
         opacity: 0;
@@ -113,12 +113,11 @@
     let currentSlide = 0;
     const totalSlides = 3;
     const autoScroll = document.getElementById('auto-scroll');
+    let autoScrollInterval;
 
     function updateScroll() {
         if (!autoScroll) return;
-        const slideWidth = autoScroll.children[0].offsetWidth;
         autoScroll.style.transform = `translateX(-${currentSlide * 100}%)`;
-        
         document.querySelectorAll('.circle').forEach(function(c, i){
             if (i == currentSlide) c.classList.add('current');
             else c.classList.remove('current');
@@ -142,7 +141,6 @@
     function getSlide(toSlide){
         currentSlide = toSlide;
         updateScroll();
-
         clearInterval(autoScrollInterval)
         startAutoScroll()
     }
