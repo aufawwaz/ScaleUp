@@ -8,12 +8,12 @@ class Product extends Model
 {
     protected $fillable = [
         'nama_produk',
-        'image',      // Nama produk
-        'satuan',           // Satuan
-        'harga_jual',       // Harga jual
-        'harga_modal',      // Harga modal
-        'kategori',         // Kategori
-        'deskripsi',        // Deskripsi produk
-        'stok',        // Stok awal
+        'image',
+        'satuan',
+        'harga_jual',
+        'harga_modal',
+        'kategori',
+        'deskripsi',
+        'stok_awal', // Ubah dari 'stok' ke 'stok_awal'
     ];
 }
