@@ -1,13 +1,12 @@
 <?php
 
 use App\http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/product', function () {
-    return view('product');
-})->name('product');
+Route::get('/product', [ProductController::class, 'index'])->name('product');
 
 Route::get('/transaction', function () {
     return view('transaction');
@@ -32,3 +31,6 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('register');
+
+// Product
+Route::get('/product/create')->name('product.create');

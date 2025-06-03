@@ -2,7 +2,8 @@
   titlePage="Dashboard - ScaleUp"
   title="Dashboard"  
 >
-  <main class="main-container flex flex-col gap-[1.5rem]">
+  <main class="main-container">
+    <div class="p-[1rem] min-h-[calc(100dvh-60px)] flex flex-col gap-[1.5rem]">
     <!-- Card Dashboard -->
     <div class="flex gap-[1rem]">
       <!-- Card -->
@@ -175,9 +176,8 @@
         </div>
       </div>
     </div>
+    </div>
 
-    <!-- Chart.js Script -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       new Chart(document.getElementById('incomeDoughnut'), {
         type: 'doughnut',
