@@ -2,6 +2,7 @@
 
 use App\http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +11,8 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+
+Route::get('/news', [NewsController::class, 'index'])->name('news');
 
 Route::get('/transaction', function () {
     return view('transaction');
@@ -23,9 +26,6 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/news', function () {
-    return view('news');
-})->name('news');
 
 Route::get('/login', function () {
     return view('login');

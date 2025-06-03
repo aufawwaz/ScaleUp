@@ -10,7 +10,8 @@
 <body style="background: linear-gradient(#007AFF, #0E315D); overflow-y: auto;" class="min-h-screen md:h-full">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between px-[5vw] py-[3vh] md:h-[100vh] gap-[6vh] md:gap-[3vw]">
         
-        <div class="fade-move-up relative w-full h-[32rem] md:w-[480px] overflow-hidden text-white md:ml-auto mb-4 md:mb-0 md:mr-0 flex flex-col justify-center gap-2" style="transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;">
+        {{-- on board --}}
+        <div class="fade-move-up relative w-full h-[28rem] md:w-[480px] overflow-hidden text-white md:ml-auto mb-4 md:mb-0 md:mr-0 flex flex-col justify-center gap-2" style="transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;">
             <div id="auto-scroll" class="flex h-full transition-transform duration-700 ease-in-out">
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
                     <img src="/asset/onboard_1.svg" alt="" class="w-[275px]">
@@ -37,7 +38,7 @@
             </div>
         </div>
 
-
+        {{-- form login --}}
         <div class="fade-move-up container bg-white rounded-[20px] px-[3rem] py-[1rem] md:w-1/2 md:max-w-[480px] md:min-w-[360px] md:mr-auto md:ml-0" style="transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;">
             <div class="flex items-center justify-start">
                 <img src="/asset/scaleUp_logo.svg" alt="" class="w-10">
@@ -110,12 +111,14 @@
     }
 </style>
 <script>
+    // fade in
     window.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.fade-move-up').forEach(function(el, i) {
             setTimeout(() => el.classList.add('show'), 200 + i * 150);
         });
     });
 
+    // onboard logic
     let currentSlide = 0;
     const totalSlides = 3;
     const autoScroll = document.getElementById('auto-scroll');
@@ -134,13 +137,13 @@
         autoScrollInterval = setInterval(() => {
             currentSlide = (currentSlide + 1) % totalSlides;
             updateScroll();
-        }, 3000);
+        }, 4000);
     }
     startAutoScroll()
 
     window.addEventListener('resize', function(){
         currentSlide = 0;
-        updateScroll
+        updateScroll()
     })
 
     function getSlide(toSlide){
