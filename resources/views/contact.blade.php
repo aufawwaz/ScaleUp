@@ -1,4 +1,7 @@
-<x-layout title="Contact - ScaleUp">
+<x-layout
+  titlePage="Contact - ScaleUp"
+  title="Kontak"  
+>
   <main>
     
   </main>

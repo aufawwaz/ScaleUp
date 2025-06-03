@@ -28,4 +28,19 @@
     --color-primary-500: #1EACFF;
     --color-primary-300: #83DFFF;
     --color-primary-100: #D6F2FF;
+    --color-primary-50: #EDFAFF;
+}
+
+@layer components {
+    .nav-link {
+        @apply w-full pl-[1.5rem] py-4 font-semibold rounded-r-full text-dark opacity-80 text-sm hover:bg-slate-100 hover:opacity-100 hover:text-primary transition
+    }
+
+    .main-container {
+        @apply p-[1rem] fixed top-[60px] left-[240px] bg-slate-50 w-[calc(100%-240px)] h-[calc(100dvh-60px)] overflow-y-scroll
+    }
+
+    .dashboard-card-header {
+        @apply text-base uppercase font-bold text-dark w-full
+    }
 }

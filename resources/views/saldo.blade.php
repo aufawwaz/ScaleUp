@@ -1,4 +1,7 @@
-<x-layout title="Saldo - ScaleUp">
+<x-layout   
+  titlePage="Saldo - ScaleUp"
+  title="Saldo"  
+>
   <main>
     
   </main>
