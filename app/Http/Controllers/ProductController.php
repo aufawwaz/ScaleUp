@@ -93,4 +93,15 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate!');
     }
+
+    public function destroy(Product $product)
+    {
+        // Hapus gambar jika ada
+        if ($product->image && \Storage::disk('public')->exists($product->image)) {
+            \Storage::disk('public')->delete($product->image);
+        }
+        $product->delete();
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus!');
+    }
 }
