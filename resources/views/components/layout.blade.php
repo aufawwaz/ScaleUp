@@ -8,6 +8,9 @@
 
   <!-- AlpineJs -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Chart.js Script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="font-poppins text-dark h-[100dvh] w-full">
   <!-- Sidebar component -->
@@ -24,3 +27,21 @@
   {{ $slot }}
 </body>
 </html>
+
+<style>
+    .fade-move-up {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    .fade-move-up.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.fade-move-up').forEach(function(el, i) {
+            setTimeout(() => el.classList.add('show'), 200 + i * 150);
+        });
+    });
+</script>
