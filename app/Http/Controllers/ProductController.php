@@ -1,85 +1,56 @@
 <?php
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
+    // Tampilkan daftar produk
+    public function index(Request $request)
     {
-        $products = [
-            (object)[
-                'nama_produk' => 'Meja Belajar',
-                'satuan' => 'Pcs',
-                'harga_jual' => 1000000,
-                'harga_modal' => 10000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Meja belajar minimalis',
-                'stok' => 100,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 10000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 150000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 150000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 150000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 150000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-            (object)[
-                'nama_produk' => 'Kursi Kantor',
-                'satuan' => 'Pcs',
-                'harga_jual' => 250000,
-                'harga_modal' => 150000,
-                'kategori' => 'Furniture',
-                'deskripsi' => 'Kursi kantor ergonomis',
-                'stok' => 50,
-                'image' => null,
-            ],
-        ];
+        $query = Product::query();
 
-        return view('product', compact('products'));
+        if ($request->filter == 'kategori') {
+            $query->orderBy('kategori');
+        } elseif ($request->filter == 'satuan') {
+            $query->orderBy('satuan');
+        } elseif ($request->filter == 'stok') {
+            $query->orderBy('stok', 'desc');
+        }
+
+        $products = $query->get();
+
+        return view('product.index', compact('products'));
+    }
+
+    // Tampilkan form tambah produk
+    public function create()
+    {
+        return view('product.create');
+    }
+
+    // Simpan produk baru
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_produk'  => 'required|string|max:255',
+            'satuan'       => 'required|string|max:50',
+            'harga_jual'   => 'required|integer',
+            'harga_modal'  => 'nullable|integer',
+            'kategori'     => 'nullable|string|max:100',
+            'deskripsi'    => 'nullable|string',
+            'stok'         => 'nullable|integer',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Handle upload gambar jika ada
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('produk', 'public');
+        }
+
+        Product::create($validated);
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 }

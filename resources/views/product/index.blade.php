@@ -6,16 +6,15 @@
     <div class="flex flex-col gap-[1rem] w-full p-[1rem]">
       <!-- Header -->
       <x-header-page title="DATA PRODUK">
-        <a href="{{ route('product.create') }}" class="bg-primary text-white rounded-xl text-xs px-4 py-2">Tambah Produk</a>
+        <x-custom-button href="{{ route('product.create') }}" color="primary">Tambah Produk</x-custom-button>
       </x-header-page>
 
       <!-- Filter Search -->
       <div class="w-full flex gap-[0.5rem] h-[32px]">
-        <p class="text-xs h-full flex items-center">Filter</p>
-        <x-filter-button label="Hari Ini" value="today"   :active="request('filter')" />
-        <x-filter-button label="Minggu Ini" value="week"  :active="request('filter')" />
-        <x-filter-button label="Bulan Ini" value="month"  :active="request('filter')" />
-        <x-filter-button label="Tahun Ini" value="year"   :active="request('filter')" />
+          <p class="text-xs h-full flex items-center">Filter</p>
+          <x-filter-button label="Kategori" value="kategori" :active="request('filter') == 'kategori'" />
+          <x-filter-button label="Satuan" value="satuan" :active="request('filter') == 'satuan'" />
+          <x-filter-button label="Stok" value="stok" :active="request('filter') == 'stok'" />
       </div>
 
       <!-- Produk Grid -->

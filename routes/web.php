@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/product', [ProductController::class, 'index'])->name('product');
 
 Route::get('/transaction', function () {
     return view('transaction');
@@ -33,4 +32,8 @@ Route::get('/register', function () {
 })->name('register');
 
 // Product
-Route::get('/product/create')->name('product.create');
+Route::resource('product', ProductController::class);
+
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
+Route::post('/product', [ProductController::class, 'store'])->name('product.store');

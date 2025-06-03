@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->string('image')->nullable();
             $table->string('satuan')->nullable();
-            $table->integer('harga_jual');
-            $table->integer('harga_modal');
+            $table->bigInteger('harga_jual');
+            $table->bigInteger('harga_modal');
             $table->string('kategori')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->integer('stok_awal');
+            $table->integer('stok')->default(0);
             $table->timestamps();
         });
     }
