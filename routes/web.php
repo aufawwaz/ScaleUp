@@ -2,7 +2,10 @@
 
 use App\http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -34,3 +37,7 @@ Route::get('/register', function () {
 
 // Product
 Route::get('/product/create')->name('product.create');
+
+// Authentication
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::post('/register', [AuthController::class, 'register'])->name('register.process');
