@@ -36,10 +36,10 @@
                 <hr class="w-[30%] border-gray">
             </div>
 
-            <form action="" class="flex flex-col gap-[16px] mb-[3rem]">
+            <form action="{{ route('login.process') }}" method="POST" class="flex flex-col gap-[16px] mb-[3rem]">
+                @csrf
                 <x-input-form type="text" name="email" icon="/asset/ic_email.svg" placeholder="Email"/>
                 <x-input-form type="password" name="password" icon="/asset/ic_password.svg" placeholder="Password"/>
-                <x-input-form type="password" name="confirm_password" icon="/asset/ic_password.svg" placeholder="Confirm Password"/>
                 
                 <div class="flex justify-between">
                     <div class="flex gap-2 items-center">
@@ -49,10 +49,7 @@
                     <a href="" class="text-sm text-primary">Forgot Password?</a>
                 </div>
 
-                <button 
-                    onclick=""
-                    class="rounded-[12px] border-1 bg-primary-900 p-3 w-full font-bold text-white text-sm cursor-pointer"
-                >
+                <button type="submit" class="rounded-[12px] border-1 bg-primary-900 p-3 w-full font-bold text-white text-sm cursor-pointer">
                     Login
                 </button>
 
