@@ -10,7 +10,6 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/product', [ProductController::class, 'index'])->name('product');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 
@@ -36,7 +35,7 @@ Route::get('/register', function () {
 })->name('register');
 
 // Product
-Route::get('/product/create')->name('product.create');
+Route::resource('product', ProductController::class);
 
 // Authentication
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
