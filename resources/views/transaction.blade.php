@@ -1,4 +1,7 @@
-<x-layout title="Transaction - ScaleUp">
+<x-layout
+  titlePage="Transaksi - ScaleUp"
+  title="Transaksi"  
+>
   <main>
     
   </main>

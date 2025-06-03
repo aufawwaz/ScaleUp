@@ -1,4 +1,7 @@
-<x-layout title="Product - ScaleUp">
+<x-layout
+  titlePage="Product - ScaleUp"
+  title="Produk"  
+>
   <main>
     
   </main>

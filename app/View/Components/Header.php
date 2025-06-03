@@ -6,22 +6,19 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Layout extends Component
+class Header extends Component
 {
-    public string $titlePage;
     public string $title;
     public string $userName;
     public string $date;
     public string $imgSrc;
 
     public function __construct(
-        $titlePage,
-        $title = "Dashboard",
-        $userName = 'Biru',
-        $date = '12 Maret 2025',
-        $imgSrc = '/asset/Light logo.png'
-    ) {
-        $this->titlePage = $titlePage;
+        $title = "Dashboard", 
+        $userName = 'Biru', 
+        $date = '12 Maret 2025', 
+        $imgSrc = 'asset/Light logo.png')
+    {
         $this->title = $title;
         $this->userName = $userName;
         $this->date = $date;
@@ -33,6 +30,6 @@ class Layout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layout');
+        return view('components.header');
     }
 }
