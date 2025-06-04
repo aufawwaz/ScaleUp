@@ -11,8 +11,6 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
-Route::get('/news', [NewsController::class, 'index'])->name('news');
-
 Route::get('/transaction', function () {
     return view('transaction');
 })->name('transaction');
@@ -25,6 +23,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+Route::get('/news', [NewsController::class, 'index'])->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/login', function () {
     return view('login');
@@ -35,7 +35,9 @@ Route::get('/register', function () {
 })->name('register');
 
 // Product
-Route::resource('product', ProductController::class);
+Route::resource('product', ProductController::class)->parameters([
+    'product' => 'product:slug'
+]);
 
 // Authentication
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');

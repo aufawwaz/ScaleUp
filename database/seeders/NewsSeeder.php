@@ -16,6 +16,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Kebangkitan UMKM di Era Digital', 
                 'description' => 'Transformasi digital membawa angin segar bagi UMKM di Indonesia',
+                'image' => '/storage/news/umkm_digital.jpg',
                 'view' => rand(1, 2500),
                 'date' => '2025-06-04', 
                 'content' => "Di tengah pesatnya perkembangan teknologi, usaha mikro, kecil, dan menengah (UMKM) mulai menunjukkan taringnya dalam ekosistem digital. Pemanfaatan platform online seperti marketplace, media sosial, hingga aplikasi kasir digital memberikan ruang baru bagi UMKM untuk tumbuh dan bersaing di pasar yang lebih luas.\n
@@ -29,6 +30,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Strategi Bisnis Berkelanjutan di Tengah Tantangan Global', 
                 'description' => 'Perusahaan dituntut untuk beradaptasi dengan prinsip keberlanjutan demi daya saing jangka panjang.',
+                'image' => '/storage/news/strategi_bisnis_global.png',
                 'view' => rand(1, 2500),
                 'date' => '2025-05-29', 
                 'content' => "Dalam menghadapi tantangan global seperti perubahan iklim, krisis energi, dan fluktuasi ekonomi, perusahaan dituntut untuk menerapkan strategi bisnis yang berkelanjutan. Konsep sustainability kini tidak lagi menjadi pilihan, melainkan keharusan bagi pelaku usaha yang ingin bertahan dalam jangka panjang.\n
@@ -42,6 +44,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Digitalisasi Bisnis sebagai Kunci Pertumbuhan Ekonomi Nasional', 
                 'description' => 'Transformasi digital menjadi faktor utama dalam percepatan pertumbuhan bisnis di Indonesia.',
+                'image' => '/storage/news/digitalisasi_bisnis.webp',
                 'view' => rand(1, 2500),
                 'date' => '2025-05-29', 
                 'content' => "Perkembangan teknologi digital telah membawa perubahan besar dalam lanskap bisnis global, termasuk di Indonesia. Digitalisasi bukan lagi sebuah pilihan, melainkan kebutuhan yang harus diadopsi oleh seluruh pelaku usaha, baik skala besar maupun kecil, untuk bertahan dan berkembang di tengah kompetisi yang semakin ketat.\n
@@ -63,6 +66,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Kebangkitan UMKM di Era Digital', 
                 'description' => 'Transformasi digital membawa angin segar bagi UMKM di Indonesia',
+                'image' => '/storage/news/umkm_digital.jpg',
                 'view' => rand(1, 2500),
                 'date' => '2025-06-04', 
                 'content' => "Di tengah pesatnya perkembangan teknologi, usaha mikro, kecil, dan menengah (UMKM) mulai menunjukkan taringnya dalam ekosistem digital. Pemanfaatan platform online seperti marketplace, media sosial, hingga aplikasi kasir digital memberikan ruang baru bagi UMKM untuk tumbuh dan bersaing di pasar yang lebih luas.\n
@@ -76,6 +80,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Strategi Bisnis Berkelanjutan di Tengah Tantangan Global', 
                 'description' => 'Perusahaan dituntut untuk beradaptasi dengan prinsip keberlanjutan demi daya saing jangka panjang.',
+                'image' => '/storage/news/strategi_bisnis_global.png',
                 'view' => rand(1, 2500),
                 'date' => '2025-06-04', 
                 'content' => "Dalam menghadapi tantangan global seperti perubahan iklim, krisis energi, dan fluktuasi ekonomi, perusahaan dituntut untuk menerapkan strategi bisnis yang berkelanjutan. Konsep sustainability kini tidak lagi menjadi pilihan, melainkan keharusan bagi pelaku usaha yang ingin bertahan dalam jangka panjang.\n
@@ -89,6 +94,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Digitalisasi Bisnis sebagai Kunci Pertumbuhan Ekonomi Nasional', 
                 'description' => 'Transformasi digital menjadi faktor utama dalam percepatan pertumbuhan bisnis di Indonesia.',
+                'image' => '/storage/news/digitalisasi_bisnis.webp',
                 'view' => rand(1, 2500),
                 'date' => '2025-05-29', 
                 'content' => "Perkembangan teknologi digital telah membawa perubahan besar dalam lanskap bisnis global, termasuk di Indonesia. Digitalisasi bukan lagi sebuah pilihan, melainkan kebutuhan yang harus diadopsi oleh seluruh pelaku usaha, baik skala besar maupun kecil, untuk bertahan dan berkembang di tengah kompetisi yang semakin ketat.\n
@@ -108,6 +114,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Kebangkitan UMKM di Era Digital', 
                 'description' => 'Transformasi digital membawa angin segar bagi UMKM di Indonesia',
+                'image' => '/storage/news/umkm_digital.jpg',
                 'view' => rand(1, 2500),
                 'date' => '2025-05-25', 
                 'content' => "Di tengah pesatnya perkembangan teknologi, usaha mikro, kecil, dan menengah (UMKM) mulai menunjukkan taringnya dalam ekosistem digital. Pemanfaatan platform online seperti marketplace, media sosial, hingga aplikasi kasir digital memberikan ruang baru bagi UMKM untuk tumbuh dan bersaing di pasar yang lebih luas.\n
@@ -121,6 +128,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Strategi Bisnis Berkelanjutan di Tengah Tantangan Global', 
                 'description' => 'Perusahaan dituntut untuk beradaptasi dengan prinsip keberlanjutan demi daya saing jangka panjang.',
+                'image' => '/storage/news/strategi_bisnis_global.png',
                 'view' => rand(1, 2500),
                 'date' => '2025-06-04', 
                 'content' => "Dalam menghadapi tantangan global seperti perubahan iklim, krisis energi, dan fluktuasi ekonomi, perusahaan dituntut untuk menerapkan strategi bisnis yang berkelanjutan. Konsep sustainability kini tidak lagi menjadi pilihan, melainkan keharusan bagi pelaku usaha yang ingin bertahan dalam jangka panjang.\n
@@ -134,6 +142,7 @@ class NewsSeeder extends Seeder
             [
                 'title' => 'Digitalisasi Bisnis sebagai Kunci Pertumbuhan Ekonomi Nasional', 
                 'description' => 'Transformasi digital menjadi faktor utama dalam percepatan pertumbuhan bisnis di Indonesia.',
+                'image' => '/storage/news/digitalisasi_bisnis.webp',
                 'view' => rand(1, 2500),
                 'date' => '2025-05-25', 
                 'content' => "Perkembangan teknologi digital telah membawa perubahan besar dalam lanskap bisnis global, termasuk di Indonesia. Digitalisasi bukan lagi sebuah pilihan, melainkan kebutuhan yang harus diadopsi oleh seluruh pelaku usaha, baik skala besar maupun kecil, untuk bertahan dan berkembang di tengah kompetisi yang semakin ketat.\n

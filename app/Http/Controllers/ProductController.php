@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
-use Illmunate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -84,8 +84,8 @@ class ProductController extends Controller
         // Handle image upload jika ada file baru
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($product->image && \Storage::disk('public')->exists($product->image)) {
-                \Storage::disk('public')->delete($product->image);
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
             }
             $validated['image'] = $request->file('image')->store('produk', 'public');
         }
@@ -99,8 +99,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         // Hapus gambar jika ada
-        if ($product->image && \Storage::disk('public')->exists($product->image)) {
-            \Storage::disk('public')->delete($product->image);
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
         }
         $product->delete();
 
@@ -108,9 +108,8 @@ class ProductController extends Controller
     }
 
     // Show Detail Produk
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
         return view('product.show', compact('product'));
     }
 }

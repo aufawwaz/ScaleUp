@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -15,5 +16,16 @@ class Product extends Model
         'kategori',
         'deskripsi',
         'stok',
+        'slug',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            $product->slug = Str::slug($product->nama_produk);
+        });
+        static::updating(function ($product) {
+            $product->slug = Str::slug($product->nama_produk);
+        });
+    }
 }
