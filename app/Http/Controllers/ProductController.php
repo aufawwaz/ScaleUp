@@ -108,9 +108,8 @@ class ProductController extends Controller
     }
 
     // Show Detail Produk
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
         return view('product.show', compact('product'));
     }
 }
