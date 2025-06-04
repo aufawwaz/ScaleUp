@@ -16,7 +16,7 @@ class NewsController extends Controller
         $data = News::orderBy('date', 'desc')->get();
 
         $mostPopularNews = $data->sortByDesc(function ($news) {
-            // nilai kepopularitas = view / hari sejak news di create
+            // nilai kepopularitas = (view) / (hari sejak news di create)
             $jumlahHari = Carbon::parse($news->date)->diffInDays(now());
             $jumlahHari = $jumlahHari === 0 ? 1 : $jumlahHari; // biar gak bagi 0
             
@@ -25,9 +25,6 @@ class NewsController extends Controller
 
         return view('news', compact('data', 'mostPopularNews'));
     }
-    /**
-     * Get
-     */
 
     /**
      * Show the form for creating a new resource.

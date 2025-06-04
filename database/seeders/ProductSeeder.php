@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
                 'harga_modal' => 100000,
                 'kategori' => 'Furniture',
                 'deskripsi' => 'Kursi kayu minimalis untuk ruang tamu.',
-                'stok_awal' => 50,
+                'stok' => 50,
             ],
             [
                 'nama_produk' => 'Meja Belajar',
@@ -31,7 +31,7 @@ class ProductSeeder extends Seeder
                 'harga_modal' => 180000,
                 'kategori' => 'Furniture',
                 'deskripsi' => 'Meja belajar anak dengan laci.',
-                'stok_awal' => 30,
+                'stok' => 30,
             ],
             [
                 'nama_produk' => 'Setrika Listrik',
@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
                 'harga_modal' => 90000,
                 'kategori' => 'Elektronik',
                 'deskripsi' => 'Setrika listrik hemat energi.',
-                'stok_awal' => 40,
+                'stok' => 40,
             ],
         ]);
     }
