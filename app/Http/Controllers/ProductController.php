@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illmunate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
