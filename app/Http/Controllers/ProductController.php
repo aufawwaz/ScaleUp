@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -108,9 +108,8 @@ class ProductController extends Controller
     }
 
     // Show Detail Produk
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
         return view('product.show', compact('product'));
     }
 }

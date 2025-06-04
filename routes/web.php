@@ -35,7 +35,9 @@ Route::get('/register', function () {
 })->name('register');
 
 // Product
-Route::resource('product', ProductController::class);
+Route::resource('product', ProductController::class)->parameters([
+    'product' => 'product:slug'
+]);
 
 // Authentication
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
