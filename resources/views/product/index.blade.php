@@ -9,7 +9,6 @@
         <div class="flex gap-[0.5rem]">
           <!-- Tambah produk, kategori dan satuan -->
           <x-custom-button href="{{ route('product.create') }}" color="primary" outline="true">Tambah Kategori</x-custom-button>
-          <x-custom-button href="{{ route('product.create') }}" color="primary" outline="true">Tambah Satuan</x-custom-button>
           <x-custom-button href="{{ route('product.create') }}" color="primary">Tambah Produk</x-custom-button>
         </div>
       </x-header-page>
