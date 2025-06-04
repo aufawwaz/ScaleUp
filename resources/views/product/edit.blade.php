@@ -28,7 +28,7 @@
               Maksimal ukuran gambar 5MB. Format: JPG, JPEG, PNG.
             </span>
             <x-custom-input-form label="Nama Produk" name="nama_produk" required="true" placeholder="Masukkan Nama Produk" :value="$product->nama_produk" />
-            <x-custom-input-form label="Satuan" name="satuan" type="select" required="true" :options="['Pcs','Box','Kg','Lusin']" placeholder="Pilih Satuan" :value="$product->satuan" />
+            <x-custom-input-form label="Satuan" name="satuan" type="select" required="true" :options="['Pcs','Box','Kg','Lusin','Lainnya']" placeholder="Pilih Satuan" :value="$product->satuan" />
             <x-custom-input-form label="Harga Jual" name="harga_jual" type="number" required="true" placeholder="Masukkan Harga Produk" :value="$product->harga_jual" />
           </div>
 
@@ -36,7 +36,7 @@
           <div class="bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
             <label class="font-semibold mb-2">DETAIL PRODUK</label>
             <x-custom-input-form label="Harga Modal" name="harga_modal" type="number" placeholder="Masukkan Harga Modal" :value="$product->harga_modal" />
-            <x-custom-input-form label="Kategori" name="kategori" type="select" :options="['Furniture','Elektronik','Alat Tulis']" placeholder="Pilih Kategori" :value="$product->kategori" />
+            <x-custom-input-form label="Kategori" name="kategori" type="select" :options="['Barang','Jasa','Lainnya']" placeholder="Pilih Kategori" :value="$product->kategori" />
             <x-custom-input-form label="Deskripsi Produk" name="deskripsi" type="textarea" placeholder="Masukkan Deskripsi" :value="$product->deskripsi" />
             <!-- Stok Saat Ini -->
             <div class="mb-2">
