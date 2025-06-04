@@ -37,10 +37,20 @@
     }
 
     .main-container {
-        @apply fixed top-[60px] left-[240px] bg-slate-50 w-[calc(100%-240px)] h-[calc(100dvh-60px)] overflow-y-scroll
+        @apply fixed top-[60px] left-[240px] bg-slate-50 w-[calc(100%-240px)] h-[calc(100dvh-60px)] overflow-y-auto
     }
 
     .dashboard-card-header {
         @apply text-base uppercase font-bold text-dark w-full
+    }
+
+    /* Untuk Chrome, Edge, Safari */
+    .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+    }
+    /* Untuk Firefox */
+    .scrollbar-hidden {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 }

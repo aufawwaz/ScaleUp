@@ -10,7 +10,7 @@
 ])
 
 @php
-    $base = 'inline-flex items-center justify-center rounded-xl font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2';
+    $base = 'cursor-pointer inline-flex items-center justify-center rounded-xl font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 whitespace-nowrap';
     $sizes = [
         'sm' => 'px-2 py-2 text-[10px]',
         'md' => 'px-4 py-3 text-xs',

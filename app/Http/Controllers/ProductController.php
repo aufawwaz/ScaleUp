@@ -94,6 +94,7 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate!');
     }
 
+    // Hapus Produk
     public function destroy(Product $product)
     {
         // Hapus gambar jika ada
@@ -103,5 +104,12 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus!');
+    }
+
+    // Show Detail Produk
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product.show', compact('product'));
     }
 }

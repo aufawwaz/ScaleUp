@@ -13,19 +13,19 @@
         <div class="fade-move-up relative w-full h-[32rem] md:w-[480px] overflow-hidden text-white md:ml-auto mb-4 md:mb-0 md:mr-0 flex flex-col justify-center gap-2" style="transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;">
             <div id="auto-scroll" class="flex h-full transition-transform duration-700 ease-in-out">
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
-                    <img src="/asset/onboard_1.svg" alt="" class="w-[275px]">
+                    <img src="/asset/onboard_1.svg" alt="" class="w-[275px] mb-[1rem]">
                     <h3 class="text-2xl font-bold">Kelola Bisnis dalam Satu Tempat dengan Mudah</h3>
                     <p class="text-sm">Atur produk, transaksi, saldo, dan pelanggan dengan mudah dalam satu platform</p>
                 </div>
 
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
-                    <img src="/asset/onboard_2.svg" alt="" class="w-[275px]">
+                    <img src="/asset/onboard_2.svg" alt="" class="w-[275px] mb-[1rem]">
                     <h3 class="text-2xl font-bold">Pengetahuan adalah Kunci Bisnis Berkembang</h3>
                     <p class="text-sm">Pelajari dan Temukan insight bisnis melalui Knowledge Card dan ambil keputusan dengan percaya diri</p>
                 </div>
 
                 <div class="w-full h-full flex-shrink-0 flex flex-col items-center justify-center px-4">
-                    <img src="/asset/onboard_3.svg" alt="" class="w-[275px]">
+                    <img src="/asset/onboard_3.svg" alt="" class="w-[275px] mb-[1rem]">
                     <h3 class="text-2xl font-bold">Catat & Kendalikan Keuanganmu Secara Real-Time</h3>
                     <p class="text-sm">Pantau saldo dan transaksi bisnis secara instan untuk pengelolaan yang lebih efisien</p>
                 </div>
