@@ -23,6 +23,7 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+Route::get('/news/fetch', [NewsController::class, 'fetchNewsHTML'])->name('news.fetch');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 

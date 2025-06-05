@@ -13,20 +13,26 @@ class NewsCard extends Component
     public $title;
     public $description;
     public $date;
-    public $views;
+    public $source;
     public $image;
     /**
      * Create a new component instance.
-     * @param $news row data dari database
      */
     public function __construct($news)
     {
-        $this->id          = $news->id;
-        $this->title       = $news->title;
-        $this->description = $news->description;
-        $this->image       = $news->image;
-        $this->date        = Carbon::parse($news->date)->translatedFormat('d F Y');
-        $this->views       = $news->view > 999 ? number_format($news->view / 1000, 1) . 'K' : $news->view;
+        $this->id          = $news['article_id'] ?? '';
+        $this->title       = $news['title'] ?? '';
+        $this->description = $news['description'] ?? 'Tidak Ada Kosong';
+        $this->image       = $news['image_url'] ?? $news['image'] ?? asset('asset/news_dummy_image.png');
+
+        $dateRaw           = $news['pubDate'] ?? $news['date'] ?? now()->toDateString();
+        try {
+            $this->date = Carbon::parse($dateRaw)->translatedFormat('d F Y');
+        } catch (\Exception $e) {
+            $this->date = now()->translatedFormat('d F Y');
+        }
+        
+        $this->source      = $news['source_id'] ?? '';
     }
 
     /**
@@ -36,4 +42,5 @@ class NewsCard extends Component
     {
         return view('components.news-card');
     }
+
 }
