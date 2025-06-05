@@ -5,7 +5,7 @@
   <main class="main-container">
     <div class="p-[1rem] min-h-[calc(100dvh-60px)] flex flex-col gap-[1.5rem]">
       <x-header-page title="EDIT PRODUK"></x-header-page>
-      <form action="{{ route('product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('product.update', $product->slug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

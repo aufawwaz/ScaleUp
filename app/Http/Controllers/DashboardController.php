@@ -3,16 +3,18 @@
 namespace App\http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Contact;
 
 class DashboardController extends Controller
 {
   public function index()
   {
     // Buat card dashboard
-    $saldo = 9000000; 
-    $transaksi = 998; 
-    $kontak = 1024;  
-    $produk = 72;     
+    $saldo = 9000000;
+    $transaksi = 998;
+    $kontak = Contact::count();
+    $produk = Product::count();
 
     // Diagram donat
     $labels = ['Tunai', 'Kredit', 'QRIS', 'Lainnya'];
@@ -52,25 +54,25 @@ class DashboardController extends Controller
 
     return view('dashboard', compact(
       // Dashboard card
-      'saldo', 
-      'transaksi', 
-      'kontak', 
+      'saldo',
+      'transaksi',
+      'kontak',
       'produk',
 
       // Diagram donat
       'labels',
-      'data', 
-      'colors', 
-      'total', 
+      'data',
+      'colors',
+      'total',
       'percent',
-      'profit', 
-      'profitPercent', 
-      
+      'profit',
+      'profitPercent',
+
       // Pesanan terbaru
-      'orders', 
+      'orders',
 
       // Pelanggan teratas
-      'topCustomers', 
+      'topCustomers',
 
       // Produk terlaris
       'topProducts',

@@ -3,7 +3,7 @@
         <div class="p-[1rem] flex flex-col gap-[1rem] h-fit">
         <x-header-page back="route('product.index')" title="{{ strtoupper($product->nama_produk) }}" class="">
                 <div class="flex gap-[0.5rem]">
-                    <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')" class="flex-1">
+                    <form action="{{ route('product.destroy', $product->slug) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')" class="flex-1">
                         @csrf
                         @method('DELETE')
                         <x-custom-button color="danger" outline="true" block="true" type="submit">
