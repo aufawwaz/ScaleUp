@@ -8,18 +8,21 @@
       <x-header-page title="DATA PRODUK">
         <div class="flex gap-[0.5rem]">
           <!-- Tambah produk, kategori dan satuan -->
-          <x-custom-button href="{{ route('product.create') }}" color="primary" outline="true">Tambah Kategori</x-custom-button>
           <x-custom-button href="{{ route('product.create') }}" color="primary">Tambah Produk</x-custom-button>
         </div>
       </x-header-page>
 
       <!-- Filter Search -->
+      @if($products->isEmpty())
+
+      @else
       <div class="w-full flex gap-[0.5rem] h-[32px]">
           <p class="text-xs h-full flex items-center">Filter</p>
           <x-filter-button label="Kategori" value="kategori" :active="request('filter') == 'kategori'" />
           <x-filter-button label="Satuan" value="satuan" :active="request('filter') == 'satuan'" />
           <x-filter-button label="Stok" value="stok" :active="request('filter') == 'stok'" />
       </div>
+      @endif
 
       <!-- Produk Grid / Empty State -->
       @if($products->isEmpty())
