@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NewsController;
@@ -39,6 +40,9 @@ Route::get('/register', function () {
 Route::resource('product', ProductController::class)->parameters([
     'product' => 'product:slug'
 ]);
+
+// Contact
+Route::resource('contact', ContactController::class);
 
 // Authentication
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');

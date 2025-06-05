@@ -1,11 +1,12 @@
 <x-layout titlePage="Detail Produk - ScaleUp" title="Detail Produk">
-    <main class="main-container flex flex-col p-[1rem] gap-[1rem]">
-        <x-header-page :back="route('product.index')" title="{{ strtoupper($product->nama_produk) }}" class="">
+    <main class="main-container">
+        <div class="p-[1rem] flex flex-col gap-[1rem] h-fit">
+        <x-header-page back="route('product.index')" title="{{ strtoupper($product->nama_produk) }}" class="">
                 <div class="flex gap-[0.5rem]">
-                    <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')" class="flex-1">
+                    <form action="{{ route('product.destroy', $product->slug) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')" class="flex-1">
                         @csrf
                         @method('DELETE')
-                        <x-custom-button color="danger" block="true" type="submit">
+                        <x-custom-button color="danger" outline="true" block="true" type="submit">
                             Hapus Produk
                         </x-custom-button>
                     </form>
@@ -16,7 +17,7 @@
         </x-header-page>
         <div class="flex gap-[1rem] max-h-[720px]">
             <!-- Gambar & Detail Produk -->
-            <div class="w-1/3 flex flex-col items-center bg-white rounded-2xl p-6 shadow h-full">
+            <div class="w-1/3 flex flex-col items-center bg-white rounded-2xl p-6 shadow min-h-full">
                 <div class="relative w-full aspect-square rounded-xl flex items-center justify-center overflow-hidden mb-4">
                     <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/default.png') }}"
                         alt="{{ $product->nama_produk }}"
@@ -68,6 +69,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </main>
 </x-layout>
