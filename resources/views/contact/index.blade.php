@@ -27,17 +27,17 @@ use Illuminate\Support\Str;
             <p class="text-gray-500 mb-4 text-sm text-center">Yuk, tambah kontak pertamamu agar <br> dapat dikelola!</p>
         </div>
       @else
-      <div class="p-6 bg-white w-full rounded-2xl shadow">
+      <div class="p-3 bg-white w-full rounded-2xl shadow">
         <table class="min-w-full rounded-xl overflow-clip">
           <thead>
-            <tr class="bg-primary text-white">  
-              <th class="py-3 px-3 font-semibold text-xs text-left">No</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">Nama</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">No. Handphone</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">Email</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">Alamat</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">Transaksi</th>
-              <th class="py-3 px-3 font-semibold text-xs text-left">Aksi</th>
+            <tr class="bg-primary/10 text-primary">  
+              <th class="py-4 px-3 font-bold text-xs text-left">No</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">Nama</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">No. Handphone</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">Email</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">Alamat</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">Transaksi</th>
+              <th class="py-4 px-3 font-bold text-xs text-left">Aksi</th>
             </tr>
           </thead>
           <tbody>

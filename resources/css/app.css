@@ -34,7 +34,7 @@
 
 @layer components {
     .nav-link {
-        @apply w-full pl-[1.5rem] py-4 font-semibold rounded-r-full text-dark opacity-80 text-sm hover:bg-slate-100 hover:opacity-100 hover:text-primary transition
+        @apply w-full pl-[1.5rem] h-12 font-medium rounded-xl text-dark opacity-80 text-sm hover:bg-gray-50 hover:opacity-100 hover:text-primary transition
     }
 
     .main-container {
