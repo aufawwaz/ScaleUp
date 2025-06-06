@@ -1,7 +1,7 @@
 <div onclick="
         @if(isset($id))window.location.href='{{ route('news.show', $id) }}'
         @else event.preventDefault();@endif" 
-    class="w-[280px] h-[250px] bg-white hover:bg-[#f7f7f7] shadow-lg cursor-pointer"
+    class="w-[280px] h-[250px] bg-white hover:bg-[#f0f0f0] shadow-lg cursor-pointer fade-move-up"
 >
     {{-- gambar --}}
     <div class="relative">
@@ -18,11 +18,10 @@
     <div class="container p-2 h-[130px] flex flex-col justify-between">
         <div>
             <judul class="text-base font-bold line-clamp-2">{{ $title }}</judul>
-            <deskripsi class="text-xs line-clamp-4">{{ $description }}</deskripsi>
+            <deskripsi class="text-xs line-clamp-3">{{ $description }}</deskripsi>
         </div>
         <div class="w-full text-xs text-gray flex flex-row-reverse bottom-0">
-            <img src="asset/ic_view_gray.svg" alt="" class="w-[16px]">
-            {{ $views }} 
+            {{ $source }}
         </div>
     </div>
 </div>
