@@ -55,13 +55,3 @@
         -ms-overflow-style: none;
     }
 }
-
-.fade-move-up {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-.fade-move-up.show {
-    opacity: 1;
-    transform: translateY(0);
-}
