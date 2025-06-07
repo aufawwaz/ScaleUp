@@ -18,11 +18,16 @@
     @if($products->isEmpty())
     
     @else
-    <div class="w-full flex gap-[0.5rem] h-[32px]">
-      <p class="text-xs h-full flex items-center">Filter</p>
-      <x-filter-button label="Kategori" value="kategori" :active="request('filter') == 'kategori'" />
-      <x-filter-button label="Satuan" value="satuan" :active="request('filter') == 'satuan'" />
-      <x-filter-button label="Stok" value="stok" :active="request('filter') == 'stok'" />
+    <div class="flex gap-5 justify-between">
+      <div class="w-fit flex gap-[0.5rem] h-[32px]">
+        <p class="text-xs h-full flex items-center">Filter</p>
+        <x-filter-button label="Kategori" value="kategori" :active="request('filter') == 'kategori'" />
+        <x-filter-button label="Satuan" value="satuan" :active="request('filter') == 'satuan'" />
+        <x-filter-button label="Stok" value="stok" :active="request('filter') == 'stok'" />
+      </div>
+      <x-search-bar
+        placeholder="Cari produk..."
+      ></x-search-bar>
     </div>
     @endif
     

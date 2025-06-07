@@ -25,6 +25,12 @@ use Illuminate\Support\Str;
 
 
       <!-- Filter and Search(maybe) -->
+      <div class="flex w-full justify-end">
+        <x-search-bar
+          placeholder="Cari kontak..."
+        >
+        </x-search-bar>
+      </div>
 
       <!-- Tabel Kontak -->
       @if($contacts->isEmpty())
