@@ -14,7 +14,13 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         $query = Contact::query();
-        $contacts = $query->paginate(10);
+
+        // Filter berdasarkan nama kontak
+        if ($request->filled('search')) {
+            $query->where('nama_kontak', 'like', '%' . $request->search . '%');
+        }
+
+        $contacts = $query->paginate(10)->withQueryString();
 
         return view('contact.index', compact('contacts'));
     }
@@ -32,7 +38,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate( [
+        $validated = $request->validate([
             'nama_kontak'       => 'required|string|max:255',
             'nomor_handphone'   => 'nullable|string|max:50',
             'image_kontak'      => 'nullable|image|mimes:jpg,jpeg,png|max:5120',

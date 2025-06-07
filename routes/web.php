@@ -45,3 +45,18 @@ Route::get('/register', function ()
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+
+// Penjualan
+Route::get('/sale', function () {
+    return view('sale');
+})->name('sale');
+
+// Pembelian
+Route::get('/purchase', function () {
+    return view('purchase');
+})->name('purchase');
+
+// Tagihan
+Route::get('/bill', function () {
+    return view('bill');
+})->name('bill');

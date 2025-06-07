@@ -128,7 +128,7 @@
                     <td class="py-2 px-2">{{ $order['product'] }}</td>
                     <td class="py-2 px-2">Rp {{ number_format($order['price'], 0, ',', '.') }}</td>
                     <td class="py-2 px-2">
-                      <span class="bg-primary text-white px-3 py-1 rounded-full text-xs">{{ $order['pembayaran'] }}</span>
+                      <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">{{ $order['pembayaran'] }}</span>
                     </td>
                   </tr>
                 @endforeach

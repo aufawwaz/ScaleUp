@@ -13,6 +13,10 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
+        if ($request->filled('search')) {
+            $query->where('nama_produk', 'like', '%' . $request->search . '%');
+        }
+
         if ($request->filter == 'kategori') {
             $query->orderBy('kategori');
         } elseif ($request->filter == 'satuan') {

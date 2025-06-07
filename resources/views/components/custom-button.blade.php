@@ -7,6 +7,7 @@
     'outline' => false,
     'block' => false,
     'disabled' => false,
+    'forceButton' => false, // paksa render <button> walau ada href
 ])
 
 @php
@@ -33,10 +34,8 @@
             : 'bg-green-500 text-white hover:bg-green-600 transition',
     ];
 
-    // Deteksi jika hanya icon tanpa teks
     $isOnlyIcon = $icon && trim($slot) === '';
 
-    // Kelas utama
     $classes = $base
         . ' ' . ($sizes[$size] ?? $sizes['md'])
         . ' ' . ($colors[$color] ?? $colors['primary'])
@@ -44,22 +43,37 @@
         . ($isOnlyIcon ? ' p-2 aspect-square' : '');
 @endphp
 
-@if($href)
-    <a href="{{ $href }}" {{ $attributes->merge(['class' => $classes . ($disabled ? ' opacity-50 pointer-events-none' : '')]) }}>
+@if($href && !$forceButton && !$attributes->has('x-on:click') && !$attributes->has('@click') && !$attributes->has('wire:click'))
+    <a 
+        href="{{ $href }}" 
+        {{ $attributes->merge([
+            'class' => $classes . ($disabled ? ' opacity-50 pointer-events-none' : '')
+        ]) }}
+    >
         @if($icon)
             <span class="{{ $isOnlyIcon ? '' : 'mr-2' }}">{!! $icon !!}</span>
         @endif
         @unless($isOnlyIcon)
             {{ $slot }}
+        @else
+            <span class="sr-only">Tombol</span>
         @endunless
     </a>
 @else
-    <button type="{{ $type }}" {{ $attributes->merge(['class' => $classes . ($disabled ? ' opacity-50 cursor-not-allowed' : '')]) }} {{ $disabled ? 'disabled' : '' }}>
+    <button 
+        type="{{ $type }}" 
+        {{ $attributes->merge([
+            'class' => $classes . ($disabled ? ' opacity-50 cursor-not-allowed' : '')
+        ]) }} 
+        {{ $disabled ? 'disabled' : '' }}
+    >
         @if($icon)
             <span class="{{ $isOnlyIcon ? '' : 'mr-2' }}">{!! $icon !!}</span>
         @endif
         @unless($isOnlyIcon)
             {{ $slot }}
+        @else
+            <span class="sr-only">Tombol</span>
         @endunless
     </button>
 @endif
