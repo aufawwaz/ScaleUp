@@ -27,7 +27,7 @@ use Illuminate\Support\Str;
       <!-- Filter and Search(maybe) -->
       <div class="flex w-full justify-end">
         <x-search-bar
-          placeholder="Cari kontak..."
+          placeholder="Cari kontak..."  name="search" :value="request('search')"
         >
         </x-search-bar>
       </div>
