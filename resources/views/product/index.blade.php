@@ -2,6 +2,8 @@
   titlePage="Produk - ScaleUp"
   title="Produk"  
 >
+<div x-data="{ showModal: false, deleteUrl: '', productName: '' }" x-cloak>
+
 <main class="main-container">
   <div class="flex flex-col gap-[1rem] w-full p-[1rem]">
     <!-- Header -->
@@ -39,5 +41,48 @@
       @endif
     </div>
   </main>
+
+<!-- Overlay -->
+  <div
+    x-show="showModal"
+    class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-50"
+    x-cloak
+    @click="showModal = false"
+  ></div>
+
+  <!-- Modal -->
+  <div
+    x-show="showModal"
+    x-cloak
+    class="fixed inset-0 flex items-center justify-center z-50"
+  >
+    <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-lg">
+      <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Produk</h2>
+      <p class="text-sm text-gray-600">
+        Apakah kamu yakin ingin menghapus produk <span class="font-semibold" x-text="productName"></span>?
+      </p>
+
+      <form :action="deleteUrl" method="POST" class="mt-4 flex justify-end gap-2">
+        @csrf
+        @method('DELETE')
+        <x-custom-button
+            type="button"
+            color="secondary"
+            outline="true"
+            @click="showModal = false"
+        >
+            Batal
+        </x-custom-button>
+
+        <x-custom-button
+            type="submit"
+            color="danger"
+        >
+            Hapus
+        </x-custom-button>
+      </form>
+    </div>
+  </div>
+  </div>
 
 </x-layout>

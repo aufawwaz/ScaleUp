@@ -4,7 +4,7 @@
 >
   <main class="main-container">
     <div class="p-[1rem] min-h-[calc(100dvh-60px)] flex flex-col gap-[1.5rem]">
-     <x-header-page title="TAMBAH KONTAK"></x-header-page>
+     <x-header-page title="EDIT KONTAK"></x-header-page>
        <form action="{{ route('contact.update', $contact->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')        
@@ -21,7 +21,7 @@
                     <input id="image" name="image_kontak" type="file" class="hidden" accept="image/*" onchange="previewImage(event)">
                     <img id="image-preview" 
                       src="{{ $contact->image_kontak ? asset('storage/' . $contact->image_kontak) : '' }}"
-                      class="absolute top-0 left-0 w-full h-full object-cover rounded opacity-0 transition-opacity duration-200" />
+                      class="absolute top-0 left-0 w-full h-full object-cover rounded opacity-0 transition-opacity duration-200 {{ $contact->image_kontak ? 'opacity-100' : 'opacity-0' }}" />
                 </label>
               </div>
               <span class="text-xs text-gray-400 mt-[-1rem] mb-2 block">
