@@ -26,7 +26,7 @@
         <x-filter-button label="Stok" value="stok" :active="request('filter') == 'stok'" />
       </div>
       <x-search-bar
-        placeholder="Cari produk..."
+        placeholder="Cari produk..."  name="search" :value="request('search')"
       ></x-search-bar>
     </div>
     @endif

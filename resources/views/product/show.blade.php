@@ -11,7 +11,7 @@
                         >
                         Hapus Produk
                     </x-custom-button>
-                        <x-custom-button :href="route('product.edit', $product->id)" color="primary" block="true">
+                        <x-custom-button :href="route('product.edit', $product->slug)" color="primary" block="true">
                             Atur Produk
                         </x-custom-button>
                     </div>

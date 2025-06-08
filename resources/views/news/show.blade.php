@@ -22,7 +22,7 @@ use App\Http\Controllers\NewsController;
                 <inpo class="text-sm text-gray flex items-center gap-0.5">
                     <a href="{{ $news['source_url'] }}" target="_blank" rel="noopener noreferrer">
                         <div class="flex flex-row py-0.5 px-1 hover:bg-primary hover:text-white gap-1 cursor-pointer rounded-sm transition">
-                            <img src="{{ $news['source_icon'] }}" alt="" class="h-5 w-5"> 
+                            <img src="{{ $news['source_icon'] }}" alt="" class="w-5"> 
                             {{ $news['source_id'] }}
                         </div>
                     </a>

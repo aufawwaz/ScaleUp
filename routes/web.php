@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\http\Controllers\DashboardController;
+use App\http\Controllers\SaldoController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AuthController;
@@ -11,30 +12,13 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
 Route::get('/transaction', function () {
     return view('transaction');
 })->name('transaction');
 
-Route::get('/saldo', function () {
-    return view('saldo');
-})->name('saldo');
-
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
-
-Route::get('/news/fetch', [NewsController::class, 'fetchNewsHTML'])->name('news.fetch');
-Route::get('/news', [NewsController::class, 'index'])->name('news');
-Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
-
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
+// Saldo
+Route::get('saldo/fetch/{id}', [SaldoController::class, 'getTransactionHistory'])->name('saldo.fetch');
+Route::resource('saldo', SaldoController::class);
 
 // Product
 Route::resource('product', ProductController::class)->parameters([
@@ -44,7 +28,18 @@ Route::resource('product', ProductController::class)->parameters([
 // Contact
 Route::resource('contact', ContactController::class);
 
+// News
+Route::get('/news/fetch', [NewsController::class, 'fetchNewsHTML'])->name('news.fetch');
+Route::get('/news', [NewsController::class, 'index'])->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
+
 // Authentication
+Route::get('/login', function () 
+    { return view('login');})->name('login');
+
+Route::get('/register', function () 
+    { return view('register'); })->name('register');
+
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
 

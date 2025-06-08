@@ -19,13 +19,18 @@
     --color-dark: #2C2C2C;
     --color-gray: #999999;
     --color-danger: #EC221F;
+    --color-danger-100: #fde5e5;
+    --color-danger-300: #F47E7C;
     --color-success: #14AE5C;
+    --color-success-100: #e6fcf0;
+    --color-success-300: #80f0b5;
     --color-warning: #E8B931;
     --color-primary-gradient: linear-gradient(#007AFF, #0E315D);
 
     /* Color Primary Shades */
     --color-primary-900: #0E315D;
     --color-primary-800: #085DC5;
+    --color-primary-600: #068EFF;
     --color-primary-500: #1EACFF;
     --color-primary-300: #83DFFF;
     --color-primary-100: #D6F2FF;
