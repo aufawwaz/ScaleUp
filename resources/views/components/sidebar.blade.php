@@ -86,7 +86,7 @@ $navItemsTransaction = [
         <p class="text-2xl font-medium text-primary">cale<span class="font-bold">Up</span></p>
     </div>
 
-    <div class="flex flex-col px-3 mt-[-3rem]">
+    <div class="flex flex-col px-3 mt-[-3rem] absolute w-full top-34">
 
         <!-- Menu -->
         <p class="text-gray-400 text-xs font-semibold pl-[1.5rem] h-10 flex items-center">MENU</p>
