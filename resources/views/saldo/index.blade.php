@@ -158,7 +158,7 @@
           <div>
             <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kontak</h2>
             <p class="text-sm text-gray-600">
-              Apakah kamu yakin ingin menghapus kontak <span class="font-semibold" x-text="$store.modal.formData.nama"></span>?
+              Apakah kamu yakin ingin menghapus kartu <span class="font-semibold" x-text="$store.modal.formData.nama"></span>?
             </p>
 
             <form
