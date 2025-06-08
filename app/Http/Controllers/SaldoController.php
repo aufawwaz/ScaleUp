@@ -35,7 +35,7 @@ class SaldoController extends Controller
         $this->validation($request);
         Saldo::create($request->all());
 
-        return redirect()->route('saldo.index')->with('success', 'Kartu berhasil diubah!');
+        return redirect()->route('saldo.index')->with('success', 'Kartu berhasil ditambah!');
     }
 
     /**

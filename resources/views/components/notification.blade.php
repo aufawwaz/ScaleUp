@@ -1,9 +1,13 @@
-@if ($success && $success->any())
+@if ($success)
     <div id="notif-success" class="bg-success-100 text-success text-xs p-2 rounded-lg mb-2 flex justify-between items-center transition-all border-1 border-success duration-300 ease-in-out">
         <ul>
-            @foreach ($success->all() as $s)
-            <li>{{ $s }}</li>
-            @endforeach
+            @if(is_array($success))
+                @foreach ($success as $s)
+                    <li>{{ $s }}</li>
+                @endforeach
+            @else
+                <li>{{ $success }}</li>
+            @endif
         </ul>
         <div class="text-xl cursor-pointer hover:scale-105 transition-all" onclick="closeNotif('notif-success')">×</div>
     </div>
