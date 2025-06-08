@@ -6,22 +6,17 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SaldoCard extends Component
+class Notification extends Component
 {
-    public $id;
-    public $jenis;
-    public $nama;
-    public $saldo;
-
+    public $success;
+    public $errors;
     /**
      * Create a new component instance.
      */
-    public function __construct($id, $jenis, $nama, $saldo)
+    public function __construct($success = [], $errors = [])
     {
-        $this->id = $id;
-        $this->jenis = $jenis;
-        $this->nama = $nama;
-        $this->saldo = $saldo;
+        $this->success = $success;
+        $this->errors = $errors;
     }
 
     /**
@@ -29,6 +24,6 @@ class SaldoCard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.saldo-card');
+        return view('components.notification');
     }
 }

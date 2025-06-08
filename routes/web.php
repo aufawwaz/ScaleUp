@@ -16,12 +16,9 @@ Route::get('/transaction', function () {
     return view('transaction');
 })->name('transaction');
 
-// Saldo 
-Route::get('/saldo', [SaldoController::class, 'index'])->name('saldo');
-
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+// Saldo
+Route::get('saldo/fetch/{id}', [SaldoController::class, 'getTransactionHistory'])->name('saldo.fetch');
+Route::resource('saldo', SaldoController::class);
 
 // Product
 Route::resource('product', ProductController::class)->parameters([

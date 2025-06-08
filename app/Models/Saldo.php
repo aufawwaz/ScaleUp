@@ -6,9 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Saldo extends Model
 {
-    protected $fillable = [
-        'jenis',
-        'jumlah',
-        'nama'
-    ];
+    protected $fillable = ['jenis','saldo','nama'];
 }
