@@ -163,7 +163,7 @@ use Illuminate\Support\Str;
     x-transition:leave="transform ease-in duration-300"
     x-transition:leave-start="translate-y-0 opacity-100"
     x-transition:leave-end="translate-y-10 opacity-0"
-    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-md text-xs shadow-lg z-[9999]"
+    class="fixed bottom-6 right-6 bg-success/10 text-success border border-success px-6 py-3 rounded-md text-xs shadow-lg z-[9999]"
   >
     {{ session('success') }}
   </div>

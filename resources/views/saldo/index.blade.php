@@ -156,7 +156,7 @@
         {{-- mode DELETE --}}
         <template x-if="$store.modal.mode === 'delete'">
           <div>
-            <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kontak</h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kartu</h2>
             <p class="text-sm text-gray-600">
               Apakah kamu yakin ingin menghapus kartu <span class="font-semibold" x-text="$store.modal.formData.nama"></span>?
             </p>
@@ -195,7 +195,7 @@
               @method('PUT')
             </template>
 
-            <h2 class="text-lg font-semibold mb-2 text-gray-800" x-text="$store.modal.mode === 'add' ? 'Tambah Kontak' : 'Edit Kontak'"></h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-800" x-text="$store.modal.mode === 'add' ? 'Tambah Kartu' : 'Edit Kartu'"></h2>
             <x-notification :success="[]" :errors="$errors" />
             <x-custom-input-form
               label="Jenis Kartu"
@@ -239,7 +239,6 @@
     </div>
   </div>
 </x-layout>
-
 
 
 

@@ -32,11 +32,7 @@ class SaldoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => 'required',
-            'jenis' => 'required|in:cash,bank',
-            'saldo' => 'nullable|numeric|min:1',
-        ]);
+        $validated = $this->validation($request);
         $validated['user_id'] = $request->user()->id;
         Saldo::create($validated);
 
