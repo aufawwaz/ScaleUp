@@ -6,16 +6,19 @@ use App\Models\Saldo;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    // Buat card dashboard
-    $saldo = Saldo::sum('saldo');
+    $userId = Auth::id();
+
+    // Jumlah saldo, produk, kontak milik user yang login
+    $saldo = \App\Models\Saldo::where('user_id', $userId)->sum('saldo');
     $transaksi = 998;
-    $kontak = Contact::count();
-    $produk = Product::count();
+    $kontak = \App\Models\Contact::where('user_id', $userId)->count();
+    $produk = \App\Models\Product::where('user_id', $userId)->count();
 
     // Diagram donat
     $labels = ['Tunai', 'Kredit', 'QRIS', 'Lainnya'];

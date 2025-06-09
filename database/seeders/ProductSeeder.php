@@ -23,6 +23,7 @@ class ProductSeeder extends Seeder
                 'deskripsi' => 'Komik Naruto',
                 'stok' => 50,
                 'slug' => 'komik-naruto',
+                'user_id' => 1,
             ],
             [
                 'nama_produk' => 'Komik One Piece',
@@ -34,6 +35,7 @@ class ProductSeeder extends Seeder
                 'deskripsi' => 'Komik One Piece',
                 'stok' => 30,
                 'slug' => 'komik-one-piece',
+                'user_id' => 1,
             ],
             [
                 'nama_produk' => 'Komik Solo Leveling',
@@ -45,6 +47,7 @@ class ProductSeeder extends Seeder
                 'deskripsi' => 'Komik Solo Leveling',
                 'stok' => 40,
                 'slug' => 'komik-solo-leveling',
+                'user_id' => 2,
             ],
             [
                 'nama_produk' => 'Komik Tomb Raider King',
@@ -56,6 +59,7 @@ class ProductSeeder extends Seeder
                 'deskripsi' => 'Komik Tomb Raider King',
                 'stok' => 40,
                 'slug' => 'komik-tomb-raider-king',
+                'user_id' => 2,
             ],
         ]);
     }

@@ -15,6 +15,12 @@ class Contact extends Model
         'image_kontak',
         'email_kontak',
         'alamat_kontak',
-        'jumlah_transaksi'
+        'jumlah_transaksi',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

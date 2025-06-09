@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Log;
 
 class SaldoController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Saldo::all();
-        return view('saldo.index', compact('data'));
+        $saldos = Saldo::where('user_id', $request->user()->id)->paginate(10);
+        return view('saldo.index', compact('saldos'));
     }
 
     /**
@@ -32,8 +32,13 @@ class SaldoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validation($request);
-        Saldo::create($request->all());
+        $validated = $request->validate([
+            'nama' => 'required',
+            'jenis' => 'required|in:cash,bank',
+            'saldo' => 'nullable|numeric|min:1',
+        ]);
+        $validated['user_id'] = $request->user()->id;
+        Saldo::create($validated);
 
         return redirect()->route('saldo.index')->with('success', 'Kartu berhasil ditambah!');
     }
@@ -45,7 +50,7 @@ class SaldoController extends Controller
     {
         $data = Saldo::all();
         $chartData = $this->getTransactionHistory($id);
-        
+
         return view('saldo.index', compact($data, 'chartData'));
     }
 
@@ -62,10 +67,10 @@ class SaldoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validation($request);
+        $validated = $this->validation($request);
 
         $data = Saldo::findOrFail($id);
-        $data->update($request->all());
+        $data->update($validated);
 
         return redirect()->route('saldo.index')->with('success', 'Kartu berhasil diubah!');
     }
@@ -77,24 +82,25 @@ class SaldoController extends Controller
     {
         Saldo::destroy($id);
         return redirect()->route('saldo.index')->with('success', 'Kartu berhasil dihapus!');
-
     }
 
-    private function validation(Request $request){
-        $request->validate([
+    private function validation(Request $request)
+    {
+        $validated = $request->validate([
             'nama' => 'required',
             'jenis' => 'required|in:Cash,Bank',
             'saldo' => 'nullable|numeric|min:1',
         ]);
-        $request->jenis = strtolower($request->jenis);
-        $request->saldo = $request->saldo ?? "0";
+        $validated['jenis'] = strtolower($validated['jenis']);
+        $validated['saldo'] = $validated['saldo'] ?? "0";
+        return $validated;
     }
 
-    public function getTransactionHistory($id):JsonResponse {
-        if($id == -1){
+    public function getTransactionHistory($id): JsonResponse
+    {
+        if ($id == -1) {
             // ambil dari database seluruh transaksi
-        }
-        else {
+        } else {
             // ambil dari database data transaksi yang menggunakan saldo tersebut
             // $data = Saldo::findOrFail($id);
         }

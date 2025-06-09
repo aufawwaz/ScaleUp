@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email_kontak')->nullable();
             $table->text('alamat_kontak')->nullable();
             $table->unsignedInteger('jumlah_transaksi')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
