@@ -1,9 +1,9 @@
 @php
   $totalSaldo = 0;
-  foreach($saldos as $d){
+  foreach($data as $d){
     $totalSaldo += $d->saldo;
   }
-  $isNoData = $saldos->isEmpty();
+  $isNoData = $data->isEmpty();
 @endphp
 
 <x-layout   
@@ -65,7 +65,7 @@
           {{-- list kartu --}}
           @if(!$isNoData)
             <div id="saldo-container" class="container flex flex-col gap-2 h-full overflow-scroll scrollbar-hidden">
-              @foreach ($saldos as $d)
+              @foreach ($data as $d)
                 <x-saldo-card 
                   :id="$d->id"
                   :nama="$d->nama" 
@@ -195,7 +195,7 @@
               @method('PUT')
             </template>
 
-            <h2 class="text-lg font-semibold mb-2 text-gray-800" x-text="$store.modal.mode === 'add' ? 'Tambah Kontak' : 'Edit Kontak'"></h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-800" x-text="$store.modal.mode === 'add' ? 'Tambah Kartu' : 'Edit Kartu'"></h2>
             <x-notification :success="[]" :errors="$errors" />
             <x-custom-input-form
               label="Jenis Kartu"
