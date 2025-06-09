@@ -9,7 +9,9 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', function() {
+    return view('landing');
+})->name('landing');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
