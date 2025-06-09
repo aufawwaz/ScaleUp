@@ -23,6 +23,7 @@ class ContactFactory extends Factory
             'email_kontak' => $this->faker->unique()->safeEmail(),
             'alamat_kontak' => $this->faker->address(),
             'jumlah_transaksi' => $this->faker->numberBetween(0, 100),
+            'user_id' => $this->faker->numberBetween(1, 2),
         ];
     }
 }

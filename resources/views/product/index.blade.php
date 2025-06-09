@@ -90,4 +90,23 @@
   </div>
   </div>
 
+  @if(session('success'))
+  <div 
+    x-data="{ show: false }" 
+    x-init="
+      setTimeout(() => show = true, 300);
+      setTimeout(() => show = false, 3300)" 
+    x-show="show"
+    x-transition:enter="transform ease-out duration-300"
+    x-transition:enter-start="translate-y-10 opacity-0"
+    x-transition:enter-end="translate-y-0 opacity-100"
+    x-transition:leave="transform ease-in duration-300"
+    x-transition:leave-start="translate-y-0 opacity-100"
+    x-transition:leave-end="translate-y-10 opacity-0"
+    class="fixed bottom-6 right-6 bg-success text-white px-6 py-3 rounded-md text-xs shadow-lg z-[9999]"
+  >
+    {{ session('success') }}
+  </div>
+  @endif
+
 </x-layout>

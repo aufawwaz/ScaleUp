@@ -47,7 +47,7 @@
     }
 
     .dashboard-card-header {
-        @apply text-base uppercase font-bold text-dark w-full
+        @apply text-sm uppercase font-bold text-dark w-full
     }
 
     /* Untuk Chrome, Edge, Safari */

@@ -13,7 +13,7 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Contact::query();
+        $query = Contact::where('user_id', $request->user()->id);
 
         // Filter berdasarkan nama kontak
         if ($request->filled('search')) {
@@ -47,6 +47,8 @@ class ContactController extends Controller
             'jumlah_transaksi'  => 'nullable|integer'
         ]);
 
+        $validated['user_id'] = $request->user()->id;
+
         // Handle upload gambar
         if ($request->hasFile('image_kontak')) {
             $validated['image_kontak'] = $request->file('image_kontak')->store('contact', 'public');
@@ -54,7 +56,7 @@ class ContactController extends Controller
 
         Contact::create($validated);
 
-        return redirect()->route('contact.index')->with('success', 'Kontak berhasil ditambahkan');
+        return redirect()->route('contact.index')->with('success', 'Kontak berhasil ditambahkan!');
     }
 
     /**
@@ -111,6 +113,6 @@ class ContactController extends Controller
         }
         $contact->delete();
 
-        return redirect()->route('contact.index')->with('success', 'Kontak berhasil dihapus');
+        return redirect()->route('contact.index')->with('success', 'Kontak berhasil dihapus!');
     }
 }

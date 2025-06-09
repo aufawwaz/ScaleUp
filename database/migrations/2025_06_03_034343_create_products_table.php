@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('satuan')->nullable();
             $table->bigInteger('harga_jual');
-            $table->bigInteger('harga_modal');
+            $table->bigInteger('harga_modal')->nullable()->default(0);
             $table->string('kategori')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->integer('stok')->default(0);
+            $table->integer('stok')->nullable()->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

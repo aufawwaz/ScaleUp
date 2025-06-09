@@ -25,7 +25,7 @@ class ProductController extends Controller
             $query->orderBy('stok', 'desc');
         }
 
-        $products = $query->get();
+        $products = $request->user()->products()->get();
 
         return view('product.index', compact('products'));
     }
@@ -46,16 +46,20 @@ class ProductController extends Controller
             'harga_modal'  => 'nullable|integer',
             'kategori'     => 'nullable|string|max:100',
             'deskripsi'    => 'nullable|string',
-            'stok'         => 'nullable|integer',
+            'stok'         => 'nullable|integer|min:0',
             'image'        => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
+
+        // Nilai null deskripsi
+        $validated['deskripsi'] = $request->input('deskripsi', '-');
+        $validated['stok'] = $request->input('stok', 0);
 
         // Handle upload gambar jika ada
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('produk', 'public');
         }
 
-        Product::create($validated);
+        $request->user()->products()->create($validated);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
@@ -76,13 +80,16 @@ class ProductController extends Controller
             'harga_modal' => 'nullable|numeric',
             'kategori' => 'nullable|string',
             'deskripsi' => 'nullable|string',
-            'stok' => 'nullable|integer',
+            'stok' => 'nullable|integer|min:0',
             'image' => 'nullable|image|max:5128',
             'stok_change' => 'nullable|integer',
         ]);
 
-        // Hitung stok baru
-        $stok_change = $request->input('stok_change', 0);
+        // Validasi nilai deskripsi
+        $validated['deskripsi'] = $request->input('deskripsi', '-');
+
+        // Kalkulasi stok
+        $stok_change = (int) $request->input('stok_change', 0);
         $validated['stok'] = $product->stok + $stok_change;
 
         // Handle image upload jika ada file baru

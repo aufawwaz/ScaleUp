@@ -1,9 +1,9 @@
 @php
   $totalSaldo = 0;
-  foreach($data as $d){
+  foreach($saldos as $d){
     $totalSaldo += $d->saldo;
   }
-  $isNoData = $data->isEmpty();
+  $isNoData = $saldos->isEmpty();
 @endphp
 
 <x-layout   
@@ -65,7 +65,7 @@
           {{-- list kartu --}}
           @if(!$isNoData)
             <div id="saldo-container" class="container flex flex-col gap-2 h-full overflow-scroll scrollbar-hidden">
-              @foreach ($data as $d)
+              @foreach ($saldos as $d)
                 <x-saldo-card 
                   :id="$d->id"
                   :nama="$d->nama" 

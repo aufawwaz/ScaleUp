@@ -21,6 +21,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_photo',
+        'nama_usaha',
+        'nomor_handphone',
+        'tipe_usaha',
+        'npwp',
+        'provinsi',
+        'kabupaten_kota',
+        'kecamatan',
+        'desa',
     ];
 
     /**
@@ -44,5 +53,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+    public function saldos()
+    {
+        return $this->hasMany(Saldo::class);
     }
 }

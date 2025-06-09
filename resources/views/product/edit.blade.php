@@ -42,7 +42,7 @@
             <div class="mb-2">
                 <label class="block text-sm font-normal text-gray-700">Stok Saat Ini</label>
                 <div class="py-2 px-3 bg-gray-100 rounded text-gray-700 font-semibold">
-                    {{ $product->stok }}
+                    {{ $product->stok ?: 0 }}
                 </div>
             </div>
             <!-- Perubahan Stok -->

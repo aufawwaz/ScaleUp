@@ -51,34 +51,36 @@
     </div>
 
     <!-- Main Flex -->
-    <div class="flex gap-[1rem]">
+    <div class="flex gap-[1rem] h-[516px]">
 
       <!-- Kolom 1: Doughnut Chart -->
       <div class="bg-white rounded-2xl shadow p-4 flex flex-col w-[320px]">
         <p class="dashboard-card-header">Total Pendapatan Kotor</p>
         <div class="mb-2 w-full h-[1px] bg-gray-300 mt-[1rem]"></div>
-        <div class="w-full flex flex-col items-center justify-between h-full mt-5">
-          <div class="relative w-[220px] h-[220px]">
+        <div class="w-full flex flex-col items-center justify-between h-full">
+          <div class="relative w-full px-5 h-full mb-10">
             <canvas id="incomeDoughnut" class="w-full h-full"></canvas>
           </div>
-          <div class="flex justify-center gap-4 mt-4 mb-2 flex-wrap">
+          <div>
+            <div class="flex justify-center gap-4 mb-5 flex-wrap">
             @foreach($labels as $i => $label)
               <div class="flex items-center gap-1">
                 <span class="inline-block w-4 h-4 rounded-full" style="background: {{ $colors[$i] }}"></span>
                 <span class="text-xs">{{ $label }}</span>
               </div>
             @endforeach
-          </div>
-          <div class="flex items-end justify-between w-full mt-2">
-            <div>
-              <p class="text-2xl font-bold">Rp {{ number_format($total, 0, ',', '.') }}</p>
             </div>
-            <div class="flex flex-col items-end">
-              <span class="flex items-center text-green-500 font-bold text-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                {{ $percent }}%
-              </span>
-              <span class="text-[10px] text-gray-500">Dari bulan lalu</span>
+            <div class="flex items-end justify-between w-full mt-2">
+              <div>
+                <p class="text-2xl font-bold">Rp {{ number_format($total, 0, ',', '.') }}</p>
+              </div>
+              <div class="flex flex-col items-end">
+                <span class="flex items-center text-green-500 font-bold text-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                  {{ $percent }}%
+                </span>
+                <span class="text-[10px] text-gray-500">Dari bulan lalu</span>
+              </div>
             </div>
           </div>
         </div>
@@ -105,7 +107,7 @@
           </div>
         </div>
         <!-- Pesanan Terbaru -->
-        <div class="bg-white rounded-2xl shadow p-4 flex flex-col">
+        <div class="bg-white rounded-2xl shadow p-4 flex flex-col h-full">
           <div class="flex items-center justify-between mb-[1rem]">
             <p class="dashboard-card-header">Pesanan Terbaru</p>
             <a href="#" class="text-primary text-xs w-full flex justify-end font-medium">Lihat semua &gt;</a>
@@ -114,20 +116,20 @@
           <div class="overflow-x-auto">
             <table class="min-w-full text-xs">
               <thead>
-                <tr class="text-left text-gray-500">
-                  <th class="py-2 px-2">PELANGGAN</th>
-                  <th class="py-2 px-2">PRODUK</th>
-                  <th class="py-2 px-2">HARGA</th>
-                  <th class="py-2 px-2">PEMBAYARAN</th>
+                <tr class="text-left text-gray-500 border-b border-gray-100">
+                  <th class="pb-2.5 pt-2 px-2">PELANGGAN</th>
+                  <th class="pb-2.5 pt-2 px-2">PRODUK</th>
+                  <th class="pb-2.5 pt-2 px-2">HARGA</th>
+                  <th class="pb-2.5 pt-2 px-2">PEMBAYARAN</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach($orders as $order)
                   <tr>
-                    <td class="py-2 px-2">{{ $order['customer'] }}</td>
-                    <td class="py-2 px-2">{{ $order['product'] }}</td>
-                    <td class="py-2 px-2">Rp {{ number_format($order['price'], 0, ',', '.') }}</td>
-                    <td class="py-2 px-2">
+                    <td class="py-3 px-2">{{ $order['customer'] }}</td>
+                    <td class="py-3 px-2">{{ $order['product'] }}</td>
+                    <td class="py-3 px-2">Rp {{ number_format($order['price'], 0, ',', '.') }}</td>
+                    <td class="py-3 px-2">
                       <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">{{ $order['pembayaran'] }}</span>
                     </td>
                   </tr>
@@ -147,7 +149,7 @@
             <a href="#" class="text-primary text-xs font-medium w-fit whitespace-nowrap">Lihat semua &gt;</a>
           </div>
           <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
-          <ul class="space-y-3 flex flex-col h-full">
+          <ul class="gap-3.5 flex flex-col h-full">
             @foreach($topCustomers as $customer)
               <li class="flex items-center gap-2">
                 <img src="{{ $customer['avatar'] }}" class="w-5 h-5 rounded-full" alt="{{ $customer['name'] }}">
@@ -164,7 +166,7 @@
             <a href="#" class="text-primary text-xs font-medium w-full flex justify-end">Lihat semua &gt;</a>
           </div>
           <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
-          <ul class="space-y-3 flex flex-col h-full">
+          <ul class="gap-3.5 flex flex-col h-full">
             @foreach($topProducts as $product)
               <li class="flex items-center gap-2">
                 <img src="{{ $product['avatar'] }}" class="w-5 h-5 rounded-full" alt="{{ $product['name'] }}">
