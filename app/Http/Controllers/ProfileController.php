@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -56,10 +57,8 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
             'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'nama_usaha' => 'nullable|string|max:255',
             'nomor_handphone' => 'nullable|string|max:50',
@@ -73,8 +72,8 @@ class ProfileController extends Controller
 
         // Handle upload foto profil
         if ($request->hasFile('profile_photo')) {
-            if ($user->profile_photo && \Storage::disk('public')->exists($user->profile_photo)) {
-                \Storage::disk('public')->delete($user->profile_photo);
+            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
+                Storage::disk('public')->delete($user->profile_photo);
             }
             $validated['profile_photo'] = $request->file('profile_photo')->store('profile_photos', 'public');
         }
