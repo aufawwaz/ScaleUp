@@ -126,9 +126,9 @@
               <tbody>
                 @foreach($orders as $order)
                   <tr>
-                    <td class="py-3 px-2">{{ $order['customer'] }}</td>
-                    <td class="py-3 px-2">{{ $order['product'] }}</td>
-                    <td class="py-3 px-2">Rp {{ number_format($order['price'], 0, ',', '.') }}</td>
+                    <td class="py-3 px-2 whitespace-nowrap">{{ \Illuminate\Support\Str::limit($order['customer'], 10) }}</td>
+                    <td class="py-3 px-2 whitespace-nowrap">{{ \Illuminate\Support\Str::limit($order['product'], 10) }}</td>
+                    <td class="py-3 px-2 whitespace-nowrap">Rp {{ number_format($order['price'], 0, ',', '.') }}</td>
                     <td class="py-3 px-2">
                       <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">{{ $order['pembayaran'] }}</span>
                     </td>
