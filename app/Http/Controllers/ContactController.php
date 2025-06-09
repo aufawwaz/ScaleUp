@@ -13,7 +13,7 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Contact::query();
+        $query = Contact::where('user_id', $request->user()->id);
 
         // Filter berdasarkan nama kontak
         if ($request->filled('search')) {
@@ -46,6 +46,8 @@ class ContactController extends Controller
             'alamat_kontak'     => 'nullable|string',
             'jumlah_transaksi'  => 'nullable|integer'
         ]);
+
+        $validated['user_id'] = $request->user()->id;
 
         // Handle upload gambar
         if ($request->hasFile('image_kontak')) {

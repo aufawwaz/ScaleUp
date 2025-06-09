@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ContactController;
-use App\http\Controllers\DashboardController;
-use App\http\Controllers\SaldoController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
@@ -42,11 +42,13 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 // Authentication
-Route::get('/login', function () 
-    { return view('login');})->name('login');
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
-Route::get('/register', function () 
-    { return view('register'); })->name('register');
+Route::get('/register', function () {
+    return view('register');
+})->name('register');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');

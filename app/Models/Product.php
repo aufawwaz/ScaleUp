@@ -17,6 +17,7 @@ class Product extends Model
         'deskripsi',
         'stok',
         'slug',
+        'user_id',
     ];
 
     protected static function booted()
@@ -27,5 +28,9 @@ class Product extends Model
         static::updating(function ($product) {
             $product->slug = Str::slug($product->nama_produk);
         });
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -25,7 +25,7 @@ class ProductController extends Controller
             $query->orderBy('stok', 'desc');
         }
 
-        $products = $query->get();
+        $products = $request->user()->products()->get();
 
         return view('product.index', compact('products'));
     }
@@ -59,7 +59,7 @@ class ProductController extends Controller
             $validated['image'] = $request->file('image')->store('produk', 'public');
         }
 
-        Product::create($validated);
+        $request->user()->products()->create($validated);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
