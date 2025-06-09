@@ -123,6 +123,6 @@ $navItemsTransaction = [
         @endforeach
     </div>
     <div class="flex flex-col mb-[3rem]">
-      <a href="/login" class="nav-link">Logout</a>
+      <a href="/login" class="nav-link flex items-center">Logout</a>
     </div>
   </nav>

@@ -20,7 +20,7 @@
                 <!-- Gambar & Detail Produk -->
                 <div class="w-1/3 flex flex-col items-center bg-white rounded-2xl p-6 shadow min-h-full">
                     <div class="relative w-full aspect-square rounded-xl flex items-center justify-center overflow-hidden mb-4">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/default.png') }}"
+                        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/default_produk.png') }}"
                             alt="{{ $product->nama_produk }}"
                             class="object-cover w-full h-full" />
                             <span class="absolute top-[1rem] right-[1rem] bg-gray-200 text-xs px-3 py-1 rounded-full text-gray-600">{{ $product->kategori ?? 'Tanpa Kategori' }}</span>
@@ -28,7 +28,7 @@
                     <div class="w-full text-xl text-primary font-bold py-[1rem]">Rp{{ number_format($product->harga_jual, 0, ',', '.') }}<span> | {{ $product->satuan }}</span></div>
                     <div class="w-full text-sm text-gray-700 flex flex-col gap-[1rem] mt-2">
                         <div class="flex w-full justify-between"><span class="font-semibold">Harga Modal</span> Rp{{ number_format($product->harga_modal, 0, ',', '.') }}</div>
-                        <div class="flex w-full justify-between"><span class="font-semibold">Stok</span> {{ $product->stok }}</div>
+                        <div class="flex w-full justify-between"><span class="font-semibold">Stok</span> {{ $product->stok ?: 0 }}</div>
                         <div>
                             <span class="font-semibold flex flex-col mb-1">Deskripsi Produk</span>
                             <div class="max-h-[9rem] overflow-y-auto scrollbar-hidden pr-2 whitespace-pre-line">

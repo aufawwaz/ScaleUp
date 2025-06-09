@@ -33,7 +33,7 @@
           <div class="bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
             <label class="font-semibold mb-2">DETAIL PRODUK</label>
             <x-custom-input-form label="Harga Modal" name="harga_modal" type="number" placeholder="Masukkan Harga Modal" />
-            <x-custom-input-form label="Kategori" name="kategori" type="select" :options="['Barang','Jasa','Lainnya']" placeholder="Pilih Kategori" />
+            <x-custom-input-form label="Kategori" name="kategori" type="select" :options="['Barang','Jasa','Lainnya']" placeholder="Pilih Kategori" value="old('kategori', 'Lainnya')" />
             <x-custom-input-form label="Deskripsi Produk" name="deskripsi" type="textarea" placeholder="Masukkan Deskripsi"/>
             <x-custom-input-form label="Manajemen Stok (Stok Awal)" name="stok" type="number" placeholder="Masukkan Stok Awal" />
           </div>

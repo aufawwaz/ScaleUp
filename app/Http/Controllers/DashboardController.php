@@ -2,6 +2,7 @@
 
 namespace App\http\Controllers;
 
+use App\Models\Saldo;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Contact;
@@ -11,7 +12,7 @@ class DashboardController extends Controller
   public function index()
   {
     // Buat card dashboard
-    $saldo = 9000000;
+    $saldo = Saldo::sum('saldo');
     $transaksi = 998;
     $kontak = Contact::count();
     $produk = Product::count();
