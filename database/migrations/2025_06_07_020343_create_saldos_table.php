@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('saldos', function (Blueprint $table) {
             $table->id();
             $table->enum('jenis', ['cash', 'bank']);
-            $table->float('saldo');
+            $table->float('saldo')->nullable();
             $table->string('nama');
             $table->timestamps();
         });

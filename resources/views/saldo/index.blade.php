@@ -57,7 +57,7 @@
               <x-custom-button color="primary" @click.stop="$store.modal.openAdd()"> Tambah Kartu </x-custom-button>
             </div>
           </x-header-page>
-          <x-notification :success="session('success')" :errors="$errors" />
+          <x-notification :success="session('success')"/>
         </div>
 
         {{-- main content --}}
