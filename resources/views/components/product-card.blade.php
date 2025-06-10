@@ -20,9 +20,9 @@
     <!-- Card clickable ke detail -->
     <a href="{{ route('product.show', $product->slug) }}" class="flex-1 flex flex-col no-underline text-inherit relative">
         <div class="w-full aspect-square bg-gray-100 flex items-center justify-center relative overflow-hidden">
-            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/default_produk.png') }}"
+            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('asset/default_produk.svg') }}"
                  alt="{{ $product->nama_produk }}"
-                 class="w-full h-full object-cover rounded-t-xl transition duration-300 group-hover:scale-105" />
+                 class="w-full h-full object-cover  rounded-t-xl transition duration-300 group-hover:scale-105" />
             <!-- Overlay gelap saat hover -->
             <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition duration-300 pointer-events-none"></div>
         </div>

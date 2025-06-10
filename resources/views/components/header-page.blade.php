@@ -4,7 +4,7 @@
 ])
 
 <!-- Header -->
-<div class="flex justify-between w-full mb-[0.5rem] items-center">
+<div class="flex justify-between w-full mb-[0.5rem] items-center" data-aos="fade-right" data-aos-duration="300">
     <div class="flex items-center gap-2">
         @if($back)
             <a href="{{ $back }}" class="p-2 rounded-full hover:bg-gray-100 transition rotate-180" title="Kembali">

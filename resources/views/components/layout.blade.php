@@ -11,8 +11,20 @@
 
   <!-- Chart.js Script -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- AOS Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body class="font-poppins text-dark h-[100dvh] w-full">
+  <!-- AOS Initialization -->
+  <script>
+    AOS.init({
+      duration: 500, 
+      once: false, 
+    });
+  </script>
+
   <!-- Sidebar component -->
   <x-sidebar/>
 

@@ -7,10 +7,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@headlessui/react@latest/dist/headlessui.umd.js"></script>
     @vite('resources/css/app.css')  
+  <!-- AOS Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
-<body class="font-poppins bg-white text-dark">
+<body class="font-poppins bg-white text-dark scroll-smooth overflow-x-hidden">
+  <script>
+    AOS.init({
+      duration: 1000, 
+      once: false, 
+    });
+  </script>
   <!-- Navbar -->
-  <nav class="fixed top-0 left-0 w-full bg-white shadow z-50">
+  <nav class="fixed top-0 left-0 w-full bg-white shadow z-50" data-aos="fade-down">
     <div class="w-10/12 mx-auto flex items-center justify-between px-4 py-3">
       <div class="flex items-center gap-2">
         <div class="flex items-center justify-center gap-0">
@@ -21,11 +30,10 @@
       </div>
       </div>
       <div class="hidden md:flex gap-8 items-center">
-        <a href="#fitur" class="hover:text-[#007AFF] transition">Home</a>
-        <a href="#fitur" class="hover:text-[#007AFF] transition">About</a>
-        <a href="#fitur" class="hover:text-[#007AFF] transition">Fitur</a>
-        <a href="#harga" class="hover:text-[#007AFF] transition">Harga</a>
-        <a href="#faq" class="hover:text-[#007AFF] transition">FAQ</a>
+        <a href="#hero" class="hover:text-primary transition">Home</a>
+        <a href="#tentang" class="hover:text-primary transition">About</a>
+        <a href="#fitur" class="hover:text-primary transition">Fitur</a>
+        <a href="#faq" class="hover:text-primary transition">FAQ</a>
         <x-custom-button
         href="{{ route('login') }}"
         >Login</x-custom-button>
@@ -33,7 +41,7 @@
       <div class="md:hidden">
         <!-- Mobile menu button -->
         <button id="menuBtn" class="focus:outline-none">
-          <svg class="w-7 h-7 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
@@ -42,7 +50,7 @@
       <a href="#fitur" class="block py-2">Fitur</a>
       <a href="#harga" class="block py-2">Harga</a>
       <a href="#faq" class="block py-2">FAQ</a>
-      <a href="/login" class="block py-2 text-[#007AFF] font-semibold">Login</a>
+      <a href="/login" class="block py-2 text-primary font-semibold">Login</a>
     </div>
     <script>
       document.getElementById('menuBtn').onclick = function() {
@@ -54,15 +62,15 @@
   <!-- Hero Section -->
   <section class="pt-28 pb-16 bg-white h-dvh flex" id="hero">
     <div class="max-w-10/12 mx-auto flex flex-col md:flex-row items-center gap-10 px-4">
-      <div class="flex-1">
-        <h1 class="text-3xl md:text-5xl font-bold mb-5 leading-tight">Kelola Bisnis Lebih Efisien dengan <span class="text-[#007AFF]">ScaleUp</span></h1>
+      <div class="flex-1" data-aos="fade-up">
+        <h1 class="text-3xl md:text-5xl font-bold mb-5 leading-tight">Kelola Bisnis Lebih Efisien dengan <span class="text-primary">ScaleUp</span></h1>
         <p class="text-lg md:text-base mb-8">Solusi manajemen bisnis untuk pemilik usaha. Keuangan, produk, pelanggan dalam satu platform</p>
         <div class="flex gap-4 mb-8">
-          <x-custom-button href="{{ route('register') }}" size="md"><span class="text-sm font-semibold">Coba Gratis</span></x-custom-button>
-          <x-custom-button href="#fitur" size="md" outline="true"><span class="text-sm">Lihat Fitur Premium</span></x-custom-button>
+          <x-custom-button href="{{ route('register') }}" size="md" data-aos="zoom-in"><span class="text-sm font-semibold">Coba Gratis</span></x-custom-button>
+          <x-custom-button href="#fitur" size="md" outline="true" data-aos="zoom-in"><span class="text-sm">Lihat Fitur</span></x-custom-button>
         </div>
       </div>
-      <div class="flex-1 flex justify-center">
+      <div class="flex-1 flex justify-center" data-aos="fade-left">
         <div class="w-[340px] h-[260px] md:w-[700px] rounded-2xl flex items-center justify-center text-gray-400 text-xl">
           <img src="{{ asset('asset/mockup_dashboard.svg') }}" alt="">
         </div>
@@ -72,83 +80,95 @@
 
   <!-- Tentang ScaleUp -->
   <section class="py-16 bg-gray-50" id="tentang">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-2xl md:text-3xl font-bold mb-4">Apa itu ScaleUp?</h2>
-      <p class="text-gray-600 mb-6">ScaleUp adalah platform digital yang membantu pemilik usaha mengelola bisnis lebih efisien, memberikan edukasi, dan solusi digital terintegrasi untuk keuangan, produk, dan pelanggan. Dengan fitur lengkap dan mudah digunakan, ScaleUp mendukung pertumbuhan UMKM di era digital.</p>
-      <div class="flex flex-wrap justify-center gap-8 mt-8">
-        <div class="flex flex-col items-center">
-          <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-2">
-            <svg class="w-7 h-7 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-1.79-8-4V6a2 2 0 012-2h12a2 2 0 012 2v8c0 2.21-3.582 4-8 4z"/></svg>
-          </div>
-          <span class="font-semibold">Efisiensi</span>
-        </div>
-        <div class="flex flex-col items-center">
-          <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-2">
-            <svg class="w-7 h-7 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0l-9-5m9 5l9-5"/></svg>
-          </div>
-          <span class="font-semibold">Edukasi</span>
-        </div>
-        <div class="flex flex-col items-center">
-          <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-2">
-            <svg class="w-7 h-7 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h3m4 0a4 4 0 00-4-4H7a4 4 0 00-4 4v4a4 4 0 004 4h3"/></svg>
-          </div>
-          <span class="font-semibold">Solusi Digital</span>
-        </div>
+    <div class="max-w-10/12 mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-left mt-10 mb-10" data-aos="fade-right">Apa itu <span class="text-primary">ScaleUp?</span></h2>
+      <div class="flex gap-[8rem]">
+        <img src="{{ asset('asset/onboard_1.svg') }}" alt="" class="w-1/4 pl-10" data-aos="fade-up">
+        <p class="text-gray-600 w-3/4 text-lg text-left mb-12" data-aos="fade-left">ScaleUp adalah platform digital terpadu yang dirancang untuk membantu pemilik usaha dalam mengelola bisnis secara lebih efisien dan profesional. Melalui fitur-fitur seperti pencatatan keuangan otomatis, manajemen produk, dan pengelolaan pelanggan, ScaleUp memungkinkan pelaku usaha—khususnya UMKM—untuk menjalankan operasional harian dengan lebih mudah, terstruktur, dan hemat waktu. Selain fungsi manajerial, ScaleUp juga menyediakan konten edukatif yang relevan guna meningkatkan pemahaman pengguna dalam aspek bisnis, keuangan, dan strategi pengembangan usaha. Dengan antarmuka yang sederhana namun fungsional, ScaleUp hadir sebagai solusi modern yang mendorong efisiensi, pertumbuhan, dan digitalisasi usaha di tengah tantangan dunia bisnis yang terus berkembang.</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Fitur Utama -->
   <section class="py-16 bg-white" id="fitur">
     <div class="max-w-10/12 mx-auto px-4">
-      <h2 class="text-2xl md:text-4xl font-bold mb-12">Berbisnis Jadi Lebih Mudah</h2>
+      <h2 class="text-2xl md:text-4xl font-bold mt-10 mb-12" data-aos="fade-up">Berbisnis Jadi Lebih Mudah</h2>
       <div class="grid md:grid-cols-3 gap-8">
-        <!-- Dashboard -->
-        <div class="border border-gray-300 rounded-xl p-8 flex flex-col bg-white">
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
           <div class="font-bold text-2xl mb-2">Dashboard</div>
-          <div>
+          <div data-aos="zoom-in">
             <img src="{{ asset('asset/mockup_dashboard.svg') }}" alt="">
           </div>
-          <div class="text-gray-500">User-friendly interface and easy navigation for less training.</div>
+          <div class="text-gray-500">Lihat semua aktivitas penting bisnis secara menyeluruh mulai dari produk, transaksi, hingga saldo langsung dari halaman utama.</div>
         </div>
-        <!-- Product Management -->
-        <!-- Transaction Management -->
-        <!-- Contact Management -->
-        <!-- Saldo Management -->
-        <!-- Knowledge Card -->
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
+          <div class="font-bold text-2xl mb-2">Kelola Produk</div>
+          <div data-aos="zoom-in">
+            <img src="{{ asset('asset/mockup_produk.svg') }}" alt="">
+          </div>
+          <div class="text-gray-500">Tambah, edit, dan atur semua produk jualanmu dengan mudah. Cocok untuk usaha dengan banyak variasi barang.</div>
+        </div>
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
+          <div class="font-bold text-2xl mb-2">Transaksi</div>
+          <div data-aos="zoom-in">
+            <img src="{{ asset('asset/mockup_transaksi.svg') }}" alt="">
+          </div>
+          <div class="text-gray-500">Layani pelanggan, catat pembelian stok, dan kelola tagihan dengan sistem kasir digital yang efisien dan mudah digunakan.</div>
+        </div>
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
+          <div class="font-bold text-2xl mb-2">Relasi Kontak</div>
+          <div data-aos="zoom-in">
+            <img src="{{ asset('asset/mockup_kontak.svg') }}" alt="">
+          </div>
+          <div class="text-gray-500">Kelola informasi pelanggan, supplier, atau mitra usaha tanpa batas. Cocok untuk membangun relasi jangka panjang.</div>
+        </div>
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
+          <div class="font-bold text-2xl mb-2">Kartu Saldo</div>
+          <div data-aos="zoom-in">
+            <img src="{{ asset('asset/mockup_saldo.svg') }}" alt="">
+          </div>
+          <div class="text-gray-500">Lihat saldo kas masuk dan keluar secara langsung. Mudah untuk memantau keuangan harian usaha.</div>
+        </div>
+        <div class="border border-gray-300 rounded-xl p-8 flex flex-col gap-6 bg-white" data-aos="fade-up">
+          <div class="font-bold text-2xl mb-2">Insight Bisnis</div>
+          <div data-aos="zoom-in">
+            <img src="{{ asset('asset/mockup_berita.svg') }}" alt="">
+          </div>
+          <div class="text-gray-500">Dapatkan berita, artikel, dan tips bisnis terkini yang relevan untuk UMKM. Bantu kamu mengambil langkah strategis ke depan.</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Keuntungan -->
   <section class="py-16 bg-gray-50">
-    <div class="max-w-10/12 mx-auto px-4">
-      <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">Keuntungan Menggunakan ScaleUp</h2>
+    <div class="max-w-10/12 mx-auto px-4" data-aos="fade-left">
+      <h2 class="text-2xl md:text-4xl font-bold text-center mb-12">Keuntungan Menggunakan <span class="text-primary">ScaleUp</span></h2>
       <div class="grid md:grid-cols-4 gap-8">
         <div class="flex flex-col items-center text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-            <svg class="w-8 h-8 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-1.79-8-4V6a2 2 0 012-2h12a2 2 0 012 2v8c0 2.21-3.582 4-8 4z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#007AFF"><path d="M480-260q53 0 100.5-23t76.5-67q11-17 3-33.5T634-400q-8 0-14.5 3.5T609-386q-23 31-57 48.5T480-320q-38 0-72-17.5T351-386q-5-7-11.5-10.5T325-400q-18 0-26 16t3 32q29 45 76.5 68.5T480-260Zm140-260q25 0 42.5-17.5T680-580q0-25-17.5-42.5T620-640q-25 0-42.5 17.5T560-580q0 25 17.5 42.5T620-520Zm-280 0q25 0 42.5-17.5T400-580q0-25-17.5-42.5T340-640q-25 0-42.5 17.5T280-580q0 25 17.5 42.5T340-520ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg>
           </div>
           <div class="font-semibold mb-1">Mudah Digunakan</div>
           <div class="text-gray-500 text-sm">Antarmuka intuitif, cocok untuk semua kalangan.</div>
         </div>
         <div class="flex flex-col items-center text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-            <svg class="w-8 h-8 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2v-7a2 2 0 00-2-2z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#007AFF"><path d="m438-452-56-56q-12-12-28-12t-28 12q-12 12-12 28.5t12 28.5l84 85q12 12 28 12t28-12l170-170q12-12 12-28.5T636-593q-12-12-28.5-12T579-593L438-452Zm42 368q-7 0-13-1t-12-3q-135-45-215-166.5T160-516v-189q0-25 14.5-45t37.5-29l240-90q14-5 28-5t28 5l240 90q23 9 37.5 29t14.5 45v189q0 140-80 261.5T505-88q-6 2-12 3t-13 1Zm0-80q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/></svg>
           </div>
           <div class="font-semibold mb-1">Aman & Terpercaya</div>
           <div class="text-gray-500 text-sm">Data bisnis tersimpan aman dan terenkripsi.</div>
         </div>
         <div class="flex flex-col items-center text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-            <svg class="w-8 h-8 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
           </div>
           <div class="font-semibold mb-1">Terintegrasi</div>
           <div class="text-gray-500 text-sm">Satu platform untuk semua kebutuhan bisnis.</div>
         </div>
         <div class="flex flex-col items-center text-center">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-            <svg class="w-8 h-8 text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#007AFF"><path d="M480-280q17 0 28.5-11.5T520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280Zm0-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
           </div>
           <div class="font-semibold mb-1">Dukungan Penuh</div>
           <div class="text-gray-500 text-sm">Tim support siap membantu kapan saja.</div>
@@ -157,109 +177,117 @@
     </div>
   </section>
 
-  <!-- Paket Harga -->
-  <section class="py-16 bg-white" id="harga">
-    <div class="max-w-10/12 mx-auto px-4">
-      <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">Pilih Paket Sesuai Kebutuhanmu</h2>
-      <div class="grid md:grid-cols-4 gap-8">
-        <div class="bg-gray-50 rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="text-lg font-semibold mb-2">Bulanan</div>
-          <div class="text-2xl font-bold mb-4">Rp49.000</div>
-          <a href="#" class="w-full text-center py-2 bg-[#007AFF] text-white rounded-full font-semibold hover:bg-blue-700 transition">Beli Sekarang</a>
-        </div>
-        <div class="bg-gray-50 rounded-xl shadow p-6 flex flex-col items-center relative">
-          <span class="absolute top-3 right-3 bg-green-400 text-white text-xs font-bold px-3 py-1 rounded-full">hemat 20%</span>
-          <div class="text-lg font-semibold mb-2">Tahunan</div>
-          <div class="text-2xl font-bold mb-4">Rp469.000</div>
-          <a href="#" class="w-full text-center py-2 bg-[#007AFF] text-white rounded-full font-semibold hover:bg-blue-700 transition">Beli Sekarang</a>
-        </div>
-        <div class="bg-gray-50 rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="text-lg font-semibold mb-2">Sekali Bayar Bulan</div>
-          <div class="text-2xl font-bold mb-4">Rp59.000</div>
-          <a href="#" class="w-full text-center py-2 bg-[#007AFF] text-white rounded-full font-semibold hover:bg-blue-700 transition">Beli Sekarang</a>
-        </div>
-        <div class="bg-gray-50 rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="text-lg font-semibold mb-2">Sekali Bayar Minggu</div>
-          <div class="text-2xl font-bold mb-4">Rp19.000</div>
-          <a href="#" class="w-full text-center py-2 bg-[#007AFF] text-white rounded-full font-semibold hover:bg-blue-700 transition">Beli Sekarang</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Testimoni Pengguna -->
-  <section class="py-16 bg-gray-50">
+  <section class="py-16 bg-white" data-aos="fade-up">
     <div class="max-w-10/12 mx-auto px-4">
-      <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">Testimoni Pengguna</h2>
+      <h2 class="text-2xl md:text-4xl font-bold text-center mb-12">Testimoni Pengguna</h2>
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="w-16 h-16 bg-gray-200 rounded-full mb-3"></div>
-          <div class="font-semibold">Rina, Toko Kue</div>
-          <div class="text-gray-500 text-sm mt-2 text-center">“ScaleUp sangat membantu saya memantau keuangan dan stok toko setiap hari!”</div>
+        <div class="bg-white rounded-full p-6 flex flex-col items-center">
+          <div class="w-50 h-50 bg-gray-200 rounded-full mb-4">
+            <img src="{{ asset('asset\testi_1.png') }}" alt="" class="rounded-full object-cover">
+          </div>
+          <div class="font-semibold text-lg mb-2">Aril Fadla Hudallah</div>
+          <div class="text-gray-500 text-sm mt-2 text-center">"Sejak pakai ScaleUp, pencatatan keuangan usaha saya jadi jauh lebih rapi. Dulu saya bingung menghitung untung rugi, sekarang semua otomatis dan jelas. Saya juga suka fitur edukasinya, banyak insight yang membantu mengembangkan bisnis kecil saya."</div>
         </div>
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="w-16 h-16 bg-gray-200 rounded-full mb-3"></div>
-          <div class="font-semibold">Budi, Laundry</div>
-          <div class="text-gray-500 text-sm mt-2 text-center">“Fitur gratisnya sudah cukup lengkap, apalagi kalau upgrade ke PRO!”</div>
+        <div class="bg-white rounded-xl p-6 flex flex-col items-center">
+          <div class="w-50 h-50 bg-gray-200 rounded-full overflow-hidden mb-4">
+            <img src="{{ asset('asset\testi_2.png') }}" alt="" class="rounded-full object-cover">
+          </div>
+          <div class="font-semibold text-lg mb-2">Ariel Josua S.</div>
+          <div class="text-gray-500 text-sm mt-2 text-center">"ScaleUp sangat memudahkan saya dalam mengatur stok dan transaksi. Produk saya sudah ratusan, tapi semua bisa saya kelola dengan mudah lewat satu dashboard. Aplikasi ini cocok banget buat UMKM yang ingin naik level secara digital."</div>
         </div>
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <div class="w-16 h-16 bg-gray-200 rounded-full mb-3"></div>
-          <div class="font-semibold">Sari, Fashion Store</div>
-          <div class="text-gray-500 text-sm mt-2 text-center">“Dashboardnya mudah dipahami, cocok untuk pemula.”</div>
+        <div class="bg-white rounded-xl p-6 flex flex-col items-center">
+          <div class="w-50 h-50 bg-gray-200 rounded-full mb-4">
+            <img src="{{ asset('asset\testi_3.png') }}" alt="" class="rounded-full object-cover">
+          </div>
+          <div class="font-semibold text-lg mb-2">Aufa Fawwaz Aryasatya</div>
+          <div class="text-gray-500 text-sm mt-2 text-center">"Manajemen pelanggan jadi lebih tertata dengan ScaleUp. Saya bisa simpan data pelanggan dan riwayat servis mereka tanpa catatan manual lagi. Harganya juga terjangkau, fitur-fitur premiumnya sangat worth it buat usaha jasa seperti saya."</div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- FAQ Section -->
-  <section class="py-16 bg-white" id="faq">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">Pertanyaan Umum</h2>
-      <div class="space-y-4">
-        <details class="bg-gray-50 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Apakah ScaleUp gratis selamanya?</summary>
-          <div class="mt-2 text-gray-600">ScaleUp menyediakan fitur gratis dan fitur premium berbayar. Fitur gratis dapat digunakan tanpa batas waktu.</div>
-        </details>
-        <details class="bg-gray-50 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Bagaimana cara upgrade ke PRO?</summary>
-          <div class="mt-2 text-gray-600">Kamu bisa upgrade ke PRO melalui menu harga di aplikasi atau hubungi tim support kami.</div>
-        </details>
-        <details class="bg-gray-50 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Apakah data saya aman di ScaleUp?</summary>
-          <div class="mt-2 text-gray-600">Data kamu tersimpan aman di server kami dan terenkripsi.</div>
-        </details>
+  <section class="py-16 bg-white" id="faq" data-aos="fade-right">
+    <div class="max-w-10/12 mx-auto px-4">
+      <h2 class="text-2xl md:text-4xl font-bold mb-12 text-center">Pertanyaan Umum</h2>
+      <div class="flex gap-[8rem]">
+        <div class="flex w-full flex-col gap-6 transition-all">
+          <details class="bg-gray-50 rounded-lg p-4">
+            <summary class="font-semibold cursor-pointer">Apakah ScaleUp gratis selamanya?</summary>
+            <div class="mt-2 text-gray-600">ScaleUp menyediakan fitur gratis dan fitur premium berbayar. Fitur gratis dapat digunakan tanpa batas waktu.</div>
+          </details>
+          <details class="bg-gray-50 rounded-lg p-4">
+            <summary class="font-semibold cursor-pointer">Bagaimana cara upgrade ke PRO?</summary>
+            <div class="mt-2 text-gray-600">Kamu bisa upgrade ke PRO melalui menu harga di aplikasi atau hubungi tim support kami.</div>
+          </details>
+          <details class="bg-gray-50 rounded-lg p-4">
+            <summary class="font-semibold cursor-pointer">Apakah data saya aman di ScaleUp?</summary>
+            <div class="mt-2 text-gray-600">Data kamu tersimpan aman di server kami dan terenkripsi.</div>
+          </details>
+        </div>
+        <img src="{{ asset('asset/onboard_3.svg') }}" alt="" class="w-1/4 pr-10" data-aos="fade-up">
       </div>
     </div>
   </section>
 
   <!-- Bottom CTA -->
-  <section class="py-16 bg-[#007AFF]">
-    <div class="max-w-3xl mx-auto px-4 text-center">
-      <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">Siap Tingkatkan Efisiensi Bisnismu?</h2>
-      <a href="/register" class="px-8 py-4 bg-white text-[#007AFF] rounded-full font-bold text-lg shadow hover:bg-blue-50 transition">Coba Gratis Sekarang</a>
-    </div>
+  <section data-aos="fade-up">
+    <section class="py-16 bg-primary" >
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">Siap Tingkatkan Efisiensi Bisnismu?</h2>
+        <a href="/register" class="px-8 py-4 bg-white text-primary rounded-full font-bold text-lg shadow hover:bg-blue-50 transition">Coba Gratis Sekarang</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+      <div class="max-w-10/12 mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex gap-4 items-center mt-4 md:mt-0">
+          <a href="mailto:support@scaleup.com" class="hover:text-primary text-sm">support@scaleup.com</a>
+        </div>
+        <div class="text-xs text-gray-400 mt-4 md:mt-0">&copy; {{ date('Y') }} ScaleUp. All rights reserved.</div>
+      </div>
+    </footer>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8">
-    <div class="max-w-10/12 mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="flex flex-col md:flex-row gap-6 items-center">
-        <a href="#fitur" class="hover:text-[#007AFF]">Fitur</a>
-        <a href="#harga" class="hover:text-[#007AFF]">Harga</a>
-        <a href="#faq" class="hover:text-[#007AFF]">FAQ</a>
-        <a href="/login" class="hover:text-[#007AFF]">Login</a>
-      </div>
-      <div class="flex gap-4 items-center mt-4 md:mt-0">
-        <a href="mailto:support@scaleup.com" class="hover:text-[#007AFF] text-sm">support@scaleup.com</a>
-        <a href="#" class="hover:text-[#007AFF]">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.56v14.91c0 2.52-2.05 4.57-4.57 4.57H4.57C2.05 24 0 21.95 0 19.47V4.56C0 2.05 2.05 0 4.57 0h14.86C21.95 0 24 2.05 24 4.56zM8.09 19.47V9.53H5.09v9.94h3zm-1.5-11.25c.97 0 1.75-.79 1.75-1.75s-.78-1.75-1.75-1.75-1.75.79-1.75 1.75.78 1.75 1.75 1.75zm15.41 11.25v-4.99c0-2.66-1.42-3.9-3.32-3.9-1.53 0-2.22.84-2.6 1.43v-1.23h-3v9.94h3v-4.94c0-1.3.25-2.57 1.87-2.57 1.61 0 1.63 1.5 1.63 2.66v4.85h3z"/></svg>
-        </a>
-        <a href="#" class="hover:text-[#007AFF]">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.56v14.91c0 2.52-2.05 4.57-4.57 4.57H4.57C2.05 24 0 21.95 0 19.47V4.56C0 2.05 2.05 0 4.57 0h14.86C21.95 0 24 2.05 24 4.56zM8.09 19.47V9.53H5.09v9.94h3zm-1.5-11.25c.97 0 1.75-.79 1.75-1.75s-.78-1.75-1.75-1.75-1.75.79-1.75 1.75.78 1.75 1.75 1.75zm15.41 11.25v-4.99c0-2.66-1.42-3.9-3.32-3.9-1.53 0-2.22.84-2.6 1.43v-1.23h-3v9.94h3v-4.94c0-1.3.25-2.57 1.87-2.57 1.61 0 1.63 1.5 1.63 2.66v4.85h3z"/></svg>
-        </a>
-      </div>
-      <div class="text-xs text-gray-400 mt-4 md:mt-0">&copy; {{ date('Y') }} ScaleUp. All rights reserved.</div>
-    </div>
-  </footer>
+  <script>
+  // Smooth scrolling for navbar links
+  document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Highlight active navbar link on scroll
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+  window.addEventListener('scroll', () => {
+    let currentSection = '';
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 300;
+      const sectionHeight = section.offsetHeight;
+      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+        currentSection = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('text-primary', 'font-bold');
+      if (link.getAttribute('href').substring(1) === currentSection) {
+        link.classList.add('text-primary', 'font-bold');
+      }
+    });
+  });
+</script>
 </body>
 </html>

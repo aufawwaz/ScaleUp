@@ -5,7 +5,7 @@
 <div x-data="{ showModal: false, deleteUrl: '', productName: '' }" x-cloak>
 
 <main class="main-container">
-  <div class="flex flex-col gap-[1rem] w-full p-[1rem]">
+  <div class="flex flex-col gap-[1rem] w-full p-[1rem] h-fit">
     <!-- Header -->
     <x-header-page title="DATA PRODUK">
       <div class="flex gap-[0.5rem]">
@@ -39,9 +39,13 @@
         </div>
       @else
         <div class="grid grid-cols-4 gap-[1rem] mt-4">
-            @foreach($products as $product)
+          @foreach($products->chunk(4) as $rowIndex => $row)
+            <div class="contents" data-aos="fade-up" data-aos-delay="{{ $rowIndex * 1000 }}">
+              @foreach($row as $product)
                 <x-product-card :product="$product" />
-            @endforeach
+              @endforeach
+            </div>
+          @endforeach
         </div>
       @endif
     </div>

@@ -33,7 +33,7 @@
                             >Ubah Profil</x-custom-button>
                         </div>
                         <div class="h-[1px] w-full bg-gray-300"></div>
-                        <div class="flex w-full gap-6">
+                        <div class="flex w-full h-full gap-6">
                             <!-- Informasi Usaha -->
                             <div class="flex-1">
                                 <h4 class="font-bold text-base mb-5">Informasi Usaha</h4>

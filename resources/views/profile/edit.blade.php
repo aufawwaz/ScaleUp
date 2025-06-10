@@ -10,16 +10,21 @@
             <div class="flex gap-[32px]">
                 <!-- Kiri: Foto & Info User -->
                 <div class="flex-1 flex-col items-center">
-                    <div class="w-40 h-40 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 overflow-hidden relative">
+                    <div class="flex w-fit flex-col items-start mb-5">
+                    <label for="profile_photo" class="relative w-40 h-40 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 overflow-hidden shadow transition-all duration-300">
                         @if(Auth::user()->profile_photo)
                             <img id="profile-photo-preview" src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="object-cover w-full h-full">
                         @else
-                            <div id="profile-photo-preview" class="w-full h-full flex items-center justify-center bg-gray-100 text-5xl font-bold text-gray-400">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            <div id="profile-photo-preview" class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
                             </div>
                         @endif
-                        <input type="file" name="profile_photo" id="profile_photo" accept="image/*" class="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer" onchange="previewProfilePhoto(event)">
-                    </div>
+                        <input type="file" name="profile_photo" id="profile_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="previewProfilePhoto(event)">
+                    </label>
+                    <span class="text-sm text-gray-500 mt-2">Klik untuk mengunggah foto</span>
+                </div>
                     <div class="w-full pr-20 flex flex-col gap-4">
                         <!-- Informasi Usaha -->
                         <h4 class="font-semibold">Informasi Usaha</h4>
@@ -64,7 +69,7 @@ function previewProfilePhoto(event) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            if(preview.tagName === 'IMG') {
+            if (preview.tagName === 'IMG') {
                 preview.src = e.target.result;
             } else {
                 preview.innerHTML = '';
@@ -73,7 +78,7 @@ function previewProfilePhoto(event) {
                 img.className = 'object-cover w-full h-full';
                 preview.appendChild(img);
             }
-        }
+        };
         reader.readAsDataURL(input.files[0]);
     }
 }

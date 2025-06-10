@@ -7,7 +7,7 @@
                     <x-custom-button
                         color="danger"
                         outline="true"
-                        @click.stop="showModal = true; deleteUrl = '{{ route('product.destroy', $product->id) }}'; productName = '{{ $product->nama_produk }}'"
+                        @click.stop="showModal = true; deleteUrl = '{{ route('product.destroy', $product->slug) }}'; productName = '{{ $product->nama_produk }}'"
                         >
                         Hapus Produk
                     </x-custom-button>
@@ -20,7 +20,7 @@
                 <!-- Gambar & Detail Produk -->
                 <div class="w-1/3 flex flex-col items-center bg-white rounded-2xl p-6 shadow min-h-full">
                     <div class="relative w-full aspect-square rounded-xl flex items-center justify-center overflow-hidden mb-4">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/default_produk.png') }}"
+                        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('asset/default_produk.svg') }}"
                             alt="{{ $product->nama_produk }}"
                             class="object-cover w-full h-full" />
                             <span class="absolute top-[1rem] right-[1rem] bg-gray-200 text-xs px-3 py-1 rounded-full text-gray-600">{{ $product->kategori ?? 'Tanpa Kategori' }}</span>
@@ -44,7 +44,7 @@
                         <div class="overflow-x-auto">
                             <table class="min-w-full text-sm rounded-xl overflow-clip">
                                 <thead>
-                                    <tr class="bg-primary text-white">
+                                    <tr class="bg-primary/10 text-primary">
                                         <th class="py-2 px-3 font-semibold">Tanggal</th>
                                         <th class="py-2 px-3 font-semibold">Invoice</th>
                                         <th class="py-2 px-3 font-semibold">Pelanggan</th>
