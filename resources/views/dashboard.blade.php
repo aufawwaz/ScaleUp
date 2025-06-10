@@ -2,8 +2,8 @@
   titlePage="Dashboard - ScaleUp"
   title="Dashboard"  
 >
-  <main class="main-container">
-    <div class="p-[1rem] min-h-[calc(100dvh-60px)] flex flex-col gap-[1.5rem]">
+  <main class="main-container scrollbar-hidden">
+    <div class="p-[1rem] min-h-[calc(100dvh-60px)] flex flex-col gap-[1.5rem] ">
     <!-- Card Dashboard -->
     <div class="flex gap-[1rem]">
       <!-- Card -->
