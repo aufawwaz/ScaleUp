@@ -12,15 +12,17 @@ class InputForm extends Component
     public string $name;
     public string $icon;
     public string $placeholder;
+    public string $textSize;
     /**
      * Create a new component instance.
      */
-    public function __construct(string $type, string $name, string $icon, string $placeholder)
+    public function __construct(string $type, string $name, string $icon, string $placeholder, string $textSize = 'sm')
     {
         $this->type = $type;
         $this->name = $name;
         $this->icon = $icon;
         $this->placeholder = $placeholder;
+        $this->textSize = $textSize;
     }
 
     /**

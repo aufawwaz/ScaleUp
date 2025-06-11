@@ -12,7 +12,7 @@
         name="{{ $name }}"
         value="{{ $value }}"
         placeholder="{{ $placeholder }}"
-        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition"
+        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition bg-white"
     />
     <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" fill="none"
          stroke="currentColor" viewBox="0 0 24 24">

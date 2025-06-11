@@ -64,7 +64,7 @@
         <div class="flex flex-row gap-2 my-4 w-full h-[100%] justify-between">
           {{-- list kartu --}}
           @if(!$isNoData)
-            <div id="saldo-container" class="container flex flex-col gap-2 h-full overflow-scroll scrollbar-hidden">
+            <div id="saldo-container" class="container flex flex-col gap-2 h-[95%] overflow-scroll scrollbar-hidden">
               @foreach ($data as $d)
                 <x-saldo-card 
                   :id="$d->id"
@@ -73,66 +73,75 @@
                   :jenis="$d->jenis" 
                 />
               @endforeach
+              <div class="h-[50px]"></div>
             </div>
 
             {{-- details --}}
-            <div class="container w-[80%] h-[96%] p-4 bg-white rounded-2xl shadow-sm ">
-              <div class="flex items-center justify-between mb-[1rem]">
-                <p class="dashboard-card-header">Data Kartu</p>
-                <button onclick="" class="border-1 border-gray-400 text-gray text-xs rounded-md px-3 py-1.5 hover:bg-gray-100 hover:text-gray-500 hover:bordrer-500 cursor-pointer">
-                  Data
-                </button>
+            <div class="container w-[80%] h-[96%] p-4 bg-white rounded-2xl shadow-sm">
+              <div>
+                <div class="flex items-center justify-between mb-[1rem]">
+                  <p class="dashboard-card-header">Detail Kartu</p>
+                  <button onclick="" class="border-1 border-gray-400 text-gray text-xs rounded-md px-3 py-1.5 hover:bg-gray-100 hover:text-gray-500 hover:bordrer-500 cursor-pointer">
+                    Data
+                  </button>
+                </div>
+                <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
               </div>
-              {{-- nampilin detail kartunya --}}
-              <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
-              <template x-if="$store.saldoActive.id !== -1">
-                <div class="mb-4 flex flex-col gap-2">
-                  <div class="flex items-center gap-0.5 text-base justify-center text-nowrap font-semibold">
-                      <span>Saldo</span>
-                      <span x-text="$store.saldoActive.jenis" class="text-primary"></span>
-                      <span x-text="$store.saldoActive.nama" class="text-primary"> </span>
-                      <span>beberapa hari terakhir</span>
+              
+              {{-- content detail --}}
+              <div class="h-[80%] flex flex-col justify-between">
+                <template x-if="$store.saldoActive.id !== -1">
+                  <div class="mb-4 flex flex-col gap-2">
+                    <div class="flex items-center gap-0.5 text-base justify-center text-nowrap font-semibold">
+                        <span>Saldo</span>
+                        <span x-text="$store.saldoActive.jenis" class="text-primary"></span>
+                        <span x-text="$store.saldoActive.nama" class="text-primary"> </span>
+                        <span>beberapa hari terakhir</span>
+                    </div>
+                  </div>
+                </template>
+
+                <div>
+                  <template x-if="$store.saldoActive.id === -1">
+                    <div class="text-base text-center font-semibold mb-4">
+                      Total Saldo beberapa hari terkahir
+                    </div>
+                  </template>
+                  
+                  {{-- chart --}}
+                  <div class="w-full" style="height:240px">
+                    <canvas id="saldoDetailChart" class="w-full" style="height:100%"></canvas>
                   </div>
                 </div>
-              </template>
-              <template x-if="$store.saldoActive.id === -1">
-                <div class="text-base text-center font-semibold mb-4">
-                    Total Saldo beberapa hari terkahir
-                </div>
-              </template>
 
-              {{-- chart --}}
-              <div class="w-full">
-                <canvas id="saldoDetailChart" width="400" height="250"></canvas>
+                {{-- tombol --}}
+                <template x-if="$store.saldoActive.id !== -1">
+                  <div class="flex gap-2 mt-2 justify-around">
+                    {{-- tombol edit --}}
+                    <x-custom-button
+                      @click.stop="$store.modal.openEdit({id: $store.saldoActive.id, jenis: $store.saldoActive.jenis, nama: $store.saldoActive.nama, saldo: $store.saldoActive.saldo})"
+                      color="primary"
+                      size="md"
+                      outline="true"
+                      icon='<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>'
+                    >
+                      <div class="w-1"></div>
+                      Edit
+                      <div class="w-2.5"></div>
+                    </x-custom-button>
+                    {{-- tombol hapus --}}
+                    <x-custom-button
+                      color="danger"
+                      size="md"
+                      outline="true"
+                      icon='<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>'
+                      @click.stop="$store.modal.openDelete({id: $store.saldoActive.id, jenis: $store.saldoActive.jenis, nama: $store.saldoActive.nama, saldo: $store.saldoActive.saldo})"
+                    >
+                      Hapus
+                    </x-custom-button>
+                  </div>
+                </template>
               </div>
-              {{-- tombol --}}
-              <template x-if="$store.saldoActive.id !== -1">
-                <div class="flex gap-2 mt-2 justify-around">
-                  {{-- tombol edit --}}
-                  <x-custom-button
-                    @click.stop="$store.modal.openEdit({id: $store.saldoActive.id, jenis: $store.saldoActive.jenis, nama: $store.saldoActive.nama, saldo: $store.saldoActive.saldo})"
-                    color="primary" 
-                    size="md" 
-                    outline="true"
-                    icon='<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>'
-                  >
-                    <div class="w-1"></div>
-                    Edit
-                    <div class="w-2.5"></div>
-                  </x-custom-button>
-
-                  {{-- tombol hapus --}}
-                  <x-custom-button
-                    color="danger"
-                    size="md"
-                    outline="true"
-                    icon='<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>'                  
-                    @click.stop="$store.modal.openDelete({id: $store.saldoActive.id, jenis: $store.saldoActive.jenis, nama: $store.saldoActive.nama, saldo: $store.saldoActive.saldo})"
-                  >
-                    Hapus
-                  </x-custom-button>
-                </div>
-              </template>
             </div>
 
           @else {{-- kalo data kosong --}}
@@ -156,7 +165,7 @@
         {{-- mode DELETE --}}
         <template x-if="$store.modal.mode === 'delete'">
           <div>
-            <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kartu</h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kontak</h2>
             <p class="text-sm text-gray-600">
               Apakah kamu yakin ingin menghapus kartu <span class="font-semibold" x-text="$store.modal.formData.nama"></span>?
             </p>
@@ -239,6 +248,7 @@
     </div>
   </div>
 </x-layout>
+
 
 
 
@@ -326,6 +336,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: { y: { beginAtZero: true }},
         plugins: {legend: { display: false }},
         scales: {

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
@@ -42,28 +43,14 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 // Authentication
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
+Route::get('/login', function () { return view('login'); })->name('login');
+Route::get('/register', function () { return view('register'); })->name('register');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
 
-// Penjualan
-Route::get('/sale', function () {
-    return view('sale');
-})->name('sale');
-
-// Pembelian
-Route::get('/purchase', function () {
-    return view('purchase');
-})->name('purchase');
-
-// Tagihan
-Route::get('/bill', function () {
-    return view('bill');
-})->name('bill');
+// Transaksi
+Route::get('/sale', [TransactionController::class, 'indexSale'])->name('sale');
+Route::get('/purchase', [TransactionController::class, 'indexPurchase'])->name('purchase');
+Route::get('/bill', [TransactionController::class, 'indexBill'])->name('bill');
+Route::get('/transaction/get-product', [TransactionController::class, 'getProductData'])->name('getProduct');

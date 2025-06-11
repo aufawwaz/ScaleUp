@@ -9,6 +9,6 @@
         type="{{ $type }}" 
         name="{{ $name }}"
         placeholder="{{ $placeholder }}" 
-        class="w-[100%] text-sm border-none focus:border-none focus:ring-0 outline-none leading-tight pb-0.75"
+        class="w-[100%] text-{{ $textSize }} border-none focus:border-none focus:ring-0 outline-none leading-tight"
     >
 </div>
