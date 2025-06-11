@@ -46,13 +46,15 @@
             </div>
 
             <h2 class="text-dark text-3xl text-center font-bold py-[1rem]">Login</h2>
-            <button
-                onclick="" 
-                class="rounded-[12px] border-1 border-gray p-2 w-full flex flex-row justify-center items-center gap-1 cursor-pointer"
-            >
-                <img src="/asset/ic_google.svg" alt="" style="width: 12px;">
-                <p class="text-dark text-sm font-bold mb-0.5">Sign in with Google</p>
-            </button>
+            <a href="{{ route('google.redirect') }}">
+                <button
+                    onclick="" 
+                    class="rounded-[12px] border-1 border-gray p-2 w-full flex flex-row justify-center items-center gap-1 cursor-pointer"
+                >
+                    <img src="/asset/ic_google.svg" alt="" style="width: 12px;">
+                    <p class="text-dark text-sm font-bold mb-0.5">Sign in with Google</p>
+                </button>
+            </a>
             
             <div class="flex items-center justify-center gap-x-[8px] h-[32px]">
                 <hr class="w-[30%] border-gray">

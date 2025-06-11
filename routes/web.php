@@ -10,7 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
+Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
@@ -43,11 +43,18 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 // Authentication
-Route::get('/login', function () { return view('login'); })->name('login');
-Route::get('/register', function () { return view('register'); })->name('register');
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+Route::get('/register', function () {
+    return view('register');
+})->name('register');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+
+Route::get('/auth-google-redirect', [AuthController::class, 'google_redirect'])->name('google.redirect');
+Route::get('/auth-google-callback', [AuthController::class, 'google_callback'])->name('google.callback');
 
 // Transaksi
 Route::get('/sale', [TransactionController::class, 'indexSale'])->name('sale');

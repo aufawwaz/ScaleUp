@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -33,5 +34,28 @@ class AuthController extends Controller
         ]);
         Auth::login($user);
         return redirect('/login')->with('success', 'Registrasi berhasil, silakan login.');
+    }
+
+    public function google_redirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function google_callback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'password' => Hash::make(uniqid()), // Generate a random password
+                'profile_photo' => $googleUser->getAvatar(),
+            ]);
+        }
+
+        Auth::login($user, true);
+        return redirect('/dashboard')->with('success', 'Login berhasil dengan akun Google.');
     }
 }
