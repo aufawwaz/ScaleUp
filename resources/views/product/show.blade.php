@@ -2,7 +2,7 @@
     <div x-data="{ showModal: false, deleteUrl: '', productName: '' }" x-cloak>
     <main class="main-container">
         <div class="p-[1rem] flex flex-col gap-[1rem] h-fit">
-            <x-header-page back="{{ route('product.index') }}" title="{{ strtoupper($product->nama_produk) }}">
+            <x-header-page back="{{ $backRoute ? route($backRoute) : route('product.index') }}" title="{{ strtoupper($product->nama_produk) }}">
                     <div class="flex gap-[0.5rem]">
                     <x-custom-button
                         color="danger"

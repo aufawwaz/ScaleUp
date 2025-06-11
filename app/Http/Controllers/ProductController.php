@@ -121,6 +121,7 @@ class ProductController extends Controller
     // Show Detail Produk
     public function show(Product $product)
     {
-        return view('product.show', compact('product'));
+        $backRoute = request('back');
+        return view('product.show', compact('product', 'backRoute'));
     }
 }

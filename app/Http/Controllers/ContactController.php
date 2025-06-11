@@ -115,4 +115,22 @@ class ContactController extends Controller
 
         return redirect()->route('contact.index')->with('success', 'Kontak berhasil dihapus!');
     }
+
+    /**
+     * Endpoint untuk auto-complete nama kontak (pelanggan)
+     */
+    public function autocomplete(Request $request)
+    {
+        $search = $request->get('q', '');
+        $userId = $request->user() ? $request->user()->id : null;
+        $query = Contact::query();
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+        if ($search) {
+            $query->where('nama_kontak', 'like', "%$search%");
+        }
+        $results = $query->limit(4)->get(['id', 'nama_kontak as label']);
+        return response()->json($results);
+    }
 }

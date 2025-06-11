@@ -1,4 +1,4 @@
-@props(['product'])
+@props(['product', 'backlink' => 'transaction'])
 
 <div class="relative group bg-white rounded-lg shadow flex flex-col overflow-hidden w-full transition hover:shadow-lg product-card-transaction"
      data-id="{{ $product->id }}"
@@ -9,7 +9,7 @@
     
     <!-- Tombol Inpo (kanan atas, hanya muncul saat hover) -->
     <div class="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition z-20">
-        <a href="{{ route('product.show', $product->slug) }}"
+        <a href="{{ route('product.show', [$product->slug, 'back' => $backlink]) }}"
            class="bg-primary hover:brightness-80 text-white p-1.5 rounded-full shadow transition"
            title="Informasi Product"> 
             <!-- Icon edit -->

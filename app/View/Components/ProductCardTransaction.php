@@ -10,12 +10,15 @@ use App\Models\Product;
 class ProductCardTransaction extends Component
 {
     public $product;
+    public $backlink;
+
     /**
      * Create a new component instance.
      */
-    public function __construct(Product $product)
+    public function __construct(Product $product, $backlink = 'product.show')
     {
         $this->product = $product;
+        $this->backlink = $backlink;
     }
 
     /**
