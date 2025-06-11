@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 <x-Layout
     titlePage="Profile - ScaleUp"
     title="Edit Profil"
@@ -13,7 +14,11 @@
                     <div class="flex w-fit flex-col items-start mb-5">
                     <label for="profile_photo" class="relative w-40 h-40 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 overflow-hidden shadow transition-all duration-300">
                         @if(Auth::user()->profile_photo)
-                            <img id="profile-photo-preview" src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="object-cover w-full h-full">
+                            @if(Str::startsWith(Auth::user()->profile_photo, 'http'))
+                                <img id="profile-photo-preview" src="{{ Auth::user()->profile_photo }}" alt="Foto Profil" class="object-cover w-full h-full">
+                            @else
+                                <img id="profile-photo-preview" src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="object-cover w-full h-full">
+                            @endif
                         @else
                             <div id="profile-photo-preview" class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">

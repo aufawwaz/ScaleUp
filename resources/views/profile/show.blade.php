@@ -11,7 +11,11 @@
                     <div class="flex flex-col items-center border-r border-gray-300 pr-[32px]">
                         <div class="w-[240px] aspect-square rounded overflow-hidden mb-4 border-4 border-gray-200">
                             @if($user->profile_photo)
-                                <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="Foto Profil" class="object-cover w-full h-full">
+                                @if(Str::startsWith($user->profile_photo, 'http'))
+                                    <img src="{{ $user->profile_photo }}" alt="Foto Profil" class="object-cover w-full h-full">
+                                @else
+                                    <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="Foto Profil" class="object-cover w-full h-full">
+                                @endif
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-gray-100 text-5xl font-bold text-gray-400">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
