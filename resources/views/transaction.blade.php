@@ -393,7 +393,7 @@ window.addEventListener('DOMContentLoaded', function(){
             // Ambil data utama
             const kontak = inputKontak.value;
             const saldo = inputSaldo.value;
-            const total = totalTransaksi;
+            const total = parseInt((document.getElementById('total-transaksi').textContent || '0').replace(/[^0-9]/g, '')) || 0;
             // Ambil tanggal hari ini (YYYYMMDD)
             const now = new Date();
             const pad = n => n.toString().padStart(2, '0');
@@ -446,6 +446,129 @@ window.addEventListener('DOMContentLoaded', function(){
       }, 200);
     });
   }
+
+  // ================== LIST PESANAN =====================
+  // Deklarasi global listPesanan
+  let listPesanan = [];
+
+  // Inisialisasi dari localStorage
+  try {
+    listPesanan = JSON.parse(localStorage.getItem(pesananKey) || '[]');
+  } catch(e) {
+    listPesanan = [];
+  }
+
+  const listPesananContainer = document.getElementById('list-pesanan-container');
+
+  // Event delegation: klik produk (agar produk baru tetap bisa ditambahkan)
+  const produkGrid = document.querySelector('.grid.grid-cols-4');
+  if (produkGrid) {
+    produkGrid.addEventListener('click', function(e) {
+      const card = e.target.closest('.product-card-transaction');
+      if (!card) return;
+      const id = card.dataset.id;
+      const nama = card.dataset.nama;
+      const harga = parseInt(card.dataset.harga);
+      const satuan = card.dataset.satuan;
+      let existing = listPesanan.find(p => p.id === id);
+      if (existing) {
+        existing.jumlah += 1;
+      } else {
+        listPesanan.push({ id, nama, harga, satuan, jumlah: 1 });
+      }
+      updateListPesanan();
+    });
+  }
+
+  // ================== PESANAN INTERFACE =====================
+  function updateListPesanan() {
+    if (!listPesananContainer) return;
+    listPesananContainer.innerHTML = '';
+    let total = 0;
+    listPesanan.forEach((pesanan, idx) => {
+      total += pesanan.harga * pesanan.jumlah;
+      const div = document.createElement('div');
+      const namaLimited = pesanan.nama.length > 30 ? pesanan.nama.substring(0, 18) + '…' : pesanan.nama;
+      const hargaFormatted = 'Rp ' + Number(pesanan.harga).toLocaleString('id-ID');
+      div.className = 'flex justify-between items-center py-1 text-xs gap-2';
+      div.innerHTML = `
+        <div class="flex gap-2 items-center">
+          <button class="delete-btn w-[24px] h-[24px] flex justify-center items-center bg-danger rounded-sm text-white cursor-pointer hover:bg-red-700" data-idx="${idx}">
+            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+          </button>
+          <div class="flex flex-col">
+            <p class="text-xs">${namaLimited}</p>
+            <p class="text-xs font-bold">${hargaFormatted}</p>
+          </div>
+        </div>
+        <span class="flex items-center gap-1">
+          <button class="plus-btn w-[24px] h-[24px] text-center bg-primary rounded-sm text-bold text-white cursor-pointer hover:bg-primary-800" data-idx="${idx}">+</button>
+          <input type="number" min="1" class="jumlah-input text-xs text-bold w-[36px] text-center border border-gray-300 rounded" value="${pesanan.jumlah}" data-idx="${idx}">
+          <button class="minus-btn w-[24px] h-[24px] text-center bg-white rounded-sm text-primary text-bold border-1 border-primary cursor-pointer hover:bg-gray-200" data-idx="${idx}">-</button>
+        </span>
+      `;
+      listPesananContainer.appendChild(div);
+    });
+    // Update total transaksi
+    document.getElementById('total-transaksi').textContent = 'Rp ' + total.toLocaleString('id-ID');
+    // Simpan ke localStorage
+    localStorage.setItem(pesananKey, JSON.stringify(listPesanan));
+    localStorage.setItem('totalTransaksi', total);
+
+    // Event: tambah jumlah
+    listPesananContainer.querySelectorAll('.plus-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        listPesanan[idx].jumlah++;
+        updateListPesanan();
+      });
+    });
+    // Event: kurang jumlah
+    listPesananContainer.querySelectorAll('.minus-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        if (listPesanan[idx].jumlah > 1)
+          listPesanan[idx].jumlah--;
+        else listPesanan.splice(idx, 1);
+        updateListPesanan();
+      });
+    });
+    // Event: input jumlah manual
+    listPesananContainer.querySelectorAll('.jumlah-input').forEach(input => {
+      input.addEventListener('change', function() {
+        const idx = this.dataset.idx;
+        let val = parseInt(this.value);
+        if (isNaN(val) || val < 1) val = 1;
+        listPesanan[idx].jumlah = val;
+        updateListPesanan();
+      });
+    });
+    // Event: hapus pesanan
+    listPesananContainer.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        listPesanan.splice(idx, 1);
+        updateListPesanan();
+      });
+    });
+  }
+
+  // Event tombol hapus semua
+  const btnDeleteAll = document.querySelector('.delete-all-btn');
+  if (btnDeleteAll) {
+    btnDeleteAll.addEventListener('click', function() {
+      listPesanan = [];
+      updateListPesanan();
+
+      localStorage.removeItem(pelangganKey);
+      localStorage.removeItem(saldoKey);
+      if(inputKontak) inputKontak.value = '';
+      if(inputSaldo) inputSaldo.value = '';
+    });
+  }
+
+  // Render awal
+  updateListPesanan();
 });
 </script>
 
