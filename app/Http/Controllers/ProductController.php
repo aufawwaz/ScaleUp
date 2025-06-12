@@ -11,7 +11,7 @@ class ProductController extends Controller
     // Tampilkan daftar produk
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = $request->user()->products(); // Mulai dari relasi user
 
         if ($request->filled('search')) {
             $query->where('nama_produk', 'like', '%' . $request->search . '%');
@@ -25,7 +25,7 @@ class ProductController extends Controller
             $query->orderBy('stok', 'desc');
         }
 
-        $products = $request->user()->products()->get();
+        $products = $query->get(); // Ambil hasil query yang sudah difilter
 
         return view('product.index', compact('products'));
     }

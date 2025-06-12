@@ -12,40 +12,43 @@ class TransactionController extends Controller
     {
         $products = $this->getProducts($request);
         $title = 'Penjualan';
-        
+
         return view('transaction', compact('products', 'title'));
     }
-    
+
     public function indexPurchase(Request $request)
     {
         $products = $this->getProducts($request);
         $title = 'Pembelian';
-        
+
         return view('transaction', compact('products', 'title'));
     }
     public function indexBill(Request $request)
     {
         $products = $this->getProducts($request);
         $title = 'Tagihan';
-        
+
         return view('transaction', compact('products', 'title'));
     }
 
-    public function getProducts(Request $request, $filter = 'filter isnt implemented'){
-        $query = Product::query();
+    public function getProducts(Request $request, $filter = 'filter isnt implemented')
+    {
+        $user = $request->user();
+        if (!$user) return collect([]);
+
+        $query = $user->products(); // Mulai dari relasi user
 
         if ($request->filled('search')) {
             $query->where('nama_produk', 'like', '%' . $request->search . '%');
         }
-        $user = $request->user();
-        if ($user) {
-            return $user->products()->get();
-        } else {
-            return collect([]);
-        }
+
+        // Tambahkan filter lain jika perlu
+
+        return $query->get(); // Ambil hasil query yang sudah difilter
     }
 
-    public function getProductById($id){
+    public function getProductById($id)
+    {
         $data = Product::findOrFail($id);
         return $data->user()->products()->get();
     }
