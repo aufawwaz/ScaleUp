@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -88,5 +89,13 @@ class ProfileController extends Controller
     public function destroy(Profile $profile)
     {
         //
+    }
+
+    public function getUserData(): JsonResponse{
+        $user = User::find(Auth::id());
+        if (!$user) {
+            return response()->json(['error' => 'Data user tidak ditemukan'], 404);
+        }
+        return response()->json($user);
     }
 }

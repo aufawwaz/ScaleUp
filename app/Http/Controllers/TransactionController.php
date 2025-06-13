@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
+use App\Models\Transaction;
+use App\Models\TransactionItem;
 
 class TransactionController extends Controller
 {
@@ -13,7 +15,7 @@ class TransactionController extends Controller
         $products = $this->getProducts($request);
         $title = 'Penjualan';
 
-        return view('transaction', compact('products', 'title'));
+        return view('transaction.index', compact('products', 'title'));
     }
 
     public function indexPurchase(Request $request)
@@ -21,14 +23,14 @@ class TransactionController extends Controller
         $products = $this->getProducts($request);
         $title = 'Pembelian';
 
-        return view('transaction', compact('products', 'title'));
+        return view('transaction.index', compact('products', 'title'));
     }
     public function indexBill(Request $request)
     {
         $products = $this->getProducts($request);
         $title = 'Tagihan';
 
-        return view('transaction', compact('products', 'title'));
+        return view('transaction.index', compact('products', 'title'));
     }
 
     public function getProducts(Request $request, $filter = 'filter isnt implemented')
@@ -55,12 +57,13 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         // Debug: log request input untuk troubleshooting
-        $validated = $request->validate([
+        $request->validate([
             'kontak' => 'required',
             'saldo' => 'required',
             'jenis' => 'required',
-            'total' => 'required|numeric',
+            'nominal' => 'required|numeric',
             'pesanan' => 'required|array',
+            'dibayar' => 'nullable|numeric',
         ]);
 
         // Cari ID kontak dan saldo dari label jika input bukan id
@@ -86,11 +89,12 @@ class TransactionController extends Controller
             return response()->json(['success' => false, 'message' => 'Kontak atau saldo tidak valid'], 422);
         }
         $jenis = $request->input('jenis');
-        $total = $request->input('total');
+        $nominal = $request->input('nominal');
         $status = $request->input('status');
         $jatuhTempo = $request->input('jatuh_tempo');
         $pembayaran = $request->input('pembayaran');
         $pesanan = $request->input('pesanan');
+        $dibayar = $request->input('dibayar');
 
         // Konversi jenis agar sesuai enum DB
         if ($jenis === 'sale') $jenis = 'penjualan';
@@ -99,8 +103,13 @@ class TransactionController extends Controller
 
         // Konversi pembayaran agar sesuai enum DB
         if ($pembayaran) {
-            if (strtolower($pembayaran) === 'cash') $pembayaran = 'tunai';
-            if (strtolower($pembayaran) === 'bank') $pembayaran = 'bank';
+            // Tidak perlu konversi 'cash' ke 'tunai', langsung gunakan value dari frontend
+            $pembayaran = strtolower($pembayaran);
+            // Validasi agar hanya enum yang valid
+            $allowed = ['tunai', 'bank transfer', 'qris', 'kartu kredit', 'lainnya'];
+            if (!in_array($pembayaran, $allowed)) {
+                return response()->json(['success' => false, 'message' => 'Metode pembayaran tidak valid'], 422);
+            }
         }
 
         // Generate custom id transaksi: KODEJENIS+DDMMYYYY+3digit_increment
@@ -114,7 +123,7 @@ class TransactionController extends Controller
         for ($i = 0; $i < $maxRetry; $i++) {
             $id = $prefix . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
             // Cek apakah id sudah ada di database
-            if (\App\Models\Transaction::where('id', $id)->exists()) {
+            if (Transaction::where('id', $id)->exists()) {
                 $newNumber++;
                 continue;
             }
@@ -125,7 +134,8 @@ class TransactionController extends Controller
                 'jenis' => $jenis,
                 'kontak_id' => $kontakId,
                 'saldo_id' => $saldoId,
-                'total' => $total,
+                'nominal' => $nominal,
+                'dibayar' => $dibayar,
             ];
             if (in_array($jenis, ['pembelian', 'tagihan']) && $status) {
                 $dataTransaksi['status'] = $status;
@@ -136,8 +146,16 @@ class TransactionController extends Controller
             if ($jatuhTempo) {
                 $dataTransaksi['jatuh_tempo'] = $jatuhTempo;
             }
+            if($dibayar){
+                $dataTransaksi['dibayar'] = $dibayar;
+            } else{
+                $dataTransaksi['dibayar'] = $nominal;
+            }
             try {
-                $transaction = \App\Models\Transaction::create($dataTransaksi);
+                $transaction = Transaction::create($dataTransaksi);
+                
+                // PERUBAHAN DATA UNTUK PRODUCT SALDO DAN CONTACT 
+
                 break; // sukses insert
             } catch (\Illuminate\Database\QueryException $e) {
                 Log::error('QueryException insert transaksi', [
@@ -166,10 +184,14 @@ class TransactionController extends Controller
         }
         foreach ($pesanan as $item) {
             if (!isset($item['id'])) continue;
-            \App\Models\TransactionItem::create([
+            TransactionItem::create([
                 'transaction_id' => $transaction->id,
                 'product_id' => $item['id'],
+                // 'jumlah' => $jumlah,
             ]);
+
+            // PERUBAHAN PRODUCT
+            // app(ProductController::class)->addStock($product_id, $jumlah);
         }
         return response()->json(['success' => true, 'id' => $transaction->id]);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -132,5 +133,15 @@ class ContactController extends Controller
         }
         $results = $query->limit(4)->get(['id', 'nama_kontak as label']);
         return response()->json($results);
+    }
+
+    // Ambil produk berdasarkan ID (API/JSON)
+    public function getById($id) : JsonResponse
+    {
+        $product = Contact::find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Produk tidak ditemukan'], 404);
+        }
+        return response()->json($product);
     }
 }

@@ -10,5 +10,6 @@
         name="{{ $name }}"
         placeholder="{{ $placeholder }}" 
         class="w-[100%] text-{{ $textSize }} border-none focus:border-none focus:ring-0 outline-none leading-tight"
+        autocomplete="{{ $autoComplete }}"
     >
 </div>

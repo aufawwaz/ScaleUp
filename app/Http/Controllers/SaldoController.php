@@ -120,7 +120,7 @@ class SaldoController extends Controller
         }
         Log::info('SaldoController: fetch [getTransactionHistory] request from: ' . $id);
 
-        // responnya dummy data dulu doanh
+        // responnya dummy data dulu
         return response()->json(collect([
             (object)[
                 'tanggal' => '2025-05-22',
@@ -193,5 +193,15 @@ class SaldoController extends Controller
                 'jumlah' => 170000
             ],
         ]));
+    }
+
+    // Ambil saldo berdasarkan ID (API/JSON)
+    public function getById($id): JsonResponse
+    {
+        $saldo = Saldo::find($id);
+        if (!$saldo) {
+            return response()->json(['error' => 'Saldo tidak ditemukan'], 404);
+        }
+        return response()->json($saldo);
     }
 }

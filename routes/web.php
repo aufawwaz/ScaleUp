@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,10 +21,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile/get', [ProfileController::class, 'getUserData']);
 
 // Saldo
 Route::get('saldo/fetch/{id}', [SaldoController::class, 'getTransactionHistory'])->name('saldo.fetch');
 Route::resource('saldo', SaldoController::class);
+Route::get('/saldo/getById/{id}', [SaldoController::class, 'getById']);
 
 // Product
 Route::resource('product', ProductController::class)->parameters([
@@ -33,6 +36,7 @@ Route::resource('product', ProductController::class)->parameters([
 
 // Contact
 Route::resource('contact', ContactController::class);
+Route::get('/contact/getById/{id}', [ContactController::class, 'getById']);
 
 // News
 Route::get('/news/fetch', [NewsController::class, 'fetchNewsHTML'])->name('news.fetch');
@@ -40,8 +44,9 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 // Transaksi
-Route::get('/transaction', function () { return view('transaction'); })->name('transaction');
+Route::get('/transaction', function () { return view('transaction.index'); })->name('transaction');
 Route::get('/transaction/get-product', [TransactionController::class, 'getProductById'])->name('getProduct');
+Route::get('/transaction/history', [TransactionHistoryController::class, 'index'])->name('transaction.history');
 Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
 Route::get('/sale', [TransactionController::class, 'indexSale'])->name('sale');
 Route::get('/purchase', [TransactionController::class, 'indexPurchase']) ->name('purchase');

@@ -3,7 +3,7 @@
 <div class="relative group bg-white rounded-lg shadow flex flex-col overflow-hidden w-full transition hover:shadow-lg product-card-transaction"
      data-id="{{ $product->id }}"
      data-nama="{{ $product->nama_produk }}"
-     data-harga="{{ $product->harga_jual }}"
+     data-harga="{{ $backlink == 'purchase' ? $product-> harga_modal : $product->harga_jual }}"
      data-satuan="{{ $product->satuan }}"
      style="cursor:pointer;">
     
@@ -32,7 +32,7 @@
                 <span class="text-xs text-gray-500  m-0 p-0">{{ $product->stok ?: 0 }} Tersedia</span>
             </div>
             <div>
-                <span class="text-sm font-bold">Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</span>
+                <span class="text-sm font-bold">Rp {{ number_format($backlink == 'purchase' ? $product-> harga_modal : $product->harga_jual, 0, ',', '.') }}</span>
                 <span class="text-sm font-bold">/{{ $product->satuan }}</span>
             </div>
         </div>

@@ -20,7 +20,7 @@
       <x-header-page title="DATA PRODUK">
         <div class="flex gap-[0.5rem]">
           <!-- Tambah produk, kategori dan satuan -->
-          <x-custom-button href="#" color="primary">Riwayat Transaksi</x-custom-button>
+          <x-custom-button href="{{ route('transaction.history', ['back' => Route::currentRouteName()]) }}" color="primary">Riwayat Transaksi</x-custom-button>
         </div>
       </x-header-page>
     
@@ -34,7 +34,7 @@
         ></x-search-bar>
       </div>
       @endif
-    
+
       <!-- Produk Grid / Empty State -->
       @if($products->isEmpty())
         <div class="flex flex-col items-center justify-center h-[500px] opacity-50">
@@ -65,6 +65,7 @@
         placeholder="Tambah Pelanggan"
         icon="/asset/ic_person.svg"
         textSize="xs"
+        autoComplete="off"
       />
       <x-input-form
         type="text"
@@ -72,6 +73,7 @@
         placeholder="Tambah Saldo"
         icon="/asset/ic_credit_card.svg"
         textSize="xs"
+        autoComplete="off"
       />
     </div>
 
@@ -80,7 +82,7 @@
       <div id="list-pesanan-container" class="h-fit pr-1"></div>
     </div>
 
-    {{-- Total Pesanan --}}
+    {{-- Nominal Pesanan --}}
     <div class="flex flex-col gap-[8px]">
       <div class="w-full h-[1px] z-50 bg-gray-300 text-gray"></div>
       
@@ -109,7 +111,7 @@
 
       <div class="flex justify-between">
         <span class="font-bold text-xs">Total Transaksi</span>
-        <span id="total-transaksi" class="font-bold text-xs">Rp 100.000</span>
+        <span id="nominal-transaksi" class="font-bold text-xs">Rp 100.000</span>
       </div>
       <x-custom-button id="btn-pembayaran">Pembayaran</x-custom-button>
     </div>
@@ -185,10 +187,11 @@ window.addEventListener('DOMContentLoaded', function(){
     inputSaldo.value = localStorage.getItem(saldoKey);
   }
 
-  // simpan ke localStorage HANYA saat user memilih dari auto-complete
+  // ========================== AUTO COMPLETE ============================================
   function setupAutocompleteWithStorage(inputSelector, endpoint, storageKey) {
     const input = document.querySelector(inputSelector);
     if (!input) return;
+
     let dropdown = document.createElement('div');
     dropdown.className = 'autocomplete-dropdown';
     dropdown.style.position = 'absolute';
@@ -215,49 +218,77 @@ window.addEventListener('DOMContentLoaded', function(){
     let lastSelectedId = null;
     let lastSelectedLabel = '';
 
+    function renderDropdown(data) {
+      // Batasi hanya 5 item pertama
+      lastResults = data.slice(0, 5);
+      dropdown.innerHTML = '';
+      if (!lastResults.length) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      lastResults.forEach(item => {
+        const opt = document.createElement('div');
+        opt.className = 'autocomplete-option hover:bg-primary/10 px-3 py-2 cursor-pointer text-xs';
+        opt.textContent = item.label;
+        opt.dataset.id = item.id;
+        opt.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          input.value = item.label;
+          input.dataset.id = item.id;
+          lastSelectedId = item.id;
+          lastSelectedLabel = item.label;
+          dropdown.style.display = 'none';
+          // Simpan hanya bila dipilih
+          localStorage.setItem(storageKey, item.label);
+        });
+        dropdown.appendChild(opt);
+      });
+      dropdown.style.display = 'block';
+      updateDropdownPosition();
+    }
+
+    function fetchSuggestions(query = '') {
+      // Jika backend mendukung parameter default, bisa tambahkan '?default=true'
+      // Contoh: endpoint + '?default=true'
+      // Kalau tidak, backend bisa deteksi q kosong dan kembalikan 5 teratas.
+      const url = endpoint + '?q=' + encodeURIComponent(query);
+      fetch(url)
+        .then(res => res.json())
+        .then(data => renderDropdown(data))
+        .catch(() => {
+          // Kalau error, sembunyikan dropdown
+          dropdown.style.display = 'none';
+        });
+    }
+
     input.addEventListener('input', function() {
       const q = input.value.trim();
       input.dataset.id = '';
       lastSelectedId = null;
       lastSelectedLabel = '';
       if (q.length < 1) {
+        dropdown.innerHTML = '';
         dropdown.style.display = 'none';
         return;
       }
-      fetch(endpoint + '?q=' + encodeURIComponent(q))
-        .then(res => res.json())
-        .then(data => {
-          lastResults = data;
-          dropdown.innerHTML = '';
-          if (!data.length) {
-            dropdown.style.display = 'none';
-            return;
-          }
-          data.forEach(item => {
-            const opt = document.createElement('div');
-            opt.className = 'autocomplete-option hover:bg-primary/10 px-3 py-2 cursor-pointer text-xs';
-            opt.textContent = item.label;
-            opt.dataset.id = item.id;
-            opt.addEventListener('mousedown', function(e) {
-              e.preventDefault();
-              input.value = item.label;
-              input.dataset.id = item.id;
-              lastSelectedId = item.id;
-              lastSelectedLabel = item.label;
-              dropdown.style.display = 'none';
-              // Simpan ke localStorage HANYA saat pilih dari auto-complete
-              localStorage.setItem(storageKey, item.label);
-            });
-            dropdown.appendChild(opt);
-          });
-          dropdown.style.display = 'block';
-        });
-      updateDropdownPosition();
+      fetchSuggestions(q);
+    });
+
+    input.addEventListener('focus', function() {
+      const q = input.value.trim();
+      if (q === '') {
+        // tampilkan default 5 teratas
+        fetchSuggestions(''); 
+      } else if (lastResults.length) {
+        dropdown.style.display = 'block';
+        updateDropdownPosition();
+      }
     });
 
     input.addEventListener('blur', function() {
       setTimeout(() => {
         dropdown.style.display = 'none';
+        // Jika value bukan dari pilihan yang valid, reset
         if (!lastResults.some(item => item.label === input.value && item.id == input.dataset.id)) {
           input.value = '';
           input.dataset.id = '';
@@ -265,13 +296,12 @@ window.addEventListener('DOMContentLoaded', function(){
         }
       }, 120);
     });
-    input.addEventListener('focus', function() {
-      if (lastResults.length) dropdown.style.display = 'block';
-      updateDropdownPosition();
-    });
+
     window.addEventListener('resize', updateDropdownPosition);
     window.addEventListener('scroll', updateDropdownPosition, true);
   }
+
+  // Panggil seperti biasa
   setupAutocompleteWithStorage('input[name="kontak"]', '/autocomplete/contact', pelangganKey);
   setupAutocompleteWithStorage('input[name="saldo"]', '/autocomplete/saldo', saldoKey);
 
@@ -322,7 +352,7 @@ window.addEventListener('DOMContentLoaded', function(){
       if(!inputKontak.value || !inputSaldo.value || !pesanan.length) {
         setModalContent(`
           <div class="text-center">
-            <p class="text-danger font-semibold mb-2 text-sm">Lengkapi pelanggan, saldo, dan pesanan terlebih dahulu!</p>
+            <p class="text-danger mb-2 text-sm">Lengkapi pelanggan, saldo, dan pesanan terlebih dahulu!</p>
           </div>
         `);
         return;
@@ -335,16 +365,25 @@ window.addEventListener('DOMContentLoaded', function(){
           <form id='form-pembayaran' class='flex flex-col gap-4'>
             <div>
               <label class='block text-sm font-medium mb-2 text-gray-700'>Pilih Metode Pembayaran <span class='text-red-500'>*</span></label>
-              <select name='pembayaran' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' required>
+              <select name='pembayaran' id='pembayaran' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' required>
                 <option value=''>Pilih Metode</option>
-                <option value='Cash'>Cash</option>
-                <option value='Bank'>Bank</option>
+                <option value='Tunai'>Tunai</option>
+                <option value='Bank Transfer'>Bank Transfer</option>
+                <option value='QRIS'>QRIS</option>
+                <option value='Kartu Kredit'>Kartu Kredit</option>
+                <option value='Lainnya'>Lainnya</option>
               </select>
             </div>
-            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 font-semibold hover:bg-primary-700 transition'>Konfirmasi</button>
+            <div id="dibayar-group" class="hidden">
+              <label class='block text-sm font-medium mb-2 text-gray-700'>Uang Tunai Dibayar <span class='text-red-500'>*</span></label>
+              <input type='number' name='dibayar' id='dibayar' min='0' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' placeholder='Masukkan nominal uang tunai' />
+              <div id="dibayar-error" class="text-danger text-xs mt-1 hidden">Masukkan nominal uang tunai yang valid!</div>
+            </div>
+            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 hover:bg-primary-700 transition'>Terima Pembayaran</button>
           </form>
         `;
-      } else if (routeName === 'bill') {
+      } 
+      else if (routeName === 'bill') {
         modalForm = `
           <form id='form-pembayaran' class='flex flex-col gap-4'>
             <div>
@@ -359,7 +398,7 @@ window.addEventListener('DOMContentLoaded', function(){
               <label class='block text-sm font-medium mb-2 text-gray-700'>Tanggal Jatuh Tempo</label>
               <input type='date' name='jatuh_tempo' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' />
             </div>
-            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 font-semibold hover:bg-primary-700 transition'>Konfirmasi</button>
+            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 hover:bg-primary-700 transition'>Terima Pembayaran</button>
           </form>
         `;
       } else if (routeName === 'purchase') {
@@ -373,49 +412,82 @@ window.addEventListener('DOMContentLoaded', function(){
                 <option value='jatuh tempo'>Jatuh Tempo</option>
               </select>
             </div>
-            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 font-semibold hover:bg-primary-700 transition'>Konfirmasi</button>
+            <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 hover:bg-primary-700 transition'>Terima Pembayaran</button>
           </form>
         `;
       }
       setModalContent(modalForm);
-
-      //============ SUBMIT FORM ======================
+      // Tambahkan event listener setelah modal di-render
       setTimeout(() => {
+        const pembayaranSelect = document.getElementById('pembayaran');
+        const dibayarGroup = document.getElementById('dibayar-group');
+        if (pembayaranSelect) {
+          pembayaranSelect.addEventListener('change', function() {
+            if(this.value === 'Tunai') {
+              dibayarGroup.classList.remove('hidden');
+            } else {
+              dibayarGroup.classList.add('hidden');
+            }
+          });
+        }
         const form = document.getElementById('form-pembayaran');
         if (form) {
           form.onsubmit = function(e) {
+            // Validasi input dibayar jika cash
+            if(pembayaranSelect && pembayaranSelect.value === 'Tunai') {
+              var dibayar = document.getElementById('dibayar').value;
+              const nominal = parseInt((document.getElementById('nominal-transaksi').textContent || '0').replace(/[^0-9]/g, '')) || 0;
+              if(!dibayar || isNaN(dibayar) || Number(dibayar) <= 0 || Number(dibayar) < nominal) {
+                e.preventDefault();
+                let errMsg = 'Masukkan nominal uang tunai yang valid!';
+                if(Number(dibayar) < nominal) errMsg = 'Nominal dibayar harus tidak kurang dari dengan total transaksi!';
+                const errDiv = document.getElementById('dibayar-error');
+                errDiv.textContent = errMsg;
+                errDiv.classList.remove('hidden');
+                return;
+              } else {
+                document.getElementById('dibayar-error').classList.add('hidden');
+              }
+            }
             e.preventDefault();
             // Ambil data dari form modal
             const formData = new FormData(form);
             let pembayaran = formData.get('pembayaran') || null;
             let status = formData.get('status') || null;
             let jatuh_tempo = formData.get('jatuh_tempo') || null;
+            if (pembayaran === 'Tunai') {
+              dibayar = formData.get('dibayar');
+            }
             // Ambil data utama
             const kontak = inputKontak.value;
             const saldo = inputSaldo.value;
-            const total = parseInt((document.getElementById('total-transaksi').textContent || '0').replace(/[^0-9]/g, '')) || 0;
+            const nominal = parseInt((document.getElementById('nominal-transaksi').textContent || '0').replace(/[^0-9]/g, '')) || 0;
             // Ambil tanggal hari ini (YYYYMMDD)
             const now = new Date();
             const pad = n => n.toString().padStart(2, '0');
             const tanggal = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
             // Kirim ke backend
+            const bodyData = {
+              tanggal,
+              kontak,
+              saldo,
+              jenis: routeName,
+              nominal,
+              status,
+              jatuh_tempo,
+              pembayaran,
+              pesanan
+            };
+            if (dibayar !== null) {
+              bodyData.dibayar = dibayar;
+            }
             fetch('/transaction/store', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '')
               },
-              body: JSON.stringify({
-                tanggal,
-                kontak,
-                saldo,
-                jenis: routeName,
-                total,
-                status,
-                jatuh_tempo,
-                pembayaran,
-                pesanan
-              })
+              body: JSON.stringify(bodyData)
             })
             .then(res => {
               if (!res.ok) throw new Error('HTTP status ' + res.status);
@@ -423,12 +495,12 @@ window.addEventListener('DOMContentLoaded', function(){
             })
             .then(data => {
               if(data.success) {
-                setModalContent('<div class="text-center text-success font-semibold">Transaksi berhasil disimpan!</div>');
+                setModalContent('<div class="text-center text-sm text-success font-semibold">Transaksi berhasil disimpan!</div>');
                 // Bersihkan localStorage
                 localStorage.removeItem(pesananKey);
                 localStorage.removeItem(pelangganKey);
                 localStorage.removeItem(saldoKey);
-                localStorage.removeItem('totalTransaksi');
+                localStorage.removeItem('nominalTransaksi');
                 listPesanan = [];
                 updateListPesanan();
                 if(inputKontak) inputKontak.value = '';
@@ -484,9 +556,9 @@ window.addEventListener('DOMContentLoaded', function(){
   function updateListPesanan() {
     if (!listPesananContainer) return;
     listPesananContainer.innerHTML = '';
-    let total = 0;
+    let nominal = 0;
     listPesanan.forEach((pesanan, idx) => {
-      total += pesanan.harga * pesanan.jumlah;
+      nominal += pesanan.harga * pesanan.jumlah;
       const div = document.createElement('div');
       const namaLimited = pesanan.nama.length > 30 ? pesanan.nama.substring(0, 18) + '…' : pesanan.nama;
       const hargaFormatted = 'Rp ' + Number(pesanan.harga).toLocaleString('id-ID');
@@ -509,11 +581,11 @@ window.addEventListener('DOMContentLoaded', function(){
       `;
       listPesananContainer.appendChild(div);
     });
-    // Update total transaksi
-    document.getElementById('total-transaksi').textContent = 'Rp ' + total.toLocaleString('id-ID');
+    // Update nominal transaksi
+    document.getElementById('nominal-transaksi').textContent = 'Rp ' + nominal.toLocaleString('id-ID');
     // Simpan ke localStorage
     localStorage.setItem(pesananKey, JSON.stringify(listPesanan));
-    localStorage.setItem('totalTransaksi', total);
+    localStorage.setItem('nominalTransaksi', nominal);
 
     // Event: tambah jumlah
     listPesananContainer.querySelectorAll('.plus-btn').forEach(btn => {
