@@ -59,9 +59,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
     // Transaksi
-    Route::get('/transaction', function () { return view('transaction'); })->name('transaction');
     Route::get('/transaction/get-product', [TransactionController::class, 'getProductById'])->name('getProduct');
     Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
+    Route::get('/transaction/history', [TransactionHistoryController::class, 'index'])->name('transaction.history');
     Route::get('/sale', [TransactionController::class, 'indexSale'])->name('sale');
     Route::get('/purchase', [TransactionController::class, 'indexPurchase']) ->name('purchase');
     Route::get('/bill', [TransactionController::class, 'indexBill'])->name('bill');
