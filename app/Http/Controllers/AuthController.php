@@ -58,4 +58,12 @@ class AuthController extends Controller
         Auth::login($user, true);
         return redirect('/dashboard')->with('success', 'Login berhasil dengan akun Google.');
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
 }

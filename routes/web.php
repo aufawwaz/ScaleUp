@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Transaksi
     Route::get('/sale', [TransactionController::class, 'indexSale'])->name('sale');
-    Route::get('/purchase', [TransactionController::class, 'indexPurchase']) ->name('purchase');
+    Route::get('/purchase', [TransactionController::class, 'indexPurchase'])->name('purchase');
     Route::get('/bill', [TransactionController::class, 'indexBill'])->name('bill');
     Route::get('/transaction/get-product', [TransactionController::class, 'getProductById'])->name('getProduct');
     Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
@@ -68,4 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/transaction/markAsLunas/{id}', [App\Http\Controllers\TransactionController::class, 'markAsLunas'])->name('transaction.markAsLunas');
     Route::get('/autocomplete/contact', [ContactController::class, 'autocomplete'])->name('contact.autocomplete');
     Route::get('/autocomplete/saldo', [SaldoController::class, 'autocomplete'])->name('saldo.autocomplete');
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

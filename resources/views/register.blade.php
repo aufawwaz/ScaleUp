@@ -57,10 +57,12 @@
                 <hr class="w-[30%] border-gray">
             </div>
             
-            <form action="" class="flex flex-col gap-[16px] mb-[3rem]">
-                <x-input-form type="text" name="name" icon="/asset/ic_user.svg" placeholder="Username"/>
-                <x-input-form type="text" name="email" icon="/asset/ic_email.svg" placeholder="Email"/>
-                <x-input-form type="password" name="password" icon="/asset/ic_password.svg" placeholder="password"/>
+            <form action="{{ route('register.process') }}" method="POST" class="flex flex-col gap-[16px] mb-[3rem]">
+                @csrf
+                <x-input-form type="text" name="name" icon="/asset/ic_user.svg" placeholder="Name"/>
+                <x-input-form type="email" name="email" icon="/asset/ic_email.svg" placeholder="Email"/>
+                <x-input-form type="password" name="password" icon="/asset/ic_password.svg" placeholder="Password"/>
+                <x-input-form type="password" name="password_confirmation" icon="/asset/ic_password.svg" placeholder="Confirm Password"/>
                 
                 <div class="flex gap-2 items-center">
                     <input type="checkbox" name="remember_me" class="accent-gray checked:accent-primary h-[24px]">

@@ -149,9 +149,9 @@ class TransactionController extends Controller
             if ($jatuhTempo) {
                 $dataTransaksi['jatuh_tempo'] = $jatuhTempo;
             }
-            if($dibayar){
+            if ($dibayar) {
                 $dataTransaksi['dibayar'] = $dibayar;
-            } else{
+            } else {
                 $dataTransaksi['dibayar'] = $nominal;
             }
             try {
