@@ -37,7 +37,7 @@
                   </tr>
                 </thead>
                 <tbody id="trx-tbody">
-                  @foreach($transaction as $trx)
+                  @foreach($transactions as $trx)
                   <tr class="border-b border-gray-100 hover:bg-primary/5 cursor-pointer" data-jenis="{{ $trx->jenis }}">
                     <td class="py-2 px-1 text-center">{{ $trx->tanggal }}</td>
                     <td class="py-2 px-1 td-jatuh-tempo">{{ $trx->jatuh_tempo ?? '-' }}</td>
@@ -82,7 +82,7 @@
             </div>
             
             <!-- Produk Grid / Empty State -->
-            @if($transaction->isEmpty())
+            @if($transactions->isEmpty())
                 <div class="flex flex-col items-center justify-center h-[500px] opacity-50">
                     <h2 class="text-base text-gray-700 font-semibold mb-2">Belum ada transaksi</h2>
                     <p class="text-gray-500 mb-4 text-sm text-center">Yuk, tambah Transaksi pertamamu agar <br> dapat dikelola!</p>
@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const tbody = document.getElementById('trx-tbody');
   let activeRow = null;
   // Ambil data transaksi dari blade ke JS
-  const transaksiData = @json($transaction);
+  const transaksiData = @json($transactions);
   // Event click row
   tbody.querySelectorAll('tr').forEach((row, idx) => {
     row.addEventListener('click', function() {
