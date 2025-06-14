@@ -348,24 +348,20 @@
     });
 
     // fungsi update chart saldo harian
-    function updateSaldoChart(transactions, saldoAwal) {
-      if (Array.isArray(transactions) && transactions.length) {
-        let sorted = [...transactions].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-        let saldoHarian = [];
-        let labels = [];
-        let saldo = saldoAwal;
-        sorted.forEach(item => {
-          let jenis = (item.jenis || '').toLowerCase();
-          let jumlah = Number(item.jumlah);
-          if (['penjualan'].includes(jenis))
-            saldo += jumlah;
-          else if (['pembelian', 'tagihan'].includes(jenis))
-            saldo -= jumlah;
-          labels.push(item.tanggal);
-          saldoHarian.push(saldo);
+    function updateSaldoChart(saldoHarianArr) {
+      if (Array.isArray(saldoHarianArr) && saldoHarianArr.length) {
+        let labels = saldoHarianArr.map(item => {
+          // label: 14 Jun
+          const date = new Date(item.tanggal);
+          return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
         });
+        let saldoData = saldoHarianArr.map(item => item.saldo);
         chart.data.labels = labels;
-        chart.data.datasets[0].data = saldoHarian;
+        chart.data.datasets[0].data = saldoData;
+        // Sumbu Y dinamis: min 0 atau nilai terendah
+        let minY = Math.min(...saldoData, 0);
+        let maxY = Math.max(...saldoData);
+        chart.options.scales.y = { min: minY, max: maxY };
         chart.update();
       } else {
         chart.data.labels = [];
@@ -377,8 +373,7 @@
     // update kalo ada data baru
     Alpine.effect(() => {
       let newData = Alpine.store('transactions').data;
-      let saldoAwal = Number(Alpine.store('saldoActive').saldo) || 0;
-      updateSaldoChart(newData, saldoAwal);
+      updateSaldoChart(newData);
     });
 
     // initial fetch juga update chart
@@ -386,8 +381,7 @@
       .then(res => res.json())
       .then(data => {
         Alpine.store('transactions').data = data;
-        let saldoAwal = Number(Alpine.store('saldoActive').saldo) || 0;
-        updateSaldoChart(data, saldoAwal);
+        updateSaldoChart(data);
       })
       .catch(console.error);
   });

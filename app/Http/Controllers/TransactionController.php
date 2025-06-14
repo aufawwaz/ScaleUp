@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Saldo;
 use Illuminate\Support\Facades\Log;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
@@ -102,18 +103,20 @@ class TransactionController extends Controller
         elseif ($jenis === 'bill') $jenis = 'tagihan';
 
         // Konversi pembayaran agar sesuai enum DB
-        if ($pembayaran) {
-            // Tidak perlu konversi 'cash' ke 'tunai', langsung gunakan value dari frontend
+        if ($pembayaran !== null && $pembayaran !== '') {
             $pembayaran = strtolower($pembayaran);
-            // Validasi agar hanya enum yang valid
             $allowed = ['tunai', 'bank transfer', 'qris', 'kartu kredit', 'lainnya'];
             if (!in_array($pembayaran, $allowed)) {
                 return response()->json(['success' => false, 'message' => 'Metode pembayaran tidak valid'], 422);
             }
+        } else {
+            $pembayaran = null;
         }
 
         // Generate custom id transaksi: KODEJENIS+DDMMYYYY+3digit_increment
-        $kodeJenis = strtoupper($jenis) === 'SALE' ? 'PJL' : (strtoupper($jenis) === 'PURCHASE' ? 'PBL' : 'TGH');
+        $kodeJenis = strtoupper($jenis) === 'PENJUALAN' ? 'PJL' 
+                        : (strtoupper($jenis) === 'PEMBELIAN' ? 'PBL' 
+                        : 'TGH');
         $tanggal = now();
         $tanggalStr = $tanggal->format('dmY');
         $prefix = $kodeJenis . $tanggalStr;
@@ -141,7 +144,7 @@ class TransactionController extends Controller
             if (in_array($jenis, ['pembelian', 'tagihan']) && $status) {
                 $dataTransaksi['status'] = $status;
             }
-            if ($pembayaran && in_array($pembayaran, ['tunai', 'bank'])) {
+            if ($pembayaran !== null) {
                 $dataTransaksi['pembayaran'] = $pembayaran;
             }
             if ($jatuhTempo) {
@@ -154,10 +157,7 @@ class TransactionController extends Controller
             }
             try {
                 $transaction = Transaction::create($dataTransaksi);
-
-                // PERUBAHAN DATA UNTUK PRODUCT SALDO DAN CONTACT 
-
-                break; // sukses insert
+                break; // Stop loop setelah berhasil insert satu transaksi
             } catch (\Illuminate\Database\QueryException $e) {
                 Log::error('QueryException insert transaksi', [
                     'error' => $e->getMessage(),
@@ -166,12 +166,7 @@ class TransactionController extends Controller
                     'data' => $dataTransaksi,
                     'request' => $request->all()
                 ]);
-                if ($e->getCode() == 23000) { // duplicate key
-                    $newNumber++;
-                    continue; // retry dengan id berikutnya
-                } else {
-                    return response()->json(['success' => false, 'message' => 'Gagal menyimpan transaksi', 'error' => $e->getMessage()], 500);
-                }
+                return response()->json(['success' => false, 'message' => 'Gagal menyimpan transaksi', 'error' => $e->getMessage()], 500);
             }
         }
         if (!$transaction) {
@@ -183,17 +178,79 @@ class TransactionController extends Controller
             Log::error('Transaksi tidak memiliki id setelah insert', ['transaction' => $transaction]);
             return response()->json(['success' => false, 'message' => 'Transaksi gagal dibuat.'], 500);
         }
-        foreach ($pesanan as $item) {
-            if (!isset($item['id'])) continue;
-            TransactionItem::create([
-                'transaction_id' => $transaction->id,
-                'product_id' => $item['id'],
-                'jumlah' => $item['jumlah'],
+        // Proses item dan saldo
+        try {
+            $saldo = Saldo::findOrFail($saldoId);
+            $saldoNominal = (float) ($saldo->saldo ?? 0);
+            $nominalFloat = (float) ($nominal ?? 0);
+            foreach ($pesanan as $item) {
+                if (!isset($item['id'])) continue;
+                $jumlah = isset($item['jumlah']) ? (int)$item['jumlah'] : 1;
+                $product = Product::findOrFail($item['id']);
+                if ($jenis === 'pembelian') {
+                    $product->stok += $jumlah;
+                    $product->save();
+                } else {
+                    // Penjualan/tagihan: cek stok, kurangi stok, tambah saldo
+                    if ($product->stok < $jumlah) {
+                        return response()->json(['success' => false, 'message' => 'Produk habis: ' . $product->nama_produk], 422);
+                    }
+                    $product->stok -= $jumlah;
+                    $product->save();
+                    // Penambahan saldo hanya jika bukan tagihan BELUM lunas
+                    if ($jenis === 'penjualan' || ($jenis === 'tagihan' && $status === 'lunas')) {
+                        $saldo->saldo = $saldoNominal + $nominalFloat;
+                        $saldo->save();
+                    }
+                }
+                TransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'product_id' => $item['id'],
+                    'jumlah' => $jumlah,
+                ]);
+            }
+            // Update saldo hanya sekali per transaksi
+            if ($jenis === 'pembelian') {
+                if ($saldoNominal < $nominalFloat) {
+                    return response()->json(['success' => false, 'message' => 'Saldo tidak cukup'], 422);
+                }
+                $saldo->saldo = $saldoNominal - $nominalFloat;
+                $saldo->save();
+            }
+        } catch (\Throwable $e) {
+            Log::error('Transaction store error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all()
             ]);
-
-            // PERUBAHAN PRODUCT
-            // app(ProductController::class)->addStock($product_id, $jumlah);
+            return response()->json(['success' => false, 'message' => 'Internal server error', 'error' => $e->getMessage()], 500);
         }
         return response()->json(['success' => true, 'id' => $transaction->id]);
+    }
+
+    public function markAsLunas($id)
+    {
+        try {
+            $trx = Transaction::findOrFail($id);
+            if ($trx->jenis !== 'tagihan') {
+                return back()->with('error', 'Bukan transaksi tagihan');
+            }
+            if ($trx->status === 'lunas') {
+                return back()->with('error', 'Sudah lunas');
+            }
+            // Update status
+            $trx->status = 'lunas';
+            $trx->save();
+            // Tambah saldo
+            $saldo = Saldo::find($trx->saldo_id);
+            if ($saldo) {
+                $saldo->saldo = ((float)$saldo->saldo) + ((float)$trx->nominal);
+                $saldo->save();
+            }
+            return redirect()->back()->with('success', 'Tagihan berhasil dilunasi');
+        } catch (\Exception $e) {
+            Log::error('Mark as lunas error', ['error' => $e->getMessage(), 'id' => $id]);
+            return back()->with('error', 'Gagal update status');
+        }
     }
 }

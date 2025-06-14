@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Saldo;
+use App\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -112,87 +113,53 @@ class SaldoController extends Controller
 
     public function getTransactionHistory($id): JsonResponse
     {
-        if ($id == -1) {
-            // ambil dari database seluruh transaksi
-        } else {
-            // ambil dari database data transaksi yang menggunakan saldo tersebut
-            // $data = Saldo::findOrFail($id);
+        $today = now()->startOfDay();
+        $days = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $days->push($today->copy()->subDays($i)->format('Y-m-d'));
         }
-        Log::info('SaldoController: fetch [getTransactionHistory] request from: ' . $id);
-
-        // responnya dummy data dulu
-        return response()->json(collect([
-            (object)[
-                'tanggal' => '2025-05-22',
-                'kode_transaksi' => 'TRSPJL22032025001',
-                'jenis' => 'Pembelian',
-                'status' => 'Lunas',
-                'jumlah' => 90000
-            ],
-            (object)[
-                'tanggal' => '2025-05-21',
-                'kode_transaksi' => 'TRSPJL21032025001',
-                'jenis' => 'Penjualan',
-                'status' => 'Lunas',
-                'jumlah' => 150000
-            ],
-            (object)[
-                'tanggal' => '2025-05-20',
-                'kode_transaksi' => 'TRSPJL20032025001',
-                'jenis' => 'Tagihan',
-                'status' => 'Lunas',
-                'jumlah' => 50000
-            ],
-            (object)[
-                'tanggal' => '2025-05-19',
-                'kode_transaksi' => 'TRSPJL19032025001',
-                'jenis' => 'Pembayaran',
-                'status' => 'Pending',
-                'jumlah' => 120000
-            ],
-            (object)[
-                'tanggal' => '2025-05-18',
-                'kode_transaksi' => 'TRSPJL18032025001',
-                'jenis' => 'Pembelian',
-                'status' => 'Lunas',
-                'jumlah' => 200000
-            ],
-            (object)[
-                'tanggal' => '2025-05-17',
-                'kode_transaksi' => 'TRSPJL17032025001',
-                'jenis' => 'Penjualan',
-                'status' => 'Lunas',
-                'jumlah' => 180000
-            ],
-            (object)[
-                'tanggal' => '2025-05-16',
-                'kode_transaksi' => 'TRSPJL16032025001',
-                'jenis' => 'Tagihan',
-                'status' => 'Belum Dibayar',
-                'jumlah' => 30000
-            ],
-            (object)[
-                'tanggal' => '2025-05-15',
-                'kode_transaksi' => 'TRSPJL15032025001',
-                'jenis' => 'Pembayaran',
-                'status' => 'Lunas',
-                'jumlah' => 95000
-            ],
-            (object)[
-                'tanggal' => '2025-05-14',
-                'kode_transaksi' => 'TRSPJL14032025001',
-                'jenis' => 'Pembelian',
-                'status' => 'Lunas',
-                'jumlah' => 110000
-            ],
-            (object)[
-                'tanggal' => '2025-05-13',
-                'kode_transaksi' => 'TRSPJL13032025001',
-                'jenis' => 'Penjualan',
-                'status' => 'Pending',
-                'jumlah' => 170000
-            ],
-        ]));
+        if ($id == -1) {
+            $userId = auth()->user()->id;
+            $saldoIds = Saldo::where('user_id', $userId)->pluck('id');
+            $trx = Transaction::whereIn('saldo_id', $saldoIds)
+                ->whereBetween('tanggal', [$days->first(), $days->last()])
+                ->orderBy('tanggal')
+                ->get();
+            $saldoAwal = Saldo::whereIn('id', $saldoIds)->sum('saldo');
+        } else {
+            $trx = Transaction::where('saldo_id', $id)
+                ->whereBetween('tanggal', [$days->first(), $days->last()])
+                ->orderBy('tanggal')
+                ->get();
+            $saldoAwal = Saldo::find($id)?->saldo ?? 0;
+        }
+        // Hitung saldo berjalan mundur dari hari ini
+        $trxByDate = $trx->groupBy('tanggal');
+        $saldoPerHari = [];
+        $saldo = $saldoAwal;
+        // Loop dari hari terakhir ke hari pertama
+        for ($i = 6; $i >= 0; $i--) {
+            $date = $days[$i];
+            $saldoPerHari[$i] = [
+                'tanggal' => $date,
+                'saldo' => $saldo
+            ];
+            $perubahan = 0;
+            if (isset($trxByDate[$date])) {
+                foreach ($trxByDate[$date] as $t) {
+                    if (strtolower($t->jenis) === 'pembelian') {
+                        $perubahan -= $t->nominal;
+                    } else {
+                        $perubahan += $t->nominal;
+                    }
+                }
+            }
+            $saldo -= $perubahan;
+        }
+        // Urutkan dari tanggal terlama ke terbaru
+        ksort($saldoPerHari);
+        $saldoPerHari = array_values($saldoPerHari);
+        return response()->json($saldoPerHari);
     }
 
     // Ambil saldo berdasarkan ID (API/JSON)

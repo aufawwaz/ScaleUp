@@ -37,7 +37,7 @@
                         </div>    
                     </div>
                 </div>
-                <!-- Pergerakan Stok (Statis) -->
+                <!-- Pergerakan Stok (Dinamis) -->
                 <div class="rounded-2xl w-2/3 max-h-full">
                     <div class="bg-white p-6 shadow w-full h-full rounded-2xl">
                         <h3 class="font-bold text-lg mb-4">PERGERAKAN STOK</h3>
@@ -55,15 +55,18 @@
                             <div class="max-h-[600px] overflow-y-auto scrollbar-hidden">
                                 <table class="min-w-full text-sm">
                                     <tbody>
-                                        <!-- Baris data di sini -->
-                                        @for($i = 0; $i < 20; $i++)
+                                        @forelse($stockMovements as $item)
                                         <tr class="border-b border-gray-100">
-                                            <td class="py-3 px-3">22/03/2025</td>
-                                            <td class="py-3 px-3">085423318989</td>
-                                            <td class="py-3 px-3">Ariel</td>
-                                            <td class="py-3 px-3 text-red-600">-3</td>
+                                            <td class="py-3 px-3">{{ $item->transaction ? \Carbon\Carbon::parse($item->transaction->tanggal)->format('d/m/Y') : '-' }}</td>
+                                            <td class="py-3 px-3">{{ $item->transaction->id ?? '-' }}</td>
+                                            <td class="py-3 px-3">{{ $item->transaction && $item->transaction->contact ? $item->transaction->contact->nama_kontak : '-' }}</td>
+                                            <td class="py-3 px-3 {{ $item->transaction && $item->transaction->jenis === 'pembelian' ? 'text-green-600' : 'text-red-600' }}">
+                                                {{ $item->transaction && $item->transaction->jenis === 'pembelian' ? '+' : '-' }}{{ $item->jumlah }}
+                                            </td>
                                         </tr>
-                                        @endfor
+                                        @empty
+                                        <tr><td colspan="4" class="text-center py-6 text-gray-400">Belum ada pergerakan stok</td></tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>

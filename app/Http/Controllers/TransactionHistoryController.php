@@ -9,7 +9,7 @@ class TransactionHistoryController extends Controller
 {
     public function index(Request $request){
 
-        $transaction = Transaction::with(['kontak', 'items.product', 'saldo'])->get();
+        $transaction = Transaction::orderBy('created_at', 'desc')->get();
         $backRoute = $request->get('back', 'sale');
         return view('transaction.history', compact(['transaction', 'backRoute']));
     }
