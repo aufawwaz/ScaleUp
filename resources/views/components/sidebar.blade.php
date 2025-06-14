@@ -123,6 +123,9 @@ $navItemsTransaction = [
         @endforeach
     </div>
     <div class="flex flex-col mb-[3rem]">
-      <a href="/login" class="nav-link flex items-center">Logout</a>
+      <form action="{{ route('logout') }}" method="POST" class="nav-link flex items-center">
+        @csrf
+        <button type="submit" class="w-full text-left">Logout</button>
+      </form>
     </div>
   </nav>

@@ -146,14 +146,14 @@ class TransactionController extends Controller
             if ($jatuhTempo) {
                 $dataTransaksi['jatuh_tempo'] = $jatuhTempo;
             }
-            if($dibayar){
+            if ($dibayar) {
                 $dataTransaksi['dibayar'] = $dibayar;
-            } else{
+            } else {
                 $dataTransaksi['dibayar'] = $nominal;
             }
             try {
                 $transaction = Transaction::create($dataTransaksi);
-                
+
                 // PERUBAHAN DATA UNTUK PRODUCT SALDO DAN CONTACT 
 
                 break; // sukses insert
@@ -187,7 +187,7 @@ class TransactionController extends Controller
             TransactionItem::create([
                 'transaction_id' => $transaction->id,
                 'product_id' => $item['id'],
-                // 'jumlah' => $jumlah,
+                'jumlah' => $item['jumlah'],
             ]);
 
             // PERUBAHAN PRODUCT
