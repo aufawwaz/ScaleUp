@@ -114,9 +114,9 @@ class TransactionController extends Controller
         }
 
         // Generate custom id transaksi: KODEJENIS+DDMMYYYY+3digit_increment
-        $kodeJenis = strtoupper($jenis) === 'PENJUALAN' ? 'PJL' 
-                        : (strtoupper($jenis) === 'PEMBELIAN' ? 'PBL' 
-                        : 'TGH');
+        $kodeJenis = strtoupper($jenis) === 'PENJUALAN' ? 'PJL'
+            : (strtoupper($jenis) === 'PEMBELIAN' ? 'PBL'
+                : 'TGH');
         $tanggal = now();
         $tanggalStr = $tanggal->format('dmY');
         $prefix = $kodeJenis . $tanggalStr;

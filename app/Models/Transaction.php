@@ -10,8 +10,17 @@ class Transaction extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id', 'tanggal', 'jenis', 'kontak_id', 'saldo_id', 'nominal',
-        'pembayaran', 'status', 'jatuh_tempo', 'dibayar'
+        'user_id',
+        'id',
+        'tanggal',
+        'jenis',
+        'kontak_id',
+        'saldo_id',
+        'nominal',
+        'pembayaran',
+        'status',
+        'jatuh_tempo',
+        'dibayar'
     ];
 
     public function items()
