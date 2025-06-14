@@ -114,7 +114,7 @@
         <div class="bg-white rounded-2xl shadow p-4 flex flex-col h-full">
           <div class="flex items-center justify-between mb-[1rem]">
             <p class="dashboard-card-header">Pesanan Terbaru</p>
-            <a href="#" class="text-primary text-xs w-full flex justify-end font-medium">Lihat semua &gt;</a>
+            <a href="{{ route('transaction.history') }}" class="text-primary text-xs w-full flex justify-end font-medium">Lihat semua &gt;</a>
           </div>
           <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
           <div class="overflow-x-auto">

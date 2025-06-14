@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->date('tanggal');
+            $table->dateTime('tanggal');
             $table->enum('jenis', ['penjualan', 'pembelian', 'tagihan']);
             $table->foreignId('kontak_id')->constrained('contacts', 'id')->onDelete('cascade');
             $table->foreignId('saldo_id')->constrained('saldos', 'id')->onDelete('cascade');

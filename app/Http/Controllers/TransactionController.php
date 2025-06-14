@@ -130,12 +130,13 @@ class TransactionController extends Controller
             // Build data transaksi hanya dengan field yang valid
             $dataTransaksi = [
                 'id' => $id,
-                'tanggal' => $tanggal->format('Y-m-d'),
+                'tanggal' => $tanggal->format('Y-m-d H:i'), // Simpan tanggal + jam:menit
                 'jenis' => $jenis,
                 'kontak_id' => $kontakId,
                 'saldo_id' => $saldoId,
                 'nominal' => $nominal,
                 'dibayar' => $dibayar,
+                'user_id' => $request->user()->id,
             ];
             if (in_array($jenis, ['pembelian', 'tagihan']) && $status) {
                 $dataTransaksi['status'] = $status;
