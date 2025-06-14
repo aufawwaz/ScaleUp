@@ -24,6 +24,10 @@
                  alt="{{ $product->nama_produk }}"
                  class="w-full h-full object-cover rounded-t-xl transition duration-300 group-hover:scale-105 bg-white" />
             <!-- Overlay gelap saat hover -->
+            <div class="absolute opacity-0 group-hover:opacity-100 text-xs text-center transition-opacity duration-300 font-semibold text-white z-10 flex flex-col items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px" fill="currentColor"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
+                <p>Tambah Pesanan</p>
+            </div>
             <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition duration-300 pointer-events-none"></div>
         </div>
         <div class="p-2.5 flex flex-col gap-1 transition-colors duration-300 group-hover:bg-gray-50">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +66,12 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        return view('contact.show', compact('contact'));
+        // Ambil transaksi dari model Transaction, bukan relasi, berdasarkan kontak_id
+        $transactions = Transaction::where('kontak_id', $contact->id)
+            ->orderByDesc('tanggal')
+            ->limit(20)
+            ->get();
+        return view('contact.show', compact('contact', 'transactions'));
     }
 
     /**

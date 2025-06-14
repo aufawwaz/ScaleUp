@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\TransactionItem;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -123,7 +124,17 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $backRoute = request('back');
-        return view('product.show', compact('product', 'backRoute'));
+        // Ambil pergerakan stok dari transaction_items yang terkait produk ini,
+        // join ke transactions untuk dapatkan info transaksi
+        $stockMovements = TransactionItem::query()
+            ->where('product_id', $product->id)
+            ->with(['transaction' => function($q) {
+                $q->select('id', 'tanggal', 'jenis', 'kontak_id');
+            }, 'transaction.contact:id,nama_kontak'])
+            ->orderByDesc('id')
+            ->limit(40)
+            ->get();
+        return view('product.show', compact('product', 'backRoute', 'stockMovements'));
     }
 
     public function addStock($id, $jumlah){

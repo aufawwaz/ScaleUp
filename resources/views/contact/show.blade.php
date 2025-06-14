@@ -50,7 +50,7 @@
                     </div>
                 </div>  
 
-                <!-- Riwayat Transaksi (Statis) -->
+                <!-- Riwayat Transaksi (Dinamis) -->
                 <div class="rounded-2xl w-3/4 max-h-full">
                     <div class="bg-white p-6 shadow w-full h-full rounded-2xl">
                         <h3 class="font-bold text-lg mb-4">Riwayat Transaksi</h3>
@@ -65,15 +65,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  <!-- Baris data di sini -->
-                                  @for($i = 0; $i < 10; $i++)
+                                  @forelse($transactions as $trx)
                                   <tr class="border-b border-gray-100">
-                                    <td class="py-4 px-3">22/03/2025</td>
-                                    <td class="py-4 px-3">TRSPJL22032025001</td>
-                                    <td class="py-4 px-3"><span class="bg-success/10 text-success font-medium px-2 rounded-xl py-0.5">Lunas</span></td>
-                                    <td class="py-4 px-3">Rp 90.000</td>
+                                    <td class="py-4 px-3">{{ \Carbon\Carbon::parse($trx->tanggal)->format('d/m/Y') }}</td>
+                                    <td class="py-4 px-3">{{ $trx->id }}</td>
+                                    <td class="py-4 px-3">
+                                      @if($trx->status === 'lunas')
+                                        <span class="bg-success/10 text-success font-medium px-2 rounded-xl py-0.5">Lunas</span>
+                                      @elseif($trx->status === 'diproses')
+                                        <span class="bg-warning/10 text-warning font-medium px-2 rounded-xl py-0.5">Diproses</span>
+                                      @elseif($trx->status === 'jatuh tempo')
+                                        <span class="bg-danger/10 text-danger font-medium px-2 rounded-xl py-0.5">Jatuh Tempo</span>
+                                      @else
+                                        <span class="bg-gray-200 text-gray-600 font-medium px-2 rounded-xl py-0.5">-</span>
+                                      @endif
+                                    </td>
+                                    <td class="py-4 px-3">Rp {{ number_format($trx->nominal, 0, ',', '.') }}</td>
                                   </tr>
-                                  @endfor
+                                  @empty
+                                  <tr><td colspan="4" class="text-center py-6 text-gray-400">Belum ada transaksi</td></tr>
+                                  @endforelse
                                 </tbody>
                             </table>
                         </div>

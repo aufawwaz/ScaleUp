@@ -202,7 +202,9 @@ window.addEventListener('DOMContentLoaded', function(){
     dropdown.style.maxHeight = '180px';
     dropdown.style.overflowY = 'auto';
     dropdown.style.display = 'none';
-    dropdown.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+    dropdown.style.borderBottomLeftRadius = '20px';
+    dropdown.style.borderBottomRightRadius = '20px';
+    dropdown.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
     input.parentNode.style.position = 'relative';
     input.parentNode.appendChild(dropdown);
 
@@ -243,6 +245,16 @@ window.addEventListener('DOMContentLoaded', function(){
         });
         dropdown.appendChild(opt);
       });
+      // Tambahkan tombol Tambah Kontak di bawah dropdown (khusus input kontak)
+      if (input.name === 'kontak') {
+        const tambahBtn = document.createElement('a');
+        tambahBtn.href = '/contact/create';
+        tambahBtn.textContent = '+ Tambah Kontak';
+        tambahBtn.className = 'block m-1 px-3 py-2 rounded-full bg-primary text-white text-xs text-center hover:bg-primary-700 transition cursor-pointer';
+        tambahBtn.style.marginTop = '4px';
+        tambahBtn.style.textDecoration = 'none';
+        dropdown.appendChild(tambahBtn);
+      }
       dropdown.style.display = 'block';
       updateDropdownPosition();
     }
@@ -398,6 +410,17 @@ window.addEventListener('DOMContentLoaded', function(){
               <label class='block text-sm font-medium mb-2 text-gray-700'>Tanggal Jatuh Tempo</label>
               <input type='date' name='jatuh_tempo' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' />
             </div>
+            <div>
+              <label class='block text-sm font-medium mb-2 text-gray-700'>Metode Pembayaran <span class='text-red-500'>*</span></label>
+              <select name='pembayaran' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' required>
+                <option value=''>Pilih Metode</option>
+                <option value='Tunai'>Tunai</option>
+                <option value='Bank Transfer'>Bank Transfer</option>
+                <option value='QRIS'>QRIS</option>
+                <option value='Kartu Kredit'>Kartu Kredit</option>
+                <option value='Lainnya'>Lainnya</option>
+              </select>
+            </div>
             <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 hover:bg-primary-700 transition'>Terima Pembayaran</button>
           </form>
         `;
@@ -410,6 +433,17 @@ window.addEventListener('DOMContentLoaded', function(){
                 <option value='lunas'>Lunas</option>
                 <option value='diproses'>Diproses</option>
                 <option value='jatuh tempo'>Jatuh Tempo</option>
+              </select>
+            </div>
+            <div>
+              <label class='block text-sm font-medium mb-2 text-gray-700'>Metode Pembayaran <span class='text-red-500'>*</span></label>
+              <select name='pembayaran' class='w-full rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 py-3 px-3 text-sm bg-white transition' required>
+                <option value=''>Pilih Metode</option>
+                <option value='Tunai'>Tunai</option>
+                <option value='Bank Transfer'>Bank Transfer</option>
+                <option value='QRIS'>QRIS</option>
+                <option value='Kartu Kredit'>Kartu Kredit</option>
+                <option value='Lainnya'>Lainnya</option>
               </select>
             </div>
             <button type='submit' class='w-full bg-primary text-white rounded-xl hover:scale-101 text-sm cursor-pointer p-2 hover:bg-primary-700 transition'>Terima Pembayaran</button>
@@ -561,7 +595,7 @@ window.addEventListener('DOMContentLoaded', function(){
       nominal += pesanan.harga * pesanan.jumlah;
       const div = document.createElement('div');
       const namaLimited = pesanan.nama.length > 30 ? pesanan.nama.substring(0, 18) + '…' : pesanan.nama;
-      const hargaFormatted = 'Rp ' + Number(pesanan.harga).toLocaleString('id-ID');
+      const hargaFormatted = 'Rp ' + Number(pesanan.harga * pesanan.jumlah).toLocaleString('id-ID');
       div.className = 'flex justify-between items-center py-1 text-xs gap-2';
       div.innerHTML = `
         <div class="flex gap-2 items-center">

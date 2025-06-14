@@ -58,9 +58,9 @@
             </div>
             
             <form action="" class="flex flex-col gap-[16px] mb-[3rem]">
-                <x-input-form type="text" name="email" icon="/asset/ic_user.svg" placeholder="Username"/>
-                <x-input-form type="text" name="password" icon="/asset/ic_email.svg" placeholder="Email"/>
-                <x-input-form type="password" name="confirm_password" icon="/asset/ic_password.svg" placeholder="password"/>
+                <x-input-form type="text" name="name" icon="/asset/ic_user.svg" placeholder="Username"/>
+                <x-input-form type="text" name="email" icon="/asset/ic_email.svg" placeholder="Email"/>
+                <x-input-form type="password" name="password" icon="/asset/ic_password.svg" placeholder="password"/>
                 
                 <div class="flex gap-2 items-center">
                     <input type="checkbox" name="remember_me" class="accent-gray checked:accent-primary h-[24px]">

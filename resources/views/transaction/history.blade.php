@@ -2,6 +2,7 @@
   titlePage="Riwayat Transaksi - ScaleUp"
   title="Riwayat Transaksi"  
 >
+  <div x-data="{ showModal: false, transaksiId: null }">
   <main class="main-container pb-0 grid grid-cols-3 h-full overflow-hidden">
     {{-- Tabel --}}
     <div class="col-span-2 h-full overflow-auto scrollbar-hidden">
@@ -25,7 +26,7 @@
               <table id="trx-table" class="w-full text-[11px] border border-gray-200 rounded-t-xl overflow-hidden">
                 <thead class="bg-primary-100 text-primary">
                   <tr>
-                    <th class="py-4 pb-5 px-1 text-left">Tanggal</th>
+                    <th class="py-4 pb-5 px-1 text-center">Tanggal</th>
                     <th class="py-4 pb-5 px-1 text-left th-jatuh-tempo">Jatuh Tempo</th>
                     <th class="py-4 pb-5 px-1 text-left th-nama">Pelanggan</th>
                     <th class="py-4 pb-5 px-1 text-left">Nomor Transaksi</th>
@@ -38,7 +39,7 @@
                 <tbody id="trx-tbody">
                   @foreach($transaction as $trx)
                   <tr class="border-b border-gray-100 hover:bg-primary/5 cursor-pointer" data-jenis="{{ $trx->jenis }}">
-                    <td class="py-2 px-1">{{ $trx->tanggal }}</td>
+                    <td class="py-2 px-1 text-center">{{ $trx->tanggal }}</td>
                     <td class="py-2 px-1 td-jatuh-tempo">{{ $trx->jatuh_tempo ?? '-' }}</td>
                     <td class="py-2 px-1"><span class="kontak-nama" data-id="{{ $trx->kontak_id }}"><p class="text-xs text-gray-500">Memuat...</p></span></td>
                     <td class="py-2 px-1">{{ $trx->id }}</td>
@@ -46,9 +47,9 @@
                       @php
                         $colorMap = [
                           'tunai' => 'bg-primary-100 text-primary',
-                          'bank transfer' => 'bg-yellow-400 text-black',
-                          'qris' => 'bg-pink-400 text-white',
-                          'kartu kredit' => 'bg-blue-500 text-white',
+                          'bank transfer' => 'bg-blue-500 text-white',
+                          'qris' => 'bg-danger-300 text-white',
+                          'kartu kredit' => 'bg-yellow-100 text-yellow-600',
                           'lainnya' => 'bg-gray-300 text-black',
                         ];
                         $pembayaran = strtolower($trx->pembayaran ?? '-');
@@ -154,13 +155,71 @@
             </div>
           </div>
         </div>
+        <div id="lunas-btn-container" class="w-full flex justify-center mt-1 mb-2"></div>
     </div>
   </main>
+
+    <!-- Overlay & Modal dalam satu parent Alpine -->
+    <template x-if="showModal">
+      <div>
+        <!-- Overlay -->
+        <div
+          class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-40"
+          @click="showModal = false"
+        ></div>
+        <!-- Modal -->
+        <div
+          class="fixed inset-0 flex items-center justify-center z-50"
+        >
+          <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-lg">
+            <h2 class="text-lg font-semibold mb-2 text-gray-800">Konfirmasi Pelunasan</h2>
+            <p class="text-sm text-gray-600">
+              Apakah kamu yakin ingin menandai transaksi <span class="font-semibold" x-text="transaksiId"></span> sebagai lunas?
+            </p>
+            <form :action="`/transaction/markAsLunas/${transaksiId}`" method="POST" class="mt-4 flex justify-end gap-2">
+              @csrf
+              <x-custom-button
+                  type="button"
+                  color="secondary"
+                  outline="true"
+                  @click.prevent="showModal = false"
+              >
+                  Batal
+              </x-custom-button>
+              <x-custom-button
+                  type="submit"
+                  color="primary"
+              >
+                  Konfirmasi
+              </x-custom-button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+  @if(session('success'))
+  <div 
+    x-data="{ show: false }" 
+    x-init="
+      setTimeout(() => show = true, 300);
+      setTimeout(() => show = false, 3300)" 
+    x-show="show"
+    x-transition:enter="transform ease-out duration-300"
+    x-transition:enter-start="translate-y-10 opacity-0"
+    x-transition:enter-end="translate-y-0 opacity-100"
+    x-transition:leave="transform ease-in duration-300"
+    x-transition:leave-start="translate-y-0 opacity-100"
+    x-transition:leave-end="translate-y-10 opacity-0"
+    class="fixed bottom-6 right-6 bg-success/10 text-success border border-success px-6 py-3 rounded-md text-xs shadow-lg z-[9999]"
+  >
+    {{ session('success') }}
+  </div>
+  @endif
 </x-layout>
 
 <script>
   window.addEventListener('DOMContentLoaded', function(){
-
     // FILTER SWITCH
     const switchBtns = document.querySelectorAll('#filter-switch .switch-btn');
     const indicator = document.getElementById('switch-indicator');
@@ -204,8 +263,8 @@
         .then(res => res.json())
         .then(data => {
           el.innerHTML = data.image_kontak
-            ? `<img src="/storage/${data.image_kontak}" class="inline w-6 h-6 rounded-full align-middle" onerror="this.style.display='none'"> ${data.nama_kontak || '-'}`
-            : `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-300 text-gray-800 font-semibold">${data.nama_kontak ? data.nama_kontak.charAt(0).toUpperCase() : '-'}</span> ${data.nama_kontak || '-'}`;
+            ? `<img src="/storage/${data.image_kontak}" class="inline w-4 h-4 rounded-full align-middle" onerror="this.style.display='none'"> ${data.nama_kontak || '-'}`
+            : `<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-300 text-gray-800 font-semibold text-[10px]">${data.nama_kontak ? data.nama_kontak.charAt(0).toUpperCase() : '-'}</span> ${data.nama_kontak || '-'}`;
         })
         .catch(() => { el.textContent = '-'; });
     });
@@ -334,6 +393,17 @@ document.addEventListener('DOMContentLoaded', function() {
         elAlamat.innerText = alamat;
       })
       .catch(() => { elAlamat.innerText = 'Indonesia'; });
+
+    // Tampilkan tombol "Tandai sebagai Lunas" jika tagihan dan status bukan lunas
+    const lunasBtnContainer = document.getElementById('lunas-btn-container');
+    lunasBtnContainer.innerHTML = '';
+    if(trx.jenis === 'tagihan' && trx.status !== 'lunas') {
+      lunasBtnContainer.innerHTML = `<button 
+        class='bg-primary text-white rounded-lg w-full py-2 text-xs font-semibold shadow hover:bg-primary-800 cursor-pointer transition'
+        x-data
+        @click=\"showModal = true; transaksiId = '${trx.id}'\"
+      >Tandai sebagai Lunas</button>`;
+    }
   }
   // Render struk pertama kali jika ada data
   if(transaksiData.length > 0) {
