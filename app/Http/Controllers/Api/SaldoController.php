@@ -1,90 +1,58 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Saldo;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class SaldoController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     */
+    // GET /api/saldo
     public function index(Request $request)
     {
         $data = Saldo::where('user_id', $request->user()->id)->get();
-        return view('saldo.index', compact('data'));
+        return response()->json(['data' => $data]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // POST /api/saldo
     public function store(Request $request)
     {
         $validated = $this->validation($request);
         $validated['user_id'] = $request->user()->id;
-        Saldo::create($validated);
+        $saldo = Saldo::create($validated);
 
-        return redirect()->route('saldo.index')->with('success', 'Kartu berhasil ditambah!');
+        return response()->json(['message' => 'Kartu berhasil ditambah!', 'data' => $saldo], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // GET /api/saldo/{id}
     public function show(Request $request, $id)
     {
-        $data = Saldo::all();
-        $chartData = $this->getTransactionHistory($id);
-
-        return view('saldo.index', compact($data, 'chartData'));
+        $saldo = Saldo::where('user_id', $request->user()->id)->findOrFail($id);
+        return response()->json(['data' => $saldo]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Saldo $saldo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // PUT/PATCH /api/saldo/{id}
     public function update(Request $request, $id)
     {
         $validated = $this->validation($request);
+        $saldo = Saldo::where('user_id', $request->user()->id)->findOrFail($id);
+        $saldo->update($validated);
 
-        $data = Saldo::findOrFail($id);
-        $data->update($validated);
-
-        return redirect()->route('saldo.index')->with('success', 'Kartu berhasil diubah!');
+        return response()->json(['message' => 'Kartu berhasil diubah!', 'data' => $saldo]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+    // DELETE /api/saldo/{id}
+    public function destroy(Request $request, $id)
     {
-        Saldo::destroy($id);
-        return redirect()->route('saldo.index')->with('success', 'Kartu berhasil dihapus!');
+        $saldo = Saldo::where('user_id', $request->user()->id)->findOrFail($id);
+        $saldo->delete();
+        return response()->json(['message' => 'Kartu berhasil dihapus!']);
     }
 
-    /**
-     * Endpoint untuk auto-complete nama saldo
-     */
+    // GET /api/saldo/autocomplete?q=...
     public function autocomplete(Request $request)
     {
         $search = $request->get('q', '');
@@ -100,19 +68,8 @@ class SaldoController extends Controller
         return response()->json($results);
     }
 
-    private function validation(Request $request)
-    {
-        $validated = $request->validate([
-            'nama' => 'required',
-            'jenis' => 'required|in:Cash,Bank',
-            'saldo' => 'nullable|numeric|min:1',
-        ]);
-        $validated['jenis'] = strtolower($validated['jenis']);
-        $validated['saldo'] = $validated['saldo'] ?? "0";
-        return $validated;
-    }
-
-    public function getTransactionHistory($id): JsonResponse
+    // GET /api/saldo/{id}/history
+    public function getTransactionHistory(Request $request, $id)
     {
         $today = now()->startOfDay();
         $days = collect();
@@ -120,7 +77,7 @@ class SaldoController extends Controller
             $days->push($today->copy()->subDays($i)->format('Y-m-d'));
         }
         if ($id == -1) {
-            $userId = Auth::id();
+            $userId = $request->user()->id;
             $saldoIds = Saldo::where('user_id', $userId)->pluck('id');
             $trx = Transaction::whereIn('saldo_id', $saldoIds)
                 ->whereBetween('tanggal', [$days->first(), $days->last()])
@@ -134,11 +91,9 @@ class SaldoController extends Controller
                 ->get();
             $saldoAwal = Saldo::find($id)?->saldo ?? 0;
         }
-        // Hitung saldo berjalan mundur dari hari ini
         $trxByDate = $trx->groupBy('tanggal');
         $saldoPerHari = [];
         $saldo = $saldoAwal;
-        // Loop dari hari terakhir ke hari pertama
         for ($i = 6; $i >= 0; $i--) {
             $date = $days[$i];
             $saldoPerHari[$i] = [
@@ -157,19 +112,21 @@ class SaldoController extends Controller
             }
             $saldo -= $perubahan;
         }
-        // Urutkan dari tanggal terlama ke terbaru
         ksort($saldoPerHari);
         $saldoPerHari = array_values($saldoPerHari);
         return response()->json($saldoPerHari);
     }
 
-    // Ambil saldo berdasarkan ID (API/JSON)
-    public function getById($id): JsonResponse
+    // Validation helper
+    private function validation(Request $request)
     {
-        $saldo = Saldo::find($id);
-        if (!$saldo) {
-            return response()->json(['error' => 'Saldo tidak ditemukan'], 404);
-        }
-        return response()->json($saldo);
+        $validated = $request->validate([
+            'nama' => 'required',
+            'jenis' => 'required|in:cash,bank',
+            'saldo' => 'nullable|numeric|min:1',
+        ]);
+        $validated['jenis'] = strtolower($validated['jenis']);
+        $validated['saldo'] = $validated['saldo'] ?? "0";
+        return $validated;
     }
 }

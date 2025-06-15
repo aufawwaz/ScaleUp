@@ -164,7 +164,7 @@
         <div class="bg-white rounded-2xl shadow p-4 flex flex-col h-full justify-between">
           <div class="flex items-center justify-between mb-[1rem]">
             <p class="dashboard-card-header">Pelanggan Teratas</p>
-            <a href="#" class="text-primary text-xs font-medium w-fit whitespace-nowrap">Lihat semua &gt;</a>
+            <a href="{{ route('contact.index') }}" class="text-primary text-xs font-medium w-fit whitespace-nowrap">Lihat semua &gt;</a>
           </div>
           <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
           <ul class="gap-3.5 flex flex-col h-full">
@@ -181,7 +181,7 @@
         <div class="bg-white rounded-2xl shadow p-4 flex flex-col h-full justify-between">
           <div class="flex items-center justify-between mb-[1rem]">
             <p class="dashboard-card-header">Produk Terlaris</p>
-            <a href="#" class="text-primary text-xs font-medium w-full flex justify-end">Lihat semua &gt;</a>
+            <a href="{{ route('product.index') }}" class="text-primary text-xs font-medium w-full flex justify-end">Lihat semua &gt;</a>
           </div>
           <div class="w-full h-[1px] bg-gray-300 mb-[1rem]"></div>
           <ul class="gap-3.5 flex flex-col h-full">
