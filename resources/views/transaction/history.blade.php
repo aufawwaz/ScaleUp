@@ -95,7 +95,7 @@
     </div>
     {{-- STRUK --}}
     <div class="bg-white h-screen p-4 pb-[22%] shadow-xl flex flex-col gap-[1rem]">
-        <x-header-page title="STRUK PENJUALAN"/>
+        <x-header-page title="STRUK"/>
         <div class=" h-full w-full flex items-center justify-center">
           {{-- struk container --}}
           <div class="w-[300px] flex flex-col gap-[12px] text-[8px] px-4 py-10 shadow-lg bg-white" id="struk-detail">
