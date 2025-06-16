@@ -9,8 +9,9 @@ class TransactionHistoryController extends Controller
 {
     public function index(Request $request)
     {
-        $transactions = Transaction::where('user_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
+        $transactions = Transaction::with(['items.product','kontak','saldo'])
+            ->where('user_id', $request->user()->id)
+            ->orderBy('tanggal', 'desc')
             ->get();
 
         $backRoute = $request->get('back', 'sale');

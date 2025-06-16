@@ -285,13 +285,12 @@
     const thStatus = document.querySelector('.th-status');
     const thJatuhTempo = document.querySelector('.th-jatuh-tempo');
 
-    // Tampilkan semua baris di awal (optional)
+    // Tampilkan semua baris di awal
     tbody.querySelectorAll('tr').forEach(tr => tr.style.display = '');
 
     function applyFilter(idx) {
       tbody.querySelectorAll('tr').forEach(tr => {
         const jenis = tr.getAttribute('data-jenis');
-        // Hide all first
         tr.style.display = 'none';
 
         // Penjualan
@@ -301,7 +300,6 @@
           if(payEl) payEl.style.display = '';
           const statusEl = tr.querySelector('.td-status');
           if(statusEl) statusEl.style.display = 'none';
-          // untuk jatuh tempo, class td-jatuh-tempo di <td>, jadi:
           const jatuhEl = tr.querySelector('.td-jatuh-tempo');
           if(jatuhEl) jatuhEl.style.display = 'none';
         }
@@ -344,11 +342,13 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const table = document.getElementById('trx-table');
   const tbody = document.getElementById('trx-tbody');
-  let activeRow = null;
-  // Ambil data transaksi dari blade ke JS
+  // Ambil data transaksi dari blade ke JS; pastikan $transactions sudah eager load relasi
   const transaksiData = @json($transactions);
+
+  // Debug: cek struktur data di console
+  console.log('Transaksi data:', transaksiData);
+
   // Event click row
   tbody.querySelectorAll('tr').forEach((row, idx) => {
     row.addEventListener('click', function() {
@@ -357,35 +357,82 @@ document.addEventListener('DOMContentLoaded', function() {
       showStruk(transaksiData[idx]);
     });
   });
-  // Fungsi render struk
+
   function showStruk(trx) {
+    // Tanggal & ID
     document.getElementById('struk-tanggal').innerText = trx.tanggal || '-';
     document.getElementById('struk-id').innerText = trx.id || '-';
-    document.getElementById('struk-pelanggan').innerText = trx.kontak ? (trx.kontak.nama_kontak || '-') : '-';
+
+    // Pelanggan (relasi kontak)
+    document.getElementById('struk-pelanggan').innerText = (trx.kontak && trx.kontak.nama_kontak) ? trx.kontak.nama_kontak : '-';
+
     // Render items
     const itemsDiv = document.getElementById('struk-items');
     itemsDiv.innerHTML = '';
-    if(trx.items && trx.items.length > 0) {
+    if (Array.isArray(trx.items) && trx.items.length > 0) {
       trx.items.forEach(item => {
-        const nama = item.product ? item.product.nama_produk : '-';
-        const jumlah = item.jumlah || 1;  
-        const harga = item.product ? Number(trx.jenis == 'pembelian' ? item.product.harga_modal * jumlah : item.product.harga_jual * jumlah).toLocaleString('id-ID') : '-';
+        const nama = item.product?.nama_produk || '-';
+        const jumlah = item.jumlah ?? 1;
+        // Tentukan harga per produk sesuai jenis transaksi
+        let hargaSatuan = 0;
+        if (trx.jenis === 'pembelian') {
+          hargaSatuan = item.product?.harga_modal ?? 0;
+        } else {
+          hargaSatuan = item.product?.harga_jual ?? 0;
+        }
+        const subtotal = jumlah * hargaSatuan;
         const row = document.createElement('div');
         row.className = 'flex justify-between';
-        row.innerHTML = `<p>${jumlah}x ${nama}</p><p>Rp ${harga}</p>`;
+        row.innerHTML = `<p>${jumlah}x ${nama}</p><p>Rp ${subtotal.toLocaleString('id-ID')}</p>`;
         itemsDiv.appendChild(row);
       });
     } else {
       itemsDiv.innerHTML = '<div class="text-center">-</div>';
     }
-    document.getElementById('struk-total').innerText = 'Rp ' + Number(trx.nominal).toLocaleString('id-ID');
+
+    // Total Pembayaran
+    document.getElementById('struk-total').innerText = 'Rp ' + Number(trx.nominal ?? 0).toLocaleString('id-ID');
+
+    // Metode Pembayaran
     document.getElementById('struk-pembayaran').innerText = trx.pembayaran || '-';
-    document.getElementById('struk-status').innerText = trx.status || trx.jenis == 'penjualan' ? 'Lunas' : '-';
-    document.getElementById('struk-dibayar').innerText = trx.dibayar ? 'Rp ' + Number(trx.dibayar).toLocaleString('id-ID') : '-';
-    let kembalian = (trx.dibayar && trx.nominal) ? (Number(trx.dibayar) - Number(trx.nominal)) : 0;
+
+    // Status
+    let statusText = '-';
+    if (trx.jenis === 'penjualan') {
+      statusText = 'Lunas';
+    } else {
+      statusText = trx.status || '-';
+    }
+    document.getElementById('struk-status').innerText = statusText;
+
+    // Dibayar
+    let bayarText = '-';
+    if (trx.jenis === 'pembelian') {
+      // Jika backend menyetel trx.dibayar untuk pembelian, gunakan itu; 
+      // Jika null, bisa default tampil nominal penuh:
+      if (trx.dibayar != null) {
+        bayarText = 'Rp ' + Number(trx.dibayar).toLocaleString('id-ID');
+      } else {
+        // jika ingin default tunai penuh:
+        bayarText = 'Rp ' + Number(trx.nominal ?? 0).toLocaleString('id-ID');
+      }
+    } else {
+      // penjualan/tagihan
+      if (trx.dibayar != null) {
+        bayarText = 'Rp ' + Number(trx.dibayar).toLocaleString('id-ID');
+      }
+    }
+    document.getElementById('struk-dibayar').innerText = bayarText;
+
+    // Kembalian (hanya jika dibayar > nominal)
+    let kembalian = 0;
+    if (trx.dibayar != null && Number(trx.dibayar) > Number(trx.nominal)) {
+      kembalian = Number(trx.dibayar) - Number(trx.nominal);
+    }
     document.getElementById('struk-kembalian').innerText = 'Rp ' + kembalian.toLocaleString('id-ID');
 
-    let elAlamat = document.getElementById('struk-alamat');
+    // Alamat (fetch profile)
+    const elAlamat = document.getElementById('struk-alamat');
     fetch('/profile/get')
       .then(res => res.json())
       .then(data => {
@@ -394,37 +441,26 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(() => { elAlamat.innerText = 'Indonesia'; });
 
-    // Tampilkan tombol "Tandai sebagai Lunas" jika tagihan dan status bukan lunas
+    // Tombol “Tandai sebagai Lunas”
     const lunasBtnContainer = document.getElementById('lunas-btn-container');
     lunasBtnContainer.innerHTML = '';
-    if(trx.jenis === 'tagihan' && trx.status !== 'lunas') {
+    if (trx.jenis === 'tagihan' && trx.status !== 'lunas') {
+      // Menggunakan Alpine: set showModal dan transaksiId
       lunasBtnContainer.innerHTML = `<button 
         class='bg-primary text-white rounded-lg w-full py-2 text-xs font-semibold shadow hover:bg-primary-800 cursor-pointer transition'
         x-data
-        @click=\"showModal = true; transaksiId = '${trx.id}'\"
+        @click="showModal = true; transaksiId = '${trx.id}'"
       >Tandai sebagai Lunas</button>`;
     }
   }
+
   // Render struk pertama kali jika ada data
-  if(transaksiData.length > 0) {
-    tbody.querySelectorAll('tr')[0].classList.add('bg-primary/5', 'active-row');
-    showStruk(transaksiData[0]);
+  if (Array.isArray(transaksiData) && transaksiData.length > 0) {
+    const firstRow = tbody.querySelectorAll('tr')[0];
+    if (firstRow) {
+      firstRow.classList.add('bg-primary/5', 'active-row');
+      showStruk(transaksiData[0]);
+    }
   }
 });
 </script>
-
-<style>
-  #filter-switch .switch-btn { 
-    background: transparent; border: none; outline: none; cursor: pointer; 
-  }
-  #filter-switch .switch-btn.text-white { 
-    color: #fff !important; 
-  }
-  #switch-indicator { 
-    box-shadow: 0 2px 8px rgba(37,99,235,0.08); 
-  }
-  
-  .active-row {
-    background-color: ;
-}
-</style>
