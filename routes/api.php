@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/transaction', [TransactionController::class, 'store']);
     Route::get('/transaction/history', [TransactionHistoryController::class, 'index']);
     Route::post('/transaction/{id}/markAsLunas', [TransactionController::class, 'markAsLunas']);
+    Route::get('transaction', [TransactionController::class, "getAllData"]);
 
     //Autocomplete
     Route::get('/autocomplete/contact', [ContactController::class, 'autocomplete']);

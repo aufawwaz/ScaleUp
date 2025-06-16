@@ -238,4 +238,12 @@ class TransactionController extends Controller
             return response()->json(['success' => false, 'message' => 'Gagal update status', 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function getAllData()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => Transaction::all()
+        ]);
+    }
 }
