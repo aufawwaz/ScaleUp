@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Product
     Route::apiResource('product', ProductController::class);
+    Route::get('/product/{id}', [ProductController::class, 'show']);
 
     // Contact
     Route::apiResource('contact', ContactController::class);

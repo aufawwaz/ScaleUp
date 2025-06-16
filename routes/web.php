@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SaldoController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionHistoryController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('landing');
@@ -48,6 +49,19 @@ Route::middleware(['auth'])->group(function () {
         'product' => 'product:slug',
         'backlink' => ''
     ]);
+
+
+    Route::get('/storage/produk/{filename}', function ($filename) {
+        $path = storage_path('app/public/produk/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return response()->file($path, [
+            'Content-Type' => mime_content_type($path)
+        ]);
+    });
 
     // Contact
     Route::resource('contact', ContactController::class);
