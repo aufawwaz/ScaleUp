@@ -253,4 +253,10 @@ class TransactionController extends Controller
             return back()->with('error', 'Gagal update status');
         }
     }
+    public function getAllData(){
+        return response()->json([
+            'success' => true,
+            'data' => Transaction::all()
+        ]);
+    }
 }
