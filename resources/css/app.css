@@ -61,6 +61,11 @@
     }
 }
 
+
+.bg-primary-gradient {
+    background: linear-gradient(#007AFF, #0E315D);
+}
+
 .fade-move-up {
     opacity: 0;
     transform: translateY(40px);
