@@ -1,4 +1,4 @@
-<div class="rounded-[12px] border-1 border-gray p-2 w-full flex gap-2 items-center">
+<div class="text-xs rounded-[12px] border-1 border-gray h-[44px] px-3 w-full flex gap-2 items-center hover:border-primary focus-within:border-primary transition-all">
     @php
         $svg = file_get_contents(public_path($icon));
         $svg = str_replace('fill="#020507"', 'fill="currentColor"', $svg);
@@ -9,7 +9,7 @@
         type="{{ $type }}" 
         name="{{ $name }}"
         placeholder="{{ $placeholder }}" 
-        class="w-[100%] text-{{ $textSize }} border-none focus:border-none focus:ring-0 outline-none leading-tight"
+        class="w-full text-xs text-{{ $textSize }} truncate border-none focus:border-none focus:ring-0 focus:truncate outline-none leading-tight"
         autocomplete="{{ $autoComplete }}"
     >
 </div>
