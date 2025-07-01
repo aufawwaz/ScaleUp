@@ -52,12 +52,16 @@ class TransactionController extends Controller
         return response()->json(['data' => $transactions]);
     }
 
-    // GET /api/transaction/product/{id}
+    // GET /api/transaction/item/{id}
     public function getProductById(Request $request, $id)
     {
         $user = $request->user();
         $product = Product::where('user_id', $user->id)->findOrFail($id);
         return response()->json(['data' => $product]);
+    }
+
+    public function show(Request $request, $id) {
+        return $this->getDataById($request, $id);
     }
 
     // POST /api/transaction
@@ -237,5 +241,28 @@ class TransactionController extends Controller
             Log::error('Mark as lunas error', ['error' => $e->getMessage(), 'id' => $id]);
             return response()->json(['success' => false, 'message' => 'Gagal update status', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    // GET /api/transaction
+    public function getAllData(Request $request){
+        return response()->json([
+            'success' => true,
+            'data' => Transaction::with(['items.product','kontak','saldo'])
+                        ->where('user_id', $request->user()->id)
+                        ->orderBy('tanggal', 'desc')
+                        ->get()
+        ], 200);
+    }
+
+    // GET /api/transaction/{id}
+    public function getDataById(Request $request, $id){
+        return response()->json([
+            'success' => true,
+            'data' => Transaction::with(['items.product','kontak','saldo'])
+                        ->where('user_id', $request->user()->id)
+                        ->where('id', $id)
+                        ->orderBy('tanggal', 'desc')
+                        ->first()
+        ], 200);
     }
 }

@@ -37,18 +37,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('contact', ContactController::class);
     Route::get('/contact/{id}', [ContactController::class, 'show']);
 
-    //     // // News
-    //     // Route::get('/news', [NewsController::class, 'index']);
-    //     // Route::get('/news/{id}', [NewsController::class, 'show']);
+    // // News
+    // Route::get('/news', [NewsController::class, 'index']);
+    // Route::get('/news/{id}', [NewsController::class, 'show']);
 
     // Transaksi
-    Route::get('/sale', [TransactionController::class, 'indexSale']);
-    Route::get('/purchase', [TransactionController::class, 'indexPurchase']);
-    Route::get('/bill', [TransactionController::class, 'indexBill']);
-    Route::get('/transaction/product/{id}', [TransactionController::class, 'getProductById']);
-    Route::post('/transaction', [TransactionController::class, 'store']);
-    Route::get('/transaction/history', [TransactionHistoryController::class, 'index']);
-    Route::post('/transaction/{id}/markAsLunas', [TransactionController::class, 'markAsLunas']);
+    Route::apiResource('transaction', TransactionController::class);
+    Route::get('transaction', [TransactionController::class, 'getAllData']);
+    // Route::get('transaction/{id}', [TransactionController::class, 'getById']);
+    Route::get('/api/transaction/product/{id}', [TransactionController::class, 'getProductById']);
 
     //Autocomplete
     Route::get('/autocomplete/contact', [ContactController::class, 'autocomplete']);
